@@ -1,4 +1,4 @@
-package com.GeekHub.TestServer;
+package com.GeekHub.AuthServer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class TestServerApplication {
+public class AuthServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TestServerApplication.class, args);
+		SpringApplication.run(AuthServerApplication.class, args);
 	}
 
 }
