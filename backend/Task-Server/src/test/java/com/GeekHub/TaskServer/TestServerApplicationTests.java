@@ -1,4 +1,4 @@
-package com.GeekHub.TestServer;
+package com.GeekHub.TaskServer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

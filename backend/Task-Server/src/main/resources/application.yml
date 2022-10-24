@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name : test-server
+    name : task-server
 
 eureka:
   client:
