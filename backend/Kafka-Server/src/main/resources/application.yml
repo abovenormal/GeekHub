@@ -1,14 +1,9 @@
-
 server:
-  port: 9003
+  port: 8081
 
 spring:
-  application:
-    name : kafka-server
-
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://127.0.0.1:8761/eureka
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: Geekhub
