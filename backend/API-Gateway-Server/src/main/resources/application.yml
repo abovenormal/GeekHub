@@ -13,14 +13,14 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: test1-service
+        - id: auth-service
           uri: http://localhost:9001
           predicates:
-            - Path=/first-service/**
-        - id: test2-service
+            - Path=/members/**
+        - id: task-service
           uri: http://localhost:9002
           predicates:
-            - Path=/members/**
+            - Path=/task/**
         - id: kafka-service
           uri: http://localhost:9003
           predicates:
