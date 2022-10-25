@@ -1,10 +1,10 @@
 
 server:
-  port: 9002
+  port: 9001
 
 spring:
   application:
-    name : auth-server
+    name : test-server
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/geekhub?serverTimezone=Asia/Seoul
@@ -12,14 +12,10 @@ spring:
     password: 1234
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update #create update none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
-
-
-jwt:
-  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
 
 eureka:
   client:
