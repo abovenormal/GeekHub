@@ -3,6 +3,7 @@ package com.GeekHub.TaskServer.service;
 import com.GeekHub.TaskServer.dao.TaskDao;
 import com.GeekHub.TaskServer.dto.TaskDto;
 import com.GeekHub.TaskServer.entity.Task;
+import com.GeekHub.TaskServer.entity.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +51,7 @@ public class TaskServieImpl implements  TaskServie{
             Task taskEntity = new Task();
             System.out.println("테스크 엔티티생성");
             taskEntity.setTaskContent(taskDto.getTaskContent());
-            taskEntity.setStatus(taskDto.getStatus());
+            taskEntity.setStatus(TaskStatus.OFF);
             taskEntity.setAssignTime(LocalDateTime.now());
             System.out.println("엔티티 세팅 완료");
             taskDao.saveTask(taskEntity);
@@ -66,7 +67,6 @@ public class TaskServieImpl implements  TaskServie{
         Task taskEntity = taskDao.getTask(taskDto.getTaskId());
         taskEntity.setStatus(taskDto.getStatus());
         taskEntity.setFinTime(taskDto.getFinTime());
-        taskEntity.setAssignTime(taskDto.getAssignTime());
         taskEntity.setTaskContent(taskDto.getTaskContent());
         taskDao.saveTask(taskEntity);
     }
