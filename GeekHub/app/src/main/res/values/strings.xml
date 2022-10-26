@@ -10,6 +10,8 @@
     <string name="receive">수령</string>
     <string name="delivery">배달</string>
     <string name="count_number">0개</string>
+    <string name="dummy_title">알촌</string>
+    <string name="dummy_order">10개주문</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                add<DeliveryFragment>(R.id.main_container_view)
+                add<DeliveryDetailFragment>(R.id.main_container_view)
             }
         }
 
