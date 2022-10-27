@@ -38,7 +38,11 @@ class DeliveryFragment : Fragment() {
         binding.testComponents.setOnClickListener {
             (activity as MainActivity).changeFragment(2)
         } // 임시
+
+
     }
+
+
 
     private fun openReceive(){
         binding.receiveLine.visibility = View.VISIBLE

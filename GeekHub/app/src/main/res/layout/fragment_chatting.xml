@@ -28,6 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view">
 
         <LinearLayout
+            android:id="@+id/admin_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -41,23 +42,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="8dp"
-                android:text="@string/colleague"
+                android:text="@string/admin"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
 
 
             <View
-
+                android:id="@+id/admin_chatting"
                 android:layout_width="100dp"
                 android:layout_height="3dp"
                 android:layout_marginTop="6dp"
+                android:visibility="invisible"
                 android:background="@color/gray_500" />
 
         </LinearLayout>
 
 
         <LinearLayout
+            android:id="@+id/colleague_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -70,15 +73,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="8dp"
-                android:text="@string/admin"
+                android:text="@string/colleague"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
 
             <View
+                android:id="@+id/colleague_chatting"
                 android:layout_width="100dp"
                 android:layout_height="3dp"
                 android:layout_marginTop="6dp"
+                android:visibility="invisible"
                 android:background="@color/gray_500" />
 
         </LinearLayout>
