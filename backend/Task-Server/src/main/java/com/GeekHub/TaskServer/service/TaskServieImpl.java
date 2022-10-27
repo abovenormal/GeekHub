@@ -49,13 +49,10 @@ public class TaskServieImpl implements  TaskServie{
     public void createTask(TaskDto taskDto) throws Exception {
         try {
             Task taskEntity = new Task();
-            System.out.println("테스크 엔티티생성");
             taskEntity.setTaskContent(taskDto.getTaskContent());
             taskEntity.setStatus(TaskStatus.OFF);
             taskEntity.setAssignTime(LocalDateTime.now());
-            System.out.println("엔티티 세팅 완료");
             taskDao.saveTask(taskEntity);
-            System.out.println("세이브");
         }catch (Exception e){
             throw new Exception();
         }
@@ -65,7 +62,6 @@ public class TaskServieImpl implements  TaskServie{
     @Transactional
     public void updateTask(TaskDto taskDto) throws Exception {
         Task taskEntity = taskDao.getTask(taskDto.getTaskIdx());
-        System.out.println(taskDto.getStatus());
         taskEntity.setStatus(taskDto.getStatus());
         taskEntity.setFinTime(taskDto.getFinTime());
         taskEntity.setTaskContent(taskDto.getTaskContent());

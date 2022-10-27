@@ -1,7 +1,7 @@
 package com.GeekHub.TaskServer.controlloer;
 
-import com.GeekHub.TaskServer.dto.TaskDto;
-import com.GeekHub.TaskServer.service.TaskServie;
+import com.GeekHub.TaskServer.dto.OrderDto;
+import com.GeekHub.TaskServer.service.OrderServie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/order")
 @RequiredArgsConstructor
-public class TaskController {
+public class OrderController {
 
-    private final TaskServie taskService;
+    private final OrderServie orderService;
 
     @GetMapping("/test")
     public String test(){
@@ -22,21 +22,21 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskDto>> getTaskAll(){
-        List<TaskDto> result = null;
+    public ResponseEntity<List<OrderDto>> getOrderAll(){
+        List<OrderDto> result = null;
         try {
-            result = taskService.getTaskAll();
+            result = orderService.getOrderAll();
         }catch (Exception e){
             throw new RuntimeException();
         }
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping("/{task_idx}")
-    public ResponseEntity<TaskDto> getTask(@PathVariable("task_idx") Long taskIdx){
-        TaskDto result=null;
+    @GetMapping("/{order_idx}")
+    public ResponseEntity<OrderDto> getOrder(@PathVariable("order_idx") Long orderIdx){
+        OrderDto result=null;
         try {
-            result = taskService.getTask(taskIdx);
+            result = orderService.getOrder(orderIdx);
         }catch (Exception e){
             throw  new RuntimeException();
         }
@@ -44,30 +44,30 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createTask(@RequestBody TaskDto taskDto){
+    public ResponseEntity<String> createOrder(@RequestBody OrderDto orderDto){
         try {
-            taskService.createTask(taskDto);
+            orderService.createOrder(orderDto);
         }catch (Exception e){
             throw new RuntimeException();
         }
         return new ResponseEntity<String>("success",HttpStatus.CREATED);
     }
 
-    @PutMapping("/{task_idx}")
-    public ResponseEntity<String> updateTask(@PathVariable("task_idx") Long taskIdx,@RequestBody TaskDto taskDto){
+    @PutMapping("/{order_idx}")
+    public ResponseEntity<String> updateOrder(@PathVariable("order_idx") Long orderIdx,@RequestBody OrderDto orderDto){
         try {
-            taskDto.setTaskIdx(taskIdx);
-            taskService.updateTask(taskDto);
+            orderDto.setOrderIdx(orderIdx);
+            orderService.updateOrder(orderDto);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return  new ResponseEntity<String>("success",HttpStatus.OK);
     }
 
-    @DeleteMapping("/{task_idx}")
-    public ResponseEntity<String> deleteTask(@PathVariable("task_idx") Long taskIdx){
+    @DeleteMapping("/{order_idx}")
+    public ResponseEntity<String> deleteOrder(@PathVariable("order_idx") Long orderIdx){
         try {
-            taskService.deleteTask(taskIdx);
+            orderService.deleteOrder(orderIdx);
         }catch (Exception e){
             throw new RuntimeException();
         }

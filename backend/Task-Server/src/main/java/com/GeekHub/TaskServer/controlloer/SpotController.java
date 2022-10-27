@@ -1,7 +1,7 @@
 package com.GeekHub.TaskServer.controlloer;
 
-import com.GeekHub.TaskServer.dto.TaskDto;
-import com.GeekHub.TaskServer.service.TaskServie;
+import com.GeekHub.TaskServer.dto.SpotDto;
+import com.GeekHub.TaskServer.service.SpotServie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/spot")
 @RequiredArgsConstructor
-public class TaskController {
+public class SpotController {
 
-    private final TaskServie taskService;
+    private final SpotServie SpotServie;
 
     @GetMapping("/test")
     public String test(){
@@ -22,21 +22,21 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskDto>> getTaskAll(){
-        List<TaskDto> result = null;
+    public ResponseEntity<List<SpotDto>> getSpotAll(){
+        List<SpotDto> result = null;
         try {
-            result = taskService.getTaskAll();
+            result = SpotServie.getSpotAll();
         }catch (Exception e){
             throw new RuntimeException();
         }
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping("/{task_idx}")
-    public ResponseEntity<TaskDto> getTask(@PathVariable("task_idx") Long taskIdx){
-        TaskDto result=null;
+    @GetMapping("/{spot_idx}")
+    public ResponseEntity<SpotDto> getTask(@PathVariable("spot_idx") Long spotIdx){
+        SpotDto result=null;
         try {
-            result = taskService.getTask(taskIdx);
+            result = SpotServie.getSpot(spotIdx);
         }catch (Exception e){
             throw  new RuntimeException();
         }
@@ -44,30 +44,30 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createTask(@RequestBody TaskDto taskDto){
+    public ResponseEntity<String> createTask(@RequestBody SpotDto SpotDto){
         try {
-            taskService.createTask(taskDto);
+            SpotServie.createSpot(SpotDto);
         }catch (Exception e){
             throw new RuntimeException();
         }
         return new ResponseEntity<String>("success",HttpStatus.CREATED);
     }
 
-    @PutMapping("/{task_idx}")
-    public ResponseEntity<String> updateTask(@PathVariable("task_idx") Long taskIdx,@RequestBody TaskDto taskDto){
+    @PutMapping("/{spot_idx}")
+    public ResponseEntity<String> updateTask(@PathVariable("spot_idx") Long spotIdx,@RequestBody SpotDto SpotDto){
         try {
-            taskDto.setTaskIdx(taskIdx);
-            taskService.updateTask(taskDto);
+            SpotDto.setSpotIdx(spotIdx);
+            SpotServie.updateSpot(SpotDto);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return  new ResponseEntity<String>("success",HttpStatus.OK);
     }
 
-    @DeleteMapping("/{task_idx}")
-    public ResponseEntity<String> deleteTask(@PathVariable("task_idx") Long taskIdx){
+    @DeleteMapping("/{spot_idx}")
+    public ResponseEntity<String> deleteTask(@PathVariable("spot_idx") Long spotIdx){
         try {
-            taskService.deleteTask(taskIdx);
+            SpotServie.deleteSpot(spotIdx);
         }catch (Exception e){
             throw new RuntimeException();
         }
