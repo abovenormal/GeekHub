@@ -54,6 +54,7 @@
         tools:ignore="MissingConstraints" />
 
     <Button
+        android:id="@+id/delivery_start_button"
         android:layout_width="360dp"
         android:layout_height="48dp"
         android:background="@drawable/normal_button"

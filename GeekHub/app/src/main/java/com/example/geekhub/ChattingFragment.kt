@@ -19,8 +19,10 @@ class ChattingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = FragmentChattingBinding.inflate(inflater,container,false)
+
+        binding.adminChatting.visibility = View.VISIBLE
+
         return binding.root
     }
 
@@ -30,7 +32,17 @@ class ChattingFragment : Fragment() {
         setLocationSpinner()
         timeSpinnerHandler()
         locationSpinnerHandler()
+
+        binding.adminTitle.setOnClickListener{
+            openAdmin()
+        }
+        binding.colleagueTitle.setOnClickListener{
+            openColleague()
+        }
+
+
     }
+
 
     private fun setTimeSpinner () {
         val spinner = binding.spinnerTime
@@ -66,6 +78,16 @@ class ChattingFragment : Fragment() {
                 TODO("Not yet implemented")
             }
         }
+    }
+
+    private fun openAdmin () {
+       binding.adminChatting.visibility = View.VISIBLE
+       binding.colleagueChatting.visibility = View.INVISIBLE
+    }
+
+    private fun openColleague () {
+        binding.colleagueChatting.visibility = View.VISIBLE
+        binding.adminChatting.visibility = View.INVISIBLE
     }
 
 

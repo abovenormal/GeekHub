@@ -95,6 +95,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
         <Button
+            android:id="@+id/send_picture"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="48dp"
