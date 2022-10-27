@@ -17,7 +17,20 @@ class NavFragment : Fragment() {
     ): View? {
         binding = FragmentNavBinding.inflate(inflater,container,false)
 
+        binding.main.setOnClickListener {
+            (activity as MainActivity).changeFragment(1)
+        }
+
+
+
         return binding.root
     }
+
+
+
+
+
+
+
 
 }
