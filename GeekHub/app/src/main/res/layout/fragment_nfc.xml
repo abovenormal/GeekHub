@@ -60,8 +60,9 @@
 
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="360dp"
-                android:layout_height="360dp"
+                android:layout_width="330dp"
+                android:layout_height="330dp"
+                android:layout_marginVertical="20dp"
                 android:src="@drawable/nfctagging"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
