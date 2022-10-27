@@ -18,6 +18,7 @@
     <string name="nfc_scan">스캔 준비가 완료되었습니다.</string>
     <string name="nfc_playing">기기를 NFC 스티거에 가까이 가져가 주세요</string>
     <string name="take_picture">재촬영</string>
+    <string name="go_picture">사진찍기</string>
     <string name="send">전송하기</string>
     <string name="colleague">동료기사</string>
     <string name="admin">관리자</string>
