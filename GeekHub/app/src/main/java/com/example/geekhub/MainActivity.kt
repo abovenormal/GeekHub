@@ -68,6 +68,14 @@ class MainActivity : AppCompatActivity() {
                 moveFragment(DeliveryDetailFragment())
             }
 
+            3 -> {
+                moveFragment(NfcFragment())
+            }
+
+            4 -> {
+                moveFragment(DeliveryCameraFragment())
+            }
+
         }
 
 
