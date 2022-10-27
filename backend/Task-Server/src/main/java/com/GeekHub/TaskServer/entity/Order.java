@@ -15,7 +15,7 @@ public class Order {
     @Column(name="order_idx")
     private long orderIdx;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name="order_status")
     private Orderstatus orderStatus;
 

@@ -13,7 +13,7 @@ public class Spot {
     @Column(name="task_idx")
     private long spotIdx;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name="spotcategory")
     private SpotCategory spotCategory;
 
