@@ -64,6 +64,10 @@ class MainActivity : AppCompatActivity() {
                 moveFragment(DeliveryFragment())
             }
 
+            2 -> {
+                moveFragment(DeliveryDetailFragment())
+            }
+
         }
 
 
@@ -77,6 +81,7 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
     }
+
 
 
 

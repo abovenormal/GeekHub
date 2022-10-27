@@ -34,6 +34,10 @@ class DeliveryFragment : Fragment() {
         binding.deliveryButton.setOnClickListener {
             openDelivery()
         }
+
+        binding.testComponents.setOnClickListener {
+            (activity as MainActivity).changeFragment(2)
+        } // 임시
     }
 
     private fun openReceive(){
@@ -46,6 +50,12 @@ class DeliveryFragment : Fragment() {
         binding.deliveryLine.visibility = View.VISIBLE
 
     }
+
+//    private fun recycleFragment(){
+//
+//
+//
+//    } //recycler view와 연결 예정
 
 }
 
