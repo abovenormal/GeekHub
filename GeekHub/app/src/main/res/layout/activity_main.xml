@@ -8,7 +8,7 @@
     android:background="@color/gray_500"
     tools:context=".MainActivity">
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/go_chatting"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_margin="5dp"

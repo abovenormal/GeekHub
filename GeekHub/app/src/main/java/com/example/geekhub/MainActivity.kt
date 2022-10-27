@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import com.example.geekhub.databinding.ActivityMainBinding
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                add<DeliveryDetailFragment>(R.id.main_container_view)
+                add<NavFragment>(R.id.main_container_view)
             }
         }
 
@@ -48,20 +49,37 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, permissions, MY_PERMISSION_ACCESS_ALL)
 
         } // 퍼미션
-//
-//        locationCallback = object : LocationCallback() {
-//            override fun onLocationResult(locationResult: LocationResult?) {
-//                locationResult ?: return
-//                for (location in locationResult.locations){
-//                    // Update UI with location data
-//                    // ...
-//                }
-//            }
-//        }
+
+        binding.goChatting.setOnClickListener{
+            moveFragment(ChattingFragment())
+        }
 
     }
 
-//    var manager = getSystemService(LOCATION_SERVICE) as LocationManager
+
+
+    fun changeFragment(index:Int) {
+        when(index){
+            1 -> {
+                moveFragment(DeliveryFragment())
+            }
+
+        }
+
+
+    }
+
+    private fun moveFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.main_container_view, fragment)
+            .addToBackStack(null)
+            .commit()
+
+    }
+
+
+
 
 
 
