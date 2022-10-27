@@ -50,7 +50,7 @@ public class TaskServieImpl implements  TaskServie{
         try {
             Task taskEntity = new Task();
             taskEntity.setTaskContent(taskDto.getTaskContent());
-            taskEntity.setStatus(TaskStatus.OFF);
+            taskEntity.setStatus(TaskStatus.DELIVERYING);
             taskEntity.setAssignTime(LocalDateTime.now());
             taskDao.saveTask(taskEntity);
         }catch (Exception e){
@@ -72,6 +72,15 @@ public class TaskServieImpl implements  TaskServie{
     @Transactional
     public void deleteTask(Long taskIdx) throws Exception {
         taskDao.deleteTask(taskIdx);
+    }
+
+    @Override
+    @Transactional
+    public void complitionTask(Long taskIdx) throws Exception {
+        Task taskEntity = taskDao.getTask(taskIdx);
+        taskEntity.setStatus(TaskStatus.FINISH);
+        taskEntity.setFinTime(LocalDateTime.now());
+        taskDao.saveTask(taskEntity);
     }
 
 }

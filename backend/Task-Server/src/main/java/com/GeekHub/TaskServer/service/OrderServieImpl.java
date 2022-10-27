@@ -5,6 +5,8 @@ import com.GeekHub.TaskServer.dao.SpotDao;
 import com.GeekHub.TaskServer.dto.OrderDto;
 import com.GeekHub.TaskServer.entity.Order;
 import com.GeekHub.TaskServer.entity.Orderstatus;
+import com.GeekHub.TaskServer.entity.Task;
+import com.GeekHub.TaskServer.entity.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,6 +77,15 @@ public class OrderServieImpl implements OrderServie{
     @Transactional
     public void deleteOrder(Long orderIdx) throws Exception {
         orderDao.deleteOrder(orderIdx);
+    }
+
+    @Override
+    @Transactional
+    public void complitionOrder(Long orderIdx) throws Exception {
+        Order orderEntity = orderDao.getOrder(orderIdx);
+        orderEntity.setOrderStatus(Orderstatus.FINISH);
+        orderEntity.setFinTime(LocalDateTime.now());
+        orderDao.saveOrder(orderEntity);
     }
 
 }

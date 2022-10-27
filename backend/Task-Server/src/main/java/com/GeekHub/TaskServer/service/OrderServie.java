@@ -10,4 +10,6 @@ public interface OrderServie {
     void createOrder(OrderDto orderDto) throws Exception;
     void updateOrder(OrderDto orderDto) throws Exception;
     void deleteOrder(Long orderIdx) throws Exception;
+    void complitionOrder(Long orderIdx) throws Exception;
+
 }

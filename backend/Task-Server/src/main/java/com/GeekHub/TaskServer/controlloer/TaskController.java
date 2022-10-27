@@ -74,4 +74,14 @@ public class TaskController {
         return  new ResponseEntity<String>("success",HttpStatus.OK);
     }
 
+    @PutMapping("/complition/{task_idx}")
+    public ResponseEntity<String> completionTask(@PathVariable("task_idx") Long taskIdx){
+        try {
+            taskService.complitionTask(taskIdx);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return  new ResponseEntity<String>("success",HttpStatus.OK);
+    }
+
 }

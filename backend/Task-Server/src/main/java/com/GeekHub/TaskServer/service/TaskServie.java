@@ -10,4 +10,5 @@ public interface TaskServie {
     void createTask(TaskDto taskDto) throws Exception;
     void updateTask(TaskDto taskDto) throws Exception;
     void deleteTask(Long taskIdx) throws Exception;
+    void complitionTask(Long taskIdx) throws Exception;
 }
