@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    tools:context=".NavFragment">
+
+    <FrameLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/main_nav"
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:text="다음 목적지  :  홍콩반점 309m"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+<!--        <ImageView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/nav_arrow_up"-->
+<!--            android:layout_gravity="center_horizontal" />-->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/nav_up_button"
+            android:layout_gravity="center_horizontal"
+            />
+
+    </FrameLayout>
+
+</FrameLayout>

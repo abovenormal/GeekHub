@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="790dp"
+    android:background="@drawable/fragment_form"
+    tools:context=".DeliveryDetailFragment">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/nav_up_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.1"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:background="@drawable/title_detail"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="@string/dummy_title"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
+        android:background="@drawable/title_detail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.73"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:paddingVertical="15dp"
+            android:text="@string/dummy_order"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.9"
+            android:paddingBottom="10dp"
+            android:scrollbars="none"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/recycler_list"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@drawable/recycler_list"
+                    android:gravity="center_vertical"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:paddingStart="25dp"
+                        android:text="망고망고빙수"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:text="197번"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@drawable/recycler_list"
+                    android:gravity="center_vertical"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:paddingStart="25dp"
+                        android:text="망고망고빙수"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:text="197번"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@drawable/recycler_list"
+                    android:gravity="center_vertical"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:paddingStart="25dp"
+                        android:text="망고망고빙수"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:text="197번"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@drawable/recycler_list"
+                    android:gravity="center_vertical"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:paddingStart="25dp"
+                        android:text="망고망고빙수"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:text="197번"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </LinearLayout><LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/recycler_list"
+                android:gravity="center_vertical"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:paddingStart="25dp"
+                    android:text="망고망고빙수"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="center_horizontal"
+                    android:text="197번"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@drawable/recycler_list"
+                    android:gravity="center_vertical"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:paddingStart="25dp"
+                        android:text="망고망고빙수"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:text="197번"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </LinearLayout><LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/recycler_list"
+                android:gravity="center_vertical"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:paddingStart="25dp"
+                    android:text="망고망고빙수"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="center_horizontal"
+                    android:text="197번"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </LinearLayout><LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/recycler_list"
+                android:gravity="center_vertical"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:paddingStart="25dp"
+                    android:text="망고망고빙수"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="center_horizontal"
+                    android:text="197번"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </LinearLayout><LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/recycler_list"
+                android:gravity="center_vertical"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:paddingStart="25dp"
+                    android:text="망고망고빙수"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="center_horizontal"
+                    android:text="197번"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </LinearLayout><LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/recycler_list"
+                android:gravity="center_vertical"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:paddingStart="25dp"
+                    android:text="망고망고빙수"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="center_horizontal"
+                    android:text="197번"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </LinearLayout><LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/recycler_list"
+                android:gravity="center_vertical"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:paddingStart="25dp"
+                    android:text="망고망고빙수"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="center_horizontal"
+                    android:text="197번"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </LinearLayout>
+
+
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.15"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/normal_button"
+            android:text="@string/tagging_button"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
