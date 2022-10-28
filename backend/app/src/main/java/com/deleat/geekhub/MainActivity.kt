@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
 
         val api = retrofit.create(NaverAPI::class.java)
 
-        val callgetPath = api.getPath(APIKEY_ID, APIKEY,"129.089441, 35.231100", "129.084454, 35.228982")
+        val callgetPath = api.getPath(APIKEY_ID, APIKEY,"35.175913, 126.908395", "35.169948, 126.904466")
 
         callgetPath.enqueue(object : Callback<ResultPath>{
             override fun onResponse(
