@@ -6,16 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.UiThread
+import com.google.gson.JsonArray
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.PathOverlay
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
+import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.reflect.typeOf
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback{
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,6 +36,32 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
         val APIKEY_ID = "dsd1syl3bg"
         val APIKEY = "WuDvwWaBFLTvSzduM94HkD7wLsrsInigPd4SFHF0"
 
+        val GeoCode = Retrofit.Builder().
+                baseUrl("https://naveropenapi.apigw.ntruss.com/map-geocode/").
+                addConverterFactory(GsonConverterFactory.create()).build()
+        val GeoCodeApi = GeoCode.create(NaverAPI::class.java)
+
+        val callGeoCode = GeoCodeApi.getGeoCode(APIKEY_ID, APIKEY, "서구 상무대로 773")
+
+        callGeoCode.enqueue(object : Callback<ResultGeo>{
+            override fun onResponse(call: Call<ResultGeo>, response: Response<ResultGeo>) {
+                var path_cords_list = response.body()
+//                val jsonArray = JsonArray(path_cords_list.toString())
+                val data = path_cords_list?.addresses
+                println("여기")
+                println(data!!.get(0).x)
+                println(data!!.get(0).y)
+//                println(typeOf())
+//                for (i in 1..data!!.size) {
+//                    println(data[i])
+//                }
+            }
+
+            override fun onFailure(call: Call<ResultGeo>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+
         val retrofit = Retrofit.Builder().
         baseUrl("https://naveropenapi.apigw.ntruss.com/map-direction/").
         addConverterFactory(GsonConverterFactory.create()).
@@ -43,7 +69,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
 
         val api = retrofit.create(NaverAPI::class.java)
 
-        val callgetPath = api.getPath(APIKEY_ID, APIKEY,"35.175913, 126.908395", "35.169948, 126.904466")
+        val callgetPath = api.getPath(APIKEY_ID, APIKEY,"126.8521202, 35.1537646", "126.8472916, 35.1467104")
 
         callgetPath.enqueue(object : Callback<ResultPath>{
             override fun onResponse(
@@ -51,7 +77,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
                 response: Response<ResultPath>
             ) {
                 var path_cords_list = response.body()?.route?.traoptimal
-
                 val path = PathOverlay()
 
                 val path_container : MutableList<LatLng>? = mutableListOf(LatLng(0.1, 0.1))

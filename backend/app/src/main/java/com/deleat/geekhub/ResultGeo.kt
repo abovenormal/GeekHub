@@ -1,10 +1,10 @@
 package com.deleat.geekhub
 
-data class Result_geo (
+data class ResultGeo (
     val status : String,
     val meta : Meta_data,
     val addresses: List<Addresses_info>,
-    val errorMessage : String
+    val errorMessage : String = ""
     )
 
 data class Meta_data(

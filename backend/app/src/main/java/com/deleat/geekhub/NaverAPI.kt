@@ -14,10 +14,10 @@ interface NaverAPI {
         @Query("goal") goal: String,
     ): Call<ResultPath>
 
-    @GET("v2/geocode?query=")
+    @GET("v2/geocode")
     fun getGeoCode(
         @Header("X-NCP-APIGW-API-KEY-ID") apiKeyID: String,
         @Header("X-NCP-APIGW-API-KEY") apiKey: String,
         @Query("query") query : String,
-    ): Call<>
+    ): Call<ResultGeo>
 }
