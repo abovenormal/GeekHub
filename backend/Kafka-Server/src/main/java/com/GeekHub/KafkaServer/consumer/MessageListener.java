@@ -26,9 +26,5 @@ public class MessageListener {
         log.info("sending via kafka listener..");
         System.out.println(message);
         repository.save(message);
-        //
-        //db저장
-        //topic/group 로그데이터 보낼 경로 설정해야함
-        //template.convertAndSend("/topic/group", message);
     }
 }

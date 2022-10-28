@@ -4,6 +4,6 @@ server:
 spring:
   data:
     mongodb:
-      host: localhost
+      host: 3.36.113.161
       port: 27017
-      database: Geekhub
+      database: geekhub
