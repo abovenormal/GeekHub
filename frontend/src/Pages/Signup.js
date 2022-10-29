@@ -7,9 +7,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import Input from "@mui/material/Input"
 import "./css/Signup.css";
 
+import {makeStyles} from "@mui/styles"
 const Signup = () => {
   const [info, setInfo] = useState({
     name: "",
@@ -103,6 +103,9 @@ const Signup = () => {
       });
     }
   };
+
+  //
+
   return (
     <div className="signup-container">
       <form
@@ -117,6 +120,7 @@ const Signup = () => {
           variant="standard"
           value={info.name}
           onChange={onChange}
+          sx={{ m: 1, minWidth: 310 }}
         />
         <TextField
           id="phoneNumber"
@@ -125,9 +129,10 @@ const Signup = () => {
           variant="standard"
           value={info.phoneNumber}
           onChange={onChange}
+          sx={{ m: 1, minWidth: 310 }}
         />
         <div>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 150 }}>
+          <FormControl variant="standard" sx={{ m: 1, minWidth: 100 }}>
             <InputLabel id="demo-simple-select-standard-label">City</InputLabel>
             <Select
               labelId="demo-simple-select-standard-label"
@@ -143,7 +148,7 @@ const Signup = () => {
               <MenuItem value={"수원"}>수원</MenuItem>
             </Select>
           </FormControl>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 250 }}>
+          <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
             <InputLabel id="demo-simple-select-standard-label">
               School
             </InputLabel>
@@ -170,6 +175,7 @@ const Signup = () => {
           value={info.city + info.phoneNumber}
           variant="standard"
           onChange={onChange}
+          sx={{ m: 1, minWidth: 310 }}
         />
         {/* <label className="signup-input-label" htmlFor="id"/>
         <div className="signup-row">
@@ -192,6 +198,7 @@ const Signup = () => {
           variant="standard"
           value={info.password}
           onChange={onChange}
+          sx={{ m: 1, minWidth: 310 }}
         />
         <TextField
           id="password"
@@ -203,6 +210,7 @@ const Signup = () => {
           onChange={(e) => {
             setPasswordConfirm(e.target.value);
           }}
+          sx={{ m: 1, minWidth: 310 }}
         />
 
         <button className="signup-button">DONE</button>

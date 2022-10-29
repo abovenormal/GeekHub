@@ -11,69 +11,22 @@
   align-items: center;
   margin: 1rem;
   width: 100%;
+  background-color: #111827;
 }
 
-.signup-input-label {
-  width: 100%;
-  text-align: start;
-}
-
-.signup-row {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.signup-input {
-  box-sizing: border-box;
-  margin: 1rem auto;
-  padding: 0.5rem;
-  font-weight: bold;
-  border: 1px solid lightgray;
-  width: 100%;
-}
-
-.signup-input:focus {
-  outline: 1px solid black;
-  border: 1px solid black;
-}
-
-.signup-check-confirm {
-  margin: auto 0 auto 0.5rem;
-  padding: 0.5rem;
-  width: 5rem;
-  color: #FFE651;
-  font-size: 2rem;
-  text-align: center;
-  line-height: 0;
-}
-
-.signup-check {
-  cursor: pointer;
-  margin: auto 0 auto 0.5rem;
-  padding: 0.5rem;
-  font-size: 0.8rem;
-  width: 5rem;
-  background-color: gray;
+.MuiInput-Input {
   color: white;
-  text-align: center;
 }
-
-.signup-radio {
-  width: 2rem;
-  height: 2.5rem;
-  font-size: 1.5rem;
-  margin: 0 1rem;
-}
-
 .signup-button {
-  width: 100%;
+  width: 40%;
+  height: 40px;
+  border-radius: 16px;
   padding: 0.5rem 2rem;
   font-size: 1rem;
-  color: white;
+  color: #111827;
   border: none;
   font-weight: bold;
-  background-color: dodgerblue;
+  background-color: #10b981;
   cursor: pointer;
   margin: 1rem 0;
 }

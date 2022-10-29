@@ -3,7 +3,7 @@ import "./css/Shortcut.css"
 const ShortcutChat = () => {
   return (
     <div className="shortcut-box">
-      <h1>채팅</h1>
+      <h2>채팅</h2>
     </div>
   );
 };
