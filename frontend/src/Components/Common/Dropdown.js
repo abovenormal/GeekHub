@@ -1,11 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Datepicker from "./Datepicker";
 const Dropdown = () => {
-  const [city, setCity] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [school, setSchool] = useState("");
+
+  useEffect(() => {
+    if (selectedLocation == "서울") {
+      setSchool(schoolSeoul);
+    } else if (selectedLocation == "광주") {
+      setSchool(schoolGwangju);
+    } else if (selectedLocation == "수원") {
+      setSchool(schoolSuwon);
+    } else if (selectedLocation == "인천") {
+      setSchool(schoolIncheon);
+    }
+  }, [selectedLocation]);
   const locations = [
     { location: "서울" },
     { location: "광주" },
@@ -45,6 +58,10 @@ const Dropdown = () => {
       divider={<Divider orientation="vertical" flexItem />}
     >
       <Autocomplete
+        onChange={(e) => {
+          setSelectedLocation(e.target.innerText);
+          console.log(selectedLocation);
+        }}
         id="size-small-standard"
         size="small"
         sx={{ width: 200 }}
@@ -64,12 +81,7 @@ const Dropdown = () => {
         id="size-small-standard"
         size="small"
         sx={{ width: 200 }}
-        options={schoolGwangju}
-        // options={city=="광주" ? {schoolGwangju}:{}}
-        // if city == "서울" then options = {schoolSeoul}
-        // if city == "수원" then options = {schoolSuwon}
-        // if city == "광주" then options = {schoolGwnagju}
-        // if city == "인천" then options = {schoolIncheon}
+        options={school}
         getOptionLabel={(option) => option.school}
         // defaultValue={locations[0]}
         renderInput={(params) => (

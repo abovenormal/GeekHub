@@ -1,48 +1,214 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import Input from "@mui/material/Input"
+import "./css/Signup.css";
 
-import "./css/Signup.css"
 const Signup = () => {
+  const [info, setInfo] = useState({
+    name: "",
+    phoneNumber: "",
+    city: "",
+    school: "",
+    id: "",
+    password: "",
+  });
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [checkPassword, setCheckPassword] = useState(false);
+  // const API = apiInstance();
+  const navigate = useNavigate();
+  const MySwal = withReactContent(Swal);
+  // 비밀번호 확인
+  useEffect(() => {
+    if (info.password === passwordConfirm) {
+      setCheckPassword(true);
+    } else {
+      setCheckPassword(false);
+    }
+    console.log(checkPassword);
+  }, [info, passwordConfirm]);
+
+  const [schoolList, setSchoolList] = useState([]);
+
+  const onChange = (e) => {
+    console.log(e);
+    const nextInfo = {
+      ...info, // 기존의 값 복사 (spread operator)
+      [e.target.name]: e.target.value, // 덮어쓰기
+    };
+    console.log(nextInfo);
+    setInfo(nextInfo);
+    if (nextInfo.city === "서울") {
+      setSchoolList(schoolSeoul);
+    } else if (nextInfo.city === "광주") {
+      setSchoolList(schoolGwangju);
+    } else if (nextInfo.city === "수원") {
+      setSchoolList(schoolSuwon);
+    } else if (nextInfo.city === "인천") {
+      setSchoolList(schoolIncheon);
+    }
+  };
+
+  const schoolSeoul = [
+    "건국대학교",
+    "경희대학교",
+    "마포구공유오피스",
+    "서울교육대학교",
+    "서울대학교",
+    "서울시립대학교",
+    "연세대학교",
+    "이화여자대학교",
+    "카이스트경영대학",
+    "한국외국어대학교",
+    "한성대학교",
+  ];
+  const schoolSuwon = ["성균관대학교(자연과학캠퍼스)"];
+  const schoolIncheon = ["송도 글로벌캠퍼스", "연세대학교(송도)"];
+
+  const schoolGwangju = ["광주과학기술원", "전남대학교"];
+
+
+  // 회원 가입
+  async function signupSubmit(e) {
+    e.preventDefault();
+    if (checkPassword===true) {
+      try {
+        // await API.post('/users/signup', info);
+        await MySwal.fire({
+          icon: "success",
+          title: "회원가입 성공!",
+        })
+        await new Promise(() => {navigate('/')})
+      } catch (error) {
+        MySwal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "오류가 발생하였습니다.",
+        });
+      }
+    } else {
+      MySwal.fire({
+        icon: "warning",
+        title: "Oops...",
+        text: 
+          `${[
+              !checkPassword && "비밀번호"
+            ].filter(text => text.length > 0).join(', ')}을(를) 확인하세요`,
+      });
+    }
+  };
   return (
-    <body ng-controller="RegisterCtrl" ng-app="myApp">
- <div class="container">
-   <div id="signup">
-      <div class="signup-screen">
-         <div class="space-bot text-center">
-            <h1>Sign up</h1>
-           <div class="divider"></div>
-         </div>
-           <form class="form-register" method="post" name="register" novalidate>
-	            <div class="input-field col s6">
-              <input id="first-name" type="text" class="validate" required />
-              <label for="first-name">First Name</label>
-            </div>
-            <div class="input-field col s6">
-              <input id="last-name" type="text" class="validate" required />
-              <label for="last-name">Last Name</label>
-             </div>
-             <div class="input-field col s6">
-              <input id="email" type="email" name="email" ng-model="email" class="validate" required />
-              <label for="email">Email</label>
-             </div>
-             <p class="alert alert-danger" ng-show="form-register.email.$error.email">Your email is invalid.</p>
-             <div class="input-field col s6">
-               <input id="password" type="password" name="password" ng-model="password" ng-minlength='6' class="validate" required />
-               <label for="password">Password</label>
-              </div>
-              <p class="alert alert-danger" ng-show="form-register.password.$error.minlength || form.password.$invalid">Your password must be at least 6 characters.</p>
-              <div class="space-top text-center">
-               <button ng-disabled="form-register.$invalid" class="waves-effect waves-light btn done">
-               <i class="material-icons left">done</i> Done
-               </button>
-               <button type="button" class="waves-effect waves-light btn cancel">
-               <i class="material-icons left">clear</i>Cancel
-               </button>
-              </div>
-             </form>
-           </div>
+    <div className="signup-container">
+      <form
+        className="signup-form"
+        method="post"
+        onSubmit={signupSubmit}
+      >
+        <TextField
+          id="name"
+          name="name"
+          label="Name"
+          variant="standard"
+          value={info.name}
+          onChange={onChange}
+        />
+        <TextField
+          id="phoneNumber"
+          name="phoneNumber"
+          label="Phone Number"
+          variant="standard"
+          value={info.phoneNumber}
+          onChange={onChange}
+        />
+        <div>
+          <FormControl variant="standard" sx={{ m: 1, minWidth: 150 }}>
+            <InputLabel id="demo-simple-select-standard-label">City</InputLabel>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={info.city}
+              onChange={onChange}
+              label="City"
+              name="city"
+            >
+              <MenuItem value={"서울"}>서울</MenuItem>
+              <MenuItem value={"광주"}>광주</MenuItem>
+              <MenuItem value={"인천"}>인천</MenuItem>
+              <MenuItem value={"수원"}>수원</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl variant="standard" sx={{ m: 1, minWidth: 250 }}>
+            <InputLabel id="demo-simple-select-standard-label">
+              School
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={info.school}
+              onChange={onChange}
+              label="School"
+              name="school"
+            >
+              {schoolList.map((school) => (
+                <MenuItem key={school} value={school}>
+                  {school}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </div>
+        <TextField
+          id="standard-disabled"
+          label="ID"
+          name="id"
+          value={info.city + info.phoneNumber}
+          variant="standard"
+          onChange={onChange}
+        />
+        {/* <label className="signup-input-label" htmlFor="id"/>
+        <div className="signup-row">
+          <input
+            className="signup-input"
+            type="text"
+            id="id"
+            placeholder="ID"
+            required 
+            value={info.id}
+            onChange={signupInput}
+          />
+        </div> */}
+        <TextField
+          id="password"
+          label="Password"
+          name="password"
+          type="password"
+          autoComplete="current-password"
+          variant="standard"
+          value={info.password}
+          onChange={onChange}
+        />
+        <TextField
+          id="password"
+          label="Password Confirm"
+          type="password"
+          autoComplete="current-password"
+          variant="standard"
+          value={passwordConfirm}
+          onChange={(e) => {
+            setPasswordConfirm(e.target.value);
+          }}
+        />
+
+        <button className="signup-button">DONE</button>
+        
+      </form>
     </div>
-</body>
   );
 };
 

@@ -16,6 +16,7 @@ export default function BasicDatePicker() {
         value={value}
         onChange={(newValue) => {
           setValue(newValue);
+          console.log(value.$y, value.$M + 1, value.$D)
         }}
         renderInput={(params) => <TextField {...params} />}
       />

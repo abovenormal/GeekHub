@@ -1,103 +1,80 @@
-body {
-  min-height:100%;
-  background-color: #263238;
+.signup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3rem 0;
 }
 
-.text-center{
-text-align: center;
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+  width: 100%;
 }
 
-.space-bot{
-margin-bottom: 35px;
+.signup-input-label {
+  width: 100%;
+  text-align: start;
 }
 
-.space-top{
-margin-top: 35px;
+.signup-row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 
-/* Title */
+.signup-input {
+  box-sizing: border-box;
+  margin: 1rem auto;
+  padding: 0.5rem;
+  font-weight: bold;
+  border: 1px solid lightgray;
+  width: 100%;
+}
 
-h1 {
+.signup-input:focus {
+  outline: 1px solid black;
+  border: 1px solid black;
+}
+
+.signup-check-confirm {
+  margin: auto 0 auto 0.5rem;
+  padding: 0.5rem;
+  width: 5rem;
+  color: #FFE651;
+  font-size: 2rem;
+  text-align: center;
+  line-height: 0;
+}
+
+.signup-check {
+  cursor: pointer;
+  margin: auto 0 auto 0.5rem;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  width: 5rem;
+  background-color: gray;
   color: white;
-  font-family: 'Roboto';
-  text-transform: uppercase;
-  font-weight: 900;
-  font-size: 25px;
   text-align: center;
 }
 
-/* Sign Up */
-
-.container {
-  max-width: 400px;
-  max-height: 100px;
-  margin-top: 10px;
+.signup-radio {
+  width: 2rem;
+  height: 2.5rem;
+  font-size: 1.5rem;
+  margin: 0 1rem;
 }
 
-.alert-danger{
-text-align: center;
-}
-
-.signup-screen {
-  padding: 20px;
-  padding-bottom: 40px;
-  border-radius: 5px;
-  background-color: #2c3940;
-  box-shadow: 0 1px 6px rgba(0,0,0,.3);
+.signup-button {
+  width: 100%;
+  padding: 0.5rem 2rem;
+  font-size: 1rem;
   color: white;
+  border: none;
+  font-weight: bold;
+  background-color: dodgerblue;
+  cursor: pointer;
+  margin: 1rem 0;
 }
 
-.btn{
-border-radius: 2px;
-}
-
-.cancel{
-background-color: #df405a;
-}
-
-.done{
-background-color: #5CAB7D;
-}
-
-.done:hover{
-background-color: #6dc793;
-}
-
-.done:focus{
-background-color: #6dc793;
-}
-
-.cancel:hover{
-background-color: #f0435f;
-}
-
-.cancel:focus{
-background-color: #f0435f;
-}
-
-.input-group {
-  width:100%;
-}
-
-.input-group .ng-invalid {
-  border: 2px solid #e74c3c;
-  border-radius: 3px;
-}
-
-/* Error Box */
-
-.alert{
-padding: 15px;
-margin-bottom: 20px;
-border: 1px solid transparent;
-border-radius: 2px;
-border-color: #e85a71;
-background-color:  #e85a71;
-color: white;
-
-}
-
-.help-block {
-  font-size: 12px;
-  color: white
-}
