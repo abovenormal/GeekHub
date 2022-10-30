@@ -1,12 +1,12 @@
 import React from "react";
 import Dropdown from "../Components/Common/Dropdown"
-
+import List from "../Components/Log/List";
 import "./css/Log.css"
 const Log = () => {
   return (
     <div className="container">
-      <h1>Log!! 🏠</h1>
       <Dropdown />
+      <List />
     </div>
   );
 };

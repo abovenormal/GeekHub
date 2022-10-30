@@ -1,101 +1,139 @@
 import React, { useState, useEffect } from "react";
-import Stack from "@mui/material/Stack";
-import Divider from "@mui/material/Divider";
-import Autocomplete from "@mui/material/Autocomplete";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import Datepicker from "./Datepicker";
 const Dropdown = () => {
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [school, setSchool] = useState("");
-
-  useEffect(() => {
-    if (selectedLocation == "서울") {
-      setSchool(schoolSeoul);
-    } else if (selectedLocation == "광주") {
-      setSchool(schoolGwangju);
-    } else if (selectedLocation == "수원") {
-      setSchool(schoolSuwon);
-    } else if (selectedLocation == "인천") {
-      setSchool(schoolIncheon);
+  const [selected, setSelected] = useState({
+    city: "",
+    school: "",
+    date: "",
+  })
+  const [schoolList, setSchoolList] = useState([]);
+  
+  const onChange = (e) => {
+    console.log(e);
+    const nextInfo = {
+      ...selected,
+      [e.target.name]: e.target.value
     }
-  }, [selectedLocation]);
-  const locations = [
-    { location: "서울" },
-    { location: "광주" },
-    { location: "인천" },
-    { location: "수원" },
-  ];
+    console.log(nextInfo);
+    setSelected(nextInfo);
+    if (nextInfo.city === "서울") {
+      setSchoolList(schoolSeoul);
+    } else if (nextInfo.city === "광주") {
+      setSchoolList(schoolGwangju);
+    } else if (nextInfo.city === "수원") {
+      setSchoolList(schoolSuwon);
+    } else if (nextInfo.city === "인천") {
+      setSchoolList(schoolIncheon);
+    }
+  }
 
   const schoolSeoul = [
-    { school: "건국대학교" },
-    { school: "경희대학교" },
-    { school: "마포구공유오피스" },
-    { school: "서울교육대학교" },
-    { school: "서울대학교" },
-    { school: "서울시립대학교" },
-    { school: "연세대학교" },
-    { school: "이화여자대학교" },
-    { school: "카이스트경영대학" },
-    { school: "한국외국어대학교" },
-    { school: "한성대학교" },
+    "건국대학교",
+    "경희대학교",
+    "마포구공유오피스",
+    "서울교육대학교",
+    "서울대학교",
+    "서울시립대학교",
+    "연세대학교",
+    "이화여자대학교",
+    "카이스트경영대학",
+    "한국외국어대학교",
+    "한성대학교",
   ];
-  const schoolSuwon = [{ school: "성균관대학교(자연과학캠퍼스)" }];
-  const schoolIncheon = [
-    { school: "송도 글로벌캠퍼스" },
-    { school: "연세대학교(송도)" },
-  ];
+  const schoolSuwon = ["성균관대학교(자연과학캠퍼스)"];
+  const schoolIncheon = ["송도 글로벌캠퍼스", "연세대학교(송도)"];
 
-  const schoolGwangju = [
-    { school: "광주과학기술원" },
-    { school: "전남대학교" },
-  ];
+  const schoolGwangju = ["광주과학기술원", "전남대학교"];
 
+  const [value, setValue] = React.useState(null);
   return (
-    <Stack
-      direction="row"
-      spacing={3}
-      sx={{ width: 600 }}
-      divider={<Divider orientation="vertical" flexItem />}
-    >
-      <Autocomplete
-        onChange={(e) => {
-          setSelectedLocation(e.target.innerText);
-          console.log(selectedLocation);
-        }}
-        id="size-small-standard"
-        size="small"
-        sx={{ width: 200 }}
-        options={locations}
-        getOptionLabel={(option) => option.location}
-        // defaultValue={locations[0]}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="standard"
-            label="location"
-            placeholder="지역"
-          />
-        )}
-      />
-      <Autocomplete
-        id="size-small-standard"
-        size="small"
-        sx={{ width: 200 }}
-        options={school}
-        getOptionLabel={(option) => option.school}
-        // defaultValue={locations[0]}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="standard"
-            label="school"
-            placeholder="학교"
-          />
-        )}
-      />
+    // <Stack
+    //   direction="row"
+    //   spacing={3}
+    //   sx={{ width: 600 }}
+    //   divider={<Divider orientation="vertical" flexItem />}
+    // >
+    //   <Autocomplete
+    //     onChange={(e) => {
+    //       setSelectedLocation(e.target.innerText);
+    //       console.log(selectedLocation);
+    //     }}
+    //     id="size-small-standard"
+    //     size="small"
+    //     sx={{ width: 200 }}
+    //     options={locations}
+    //     getOptionLabel={(option) => option.location}
+    //     // defaultValue={locations[0]}
+    //     renderInput={(params) => (
+    //       <TextField
+    //         {...params}
+    //         variant="standard"
+    //         label="location"
+    //         placeholder="지역"
+    //       />
+    //     )}
+    //   />
+    //   <Autocomplete
+    //     id="size-small-standard"
+    //     size="small"
+    //     sx={{ width: 200 }}
+    //     options={school}
+    //     getOptionLabel={(option) => option.school}
+    //     // defaultValue={locations[0]}
+    //     renderInput={(params) => (
+    //       <TextField
+    //         {...params}
+    //         variant="standard"
+    //         label="school"
+    //         placeholder="학교"
+    //       />
+    //     )}
+    //   />
 
-      <Datepicker />
-    </Stack>
+    //   <Datepicker />
+    // </Stack>
+    <div>
+      <FormControl variant="standard" sx={{ m: 1, minWidth: 100 }}>
+        <InputLabel id="demo-simple-select-standard-label">City</InputLabel>
+        <Select
+          labelId="demo-simple-select-standard-label"
+          id="demo-simple-select-standard"
+          value={selected.city}
+          onChange={onChange}
+          label="City"
+          name="city"
+        >
+          <MenuItem value={"서울"}>서울</MenuItem>
+          <MenuItem value={"광주"}>광주</MenuItem>
+          <MenuItem value={"인천"}>인천</MenuItem>
+          <MenuItem value={"수원"}>수원</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+            <InputLabel id="demo-simple-select-standard-label">
+              School
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={selected.school}
+              onChange={onChange}
+              label="School"
+              name="school"
+            >
+              {schoolList.map((school) => (
+                <MenuItem key={school} value={school}>
+                  {school}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+    </div>
   );
 };
 export default Dropdown;

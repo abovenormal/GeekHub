@@ -9,13 +9,30 @@
   width: 200vw;
   height: 100vh;
   background-color: #0b0f19;
+  padding: 1rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+.logo-img {
+  max-width: 70px;
+  max-height: 70px;
+  width: auto;
+  height: auto;
+  margin: 0 10px;
+}
+
+.logo-name {
+  color: white;
 }
 .login-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 3rem;
-  width: 60vw;
+  width: 70vw;
   height: 100vh;
   color: #d1d5db;
   background-color: #111827;
@@ -30,7 +47,7 @@
   font-weight: bold;
   background-color: #7582eb;
   cursor: pointer;
-  margin: 1rem 0;
+  border-radius: 4px;
 }
 
 .login-link {

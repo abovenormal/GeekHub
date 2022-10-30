@@ -11,9 +11,10 @@ import Signup from "./Pages/Signup";
 import './App.css';
 
 function App() {
+  const isLogin = true;
   return (
     <div className="App">
-      <Nav />
+      { isLogin ? <Nav /> : <></>}
       <header className="App-header">
         <Routes>
           <Route path="/" element={<Dashboard />} />

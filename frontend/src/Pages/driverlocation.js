@@ -1,9 +1,11 @@
 import React from "react";
+import Dropdown from "../Components/Common/Dropdown";
+import List from "../Components/Driverlocation/List"
 const Driverlocation = () => {
   return (
-    <div>
-      <h1>Driverlocation!! 🏠</h1>
-      <p></p>
+    <div className="container">
+      <Dropdown />
+      <List />
     </div>
   );
 };

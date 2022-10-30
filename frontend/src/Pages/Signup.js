@@ -8,8 +8,6 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import "./css/Signup.css";
-
-import {makeStyles} from "@mui/styles"
 const Signup = () => {
   const [info, setInfo] = useState({
     name: "",
@@ -32,7 +30,7 @@ const Signup = () => {
       setCheckPassword(false);
     }
     console.log(checkPassword);
-  }, [info, passwordConfirm]);
+  }, [passwordConfirm]);
 
   const [schoolList, setSchoolList] = useState([]);
 
@@ -73,18 +71,19 @@ const Signup = () => {
 
   const schoolGwangju = ["광주과학기술원", "전남대학교"];
 
-
   // 회원 가입
   async function signupSubmit(e) {
     e.preventDefault();
-    if (checkPassword===true) {
+    if (checkPassword === true) {
       try {
         // await API.post('/users/signup', info);
         await MySwal.fire({
           icon: "success",
           title: "회원가입 성공!",
-        })
-        await new Promise(() => {navigate('/')})
+        });
+        await new Promise(() => {
+          navigate("/");
+        });
       } catch (error) {
         MySwal.fire({
           icon: "error",
@@ -96,23 +95,31 @@ const Signup = () => {
       MySwal.fire({
         icon: "warning",
         title: "Oops...",
-        text: 
-          `${[
-              !checkPassword && "비밀번호"
-            ].filter(text => text.length > 0).join(', ')}을(를) 확인하세요`,
+        text: `${[!checkPassword && "비밀번호"]
+          .filter((text) => text.length > 0)
+          .join(", ")}을(를) 확인하세요`,
       });
     }
-  };
+  }
 
   //
-
+  const [able, setAble] = useState(false);
+  useEffect(() => {
+    if (
+      info.city !== "" &&
+      info.id !== "" &&
+      info.name !== "" &&
+      info.password !== "" &&
+      info.phoneNumber !== "" &&
+      info.school !== ""
+    ) {
+      setAble(true);
+    }
+  }, [info]);
   return (
     <div className="signup-container">
-      <form
-        className="signup-form"
-        method="post"
-        onSubmit={signupSubmit}
-      >
+      <form className="signup-form" method="post" onSubmit={signupSubmit}>
+        <h4 className="signup-title">SIGN UP</h4>
         <TextField
           id="name"
           name="name"
@@ -120,7 +127,14 @@ const Signup = () => {
           variant="standard"
           value={info.name}
           onChange={onChange}
-          sx={{ m: 1, minWidth: 310 }}
+          sx={{
+            // " .MuiInputLabel-root": {
+            //   color: "white",
+            //   border: "1px solid rgba( 255, 255, 255, 0.2 )",
+            // },
+            m: 1,
+            minWidth: 310,
+          }}
         />
         <TextField
           id="phoneNumber"
@@ -172,7 +186,8 @@ const Signup = () => {
           id="standard-disabled"
           label="ID"
           name="id"
-          value={info.city + info.phoneNumber}
+          // value={info.city + info.phoneNumber}
+          value={info.id}
           variant="standard"
           onChange={onChange}
           sx={{ m: 1, minWidth: 310 }}
@@ -212,9 +227,13 @@ const Signup = () => {
           }}
           sx={{ m: 1, minWidth: 310 }}
         />
-
-        <button className="signup-button">DONE</button>
-        
+        {able ? (
+          <button className="signup-button">DONE</button>
+        ) : (
+          <button disabled className="signup-button-disabled">
+            DONE
+          </button>
+        )}
       </form>
     </div>
   );
