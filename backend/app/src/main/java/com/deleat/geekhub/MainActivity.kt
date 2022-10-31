@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
 
         val fm = supportFragmentManager
 
-        val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
+        val mapFragment = fm.findFragmentById(R.id.map) as MapF
             ?: MapFragment.newInstance().also {
                 fm.beginTransaction().add(R.id.map, it).commit()
             }
@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
                         path_container?.add(LatLng(path_cords_xy[1], path_cords_xy[0]))
                     }
                 }
+                println(path_container)
                 path.coords = path_container?.drop(1)!!
                 path.color = Color.RED
                 path.map = naverMap
