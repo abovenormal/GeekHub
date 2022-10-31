@@ -8,6 +8,10 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import "./css/Signup.css";
+import { duplicateId } from "../api/UserAPI";
+import Toast from "../utils/Toast";
+import { AiFillCheckCircle } from "react-icons/ai";
+
 const Signup = () => {
   const [info, setInfo] = useState({
     name: "",
@@ -18,6 +22,7 @@ const Signup = () => {
     password: "",
   });
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [checkId, setCheckId] = useState(false);
   const [checkPassword, setCheckPassword] = useState(false);
   // const API = apiInstance();
   const navigate = useNavigate();
@@ -74,7 +79,7 @@ const Signup = () => {
   // 회원 가입
   async function signupSubmit(e) {
     e.preventDefault();
-    if (checkPassword === true) {
+    if (checkId === true && checkPassword === true) {
       try {
         // await API.post('/users/signup', info);
         await MySwal.fire({
@@ -95,32 +100,19 @@ const Signup = () => {
       MySwal.fire({
         icon: "warning",
         title: "Oops...",
-        text: `${[!checkPassword && "비밀번호"]
+        text: `${[!checkId && "아이디", !checkPassword && "비밀번호"]
           .filter((text) => text.length > 0)
           .join(", ")}을(를) 확인하세요`,
       });
     }
   }
 
-  //
-  const [able, setAble] = useState(false);
-  useEffect(() => {
-    if (
-      info.city !== "" &&
-      info.id !== "" &&
-      info.name !== "" &&
-      info.password !== "" &&
-      info.phoneNumber !== "" &&
-      info.school !== ""
-    ) {
-      setAble(true);
-    }
-  }, [info]);
   return (
     <div className="signup-container">
       <form className="signup-form" method="post" onSubmit={signupSubmit}>
         <h4 className="signup-title">SIGN UP</h4>
         <TextField
+          required
           id="name"
           name="name"
           label="Name"
@@ -137,6 +129,7 @@ const Signup = () => {
           }}
         />
         <TextField
+          required
           id="phoneNumber"
           name="phoneNumber"
           label="Phone Number"
@@ -146,7 +139,7 @@ const Signup = () => {
           sx={{ m: 1, minWidth: 310 }}
         />
         <div>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 100 }}>
+          <FormControl required variant="standard" sx={{ m: 1, minWidth: 100 }}>
             <InputLabel id="demo-simple-select-standard-label">City</InputLabel>
             <Select
               labelId="demo-simple-select-standard-label"
@@ -162,7 +155,7 @@ const Signup = () => {
               <MenuItem value={"수원"}>수원</MenuItem>
             </Select>
           </FormControl>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+          <FormControl required variant="standard" sx={{ m: 1, minWidth: 200 }}>
             <InputLabel id="demo-simple-select-standard-label">
               School
             </InputLabel>
@@ -182,29 +175,34 @@ const Signup = () => {
             </Select>
           </FormControl>
         </div>
-        <TextField
-          id="standard-disabled"
-          label="ID"
-          name="id"
-          // value={info.city + info.phoneNumber}
-          value={info.id}
-          variant="standard"
-          onChange={onChange}
-          sx={{ m: 1, minWidth: 310 }}
-        />
-        {/* <label className="signup-input-label" htmlFor="id"/>
-        <div className="signup-row">
-          <input
-            className="signup-input"
-            type="text"
-            id="id"
-            placeholder="ID"
-            required 
+        <div className="signup-id">
+          <TextField
+            required
+            id="standard-disabled"
+            label="ID"
+            name="id"
             value={info.id}
-            onChange={signupInput}
+            variant="standard"
+            onChange={onChange}
+            sx={{ m: 1, minWidth: 240 }}
           />
-        </div> */}
+          {checkId ? (
+            <div className="signup-check-confirm">
+              <AiFillCheckCircle />
+            </div>
+          ) : (
+            <div
+              className="signup-check"
+              onClick={() => {
+                duplicateId(info.id, Toast, setCheckId);
+              }}
+            >
+              중복확인
+            </div>
+          )}
+        </div>
         <TextField
+          required
           id="password"
           label="Password"
           name="password"
@@ -216,6 +214,7 @@ const Signup = () => {
           sx={{ m: 1, minWidth: 310 }}
         />
         <TextField
+          required
           id="password"
           label="Password Confirm"
           type="password"
@@ -227,13 +226,7 @@ const Signup = () => {
           }}
           sx={{ m: 1, minWidth: 310 }}
         />
-        {able ? (
-          <button className="signup-button">DONE</button>
-        ) : (
-          <button disabled className="signup-button-disabled">
-            DONE
-          </button>
-        )}
+        <button className="signup-button">DONE</button>
       </form>
     </div>
   );

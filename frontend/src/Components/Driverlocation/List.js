@@ -1,50 +1,66 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import React from "react";
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Swal from "sweetalert2";
 
+import "./css/List.css";
 const List = () => {
-  
   function createData(name) {
     return {
       name,
       history: [
         {
-          pickupZone: '알촌',
-          arrivalScheduled: '17:20',
-          arrivalTime: '17:21',
-          pickupPicture: "https://play-lh.googleusercontent.com/Kbu0747Cx3rpzHcSbtM1zDriGFG74zVbtkPmVnOKpmLCS59l7IuKD5M3MKbaq_nEaZM",
+          pickupZone: "알촌",
+          arrivalScheduled: "17:20",
+          arrivalTime: "17:21",
+          pickupPicture:
+            "https://play-lh.googleusercontent.com/Kbu0747Cx3rpzHcSbtM1zDriGFG74zVbtkPmVnOKpmLCS59l7IuKD5M3MKbaq_nEaZM",
         },
         {
-          pickupZone: '생돈가스',
-          arrivalScheduled: '17:24',
-          arrivalTime: '17:24',
-          pickupPicture: "https://play-lh.googleusercontent.com/Kbu0747Cx3rpzHcSbtM1zDriGFG74zVbtkPmVnOKpmLCS59l7IuKD5M3MKbaq_nEaZM",
+          pickupZone: "생돈가스",
+          arrivalScheduled: "17:24",
+          arrivalTime: "17:24",
+          pickupPicture:
+            "https://play-lh.googleusercontent.com/Kbu0747Cx3rpzHcSbtM1zDriGFG74zVbtkPmVnOKpmLCS59l7IuKD5M3MKbaq_nEaZM",
         },
       ],
     };
   }
-  
+
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
-  
+
     return (
       <React.Fragment>
-        <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-          <TableCell>
+        <TableRow
+          sx={{
+            "& > *": {
+              borderBottom: "unset",
+            },
+            "&:hover": {
+              color: "#10b981",
+              backgroundColor: "rgba( 0, 0, 0, 0.08 )",
+            },
+          }}
+        >
+          <TableCell
+            sx={{
+              width: "10%",
+            }}
+          >
             <IconButton
               aria-label="expand row"
               size="small"
@@ -53,7 +69,7 @@ const List = () => {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell component="th" scope="row">
+          <TableCell component="th" scope="row" onClick={() => setOpen(!open)}>
             {row.name}
           </TableCell>
         </TableRow>
@@ -82,17 +98,22 @@ const List = () => {
                         <TableCell>{historyRow.arrivalScheduled}</TableCell>
                         <TableCell>{historyRow.arrivalTime}</TableCell>
                         <TableCell>
-                          <a href="#" onClick={() => {
-                            const pickupPicture = historyRow.pickupPicture
-                            Swal.fire({
-                              // title: '픽업 사진',
-                              text: '픽업을 완료하였습니다.',
-                              imageUrl: pickupPicture,
-                              imageWidth: 300,
-                              imageHeight: 300,
-                              imageAlt: 'Custom image',
-                            })
-                          }}>보기</a>
+                          <div
+                            className="pickupPic"
+                            onClick={() => {
+                              const pickupPicture = historyRow.pickupPicture;
+                              Swal.fire({
+                                // title: '픽업 사진',
+                                text: "픽업을 완료하였습니다.",
+                                imageUrl: pickupPicture,
+                                imageWidth: 300,
+                                imageHeight: 300,
+                                imageAlt: "Custom image",
+                              });
+                            }}
+                          >
+                            보기
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -115,28 +136,24 @@ const List = () => {
           amount: PropTypes.number.isRequired,
           customerId: PropTypes.string.isRequired,
           date: PropTypes.string.isRequired,
-        }),
+        })
       ).isRequired,
       name: PropTypes.string.isRequired,
       price: PropTypes.number.isRequired,
       protein: PropTypes.number.isRequired,
     }).isRequired,
   };
-  
+
   const rows = [
-    createData('김배달'),
-    createData('최배달'),
-    createData('이배달')
+    createData("김배달"),
+    createData("최배달"),
+    createData("이배달"),
   ];
   return (
-    
     <TableContainer component={Paper}>
-      
       <Table aria-label="collapsible table">
-      
         <TableHead>
-          <TableRow>
-          </TableRow>
+          <TableRow></TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
