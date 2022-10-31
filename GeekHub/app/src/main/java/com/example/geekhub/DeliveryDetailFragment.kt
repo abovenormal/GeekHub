@@ -17,13 +17,6 @@ class DeliveryDetailFragment : Fragment() {
     ): View? {
         binding = FragmentDeliveryDetailBinding.inflate(inflater,container,false)
 
-//        binding.detailButton.setOnClickListener{
-//            (activity as MainActivity).changeFragment(3)
-//        }
-        println(binding.detailButton.text)
-        println("NFC 태깅하기")
-
-
 
         if (binding.detailButton.text == "NFC 태깅하기"){
             binding.detailButton.setOnClickListener{
@@ -32,6 +25,9 @@ class DeliveryDetailFragment : Fragment() {
             binding.detailButton.setOnClickListener{
                 (activity as MainActivity).changeFragment(4)}
         }
+
+
+
 
         return binding.root
     }
