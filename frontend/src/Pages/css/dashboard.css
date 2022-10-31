@@ -1,0 +1,10 @@
+.shorcut-block {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.shortcut-link {
+  text-decoration: none;
+  color: white;
+}
