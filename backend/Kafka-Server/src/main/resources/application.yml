@@ -4,6 +4,10 @@ server:
 spring:
   data:
     mongodb:
-      host: 3.36.113.161
-      port: 27017
-      database: geekhub
+      uri : mongodb://posi:deleatc205@3.36.113.161/geekhub?authSource=admin
+#      host: 3.36.113.161
+#      port: 27017
+#      database: geekhub
+#      username : posi
+#      password : deleatc205
+#      authentication-database : geekhub
