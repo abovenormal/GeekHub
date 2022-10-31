@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
 
         val fm = supportFragmentManager
 
-        val mapFragment = fm.findFragmentById(R.id.map) as MapF
+        val mapFragment = fm.findFragmentById(R.id.map) as MapFragment
             ?: MapFragment.newInstance().also {
                 fm.beginTransaction().add(R.id.map, it).commit()
             }
@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
             override fun onResponse(call: Call<ResultGeo>, response: Response<ResultGeo>) {
                 var path_cords_list = response.body()
 //                val jsonArray = JsonArray(path_cords_list.toString())
+                println(path_cords_list)
+                println(path_cords_list?.addresses)
                 val data = path_cords_list?.addresses
                 println("여기")
                 println(data!!.get(0).x)
