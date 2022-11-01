@@ -61,9 +61,9 @@ const Nav = () => {
         <PersonAddAltIcon className="nav-icon"></PersonAddAltIcon>
         회원 가입
       </Link>
-      <Link className="nav-link" to="user">
+      {/* <Link className="nav-link" to="user">
         회원 관리
-      </Link>
+      </Link> */}
       <Link className="nav-link" to="login">
         로그인
       </Link>

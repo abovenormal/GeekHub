@@ -34,7 +34,8 @@
   padding: 3rem;
   width: 70vw;
   height: 100vh;
-  color: #d1d5db;
+  /* color: #d1d5db; */
+  color: white;
   background-color: #111827;
 }
 

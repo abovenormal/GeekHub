@@ -10,12 +10,14 @@ import Log from "./Pages/Log";
 import Login from "./Pages/Login";
 import User from "./Pages/User";
 import Signup from "./Pages/Signup";
+import PageNotFound from "./Pages/404";
 import './App.css';
 
 
 function App() {
   const token = localStorage.getItem("accesstoken");
-  const isLogin = true;
+  // const isLogin = !!token
+  const isLogin = true
   return (
     <div className="App">
       { isLogin ? <Nav /> : <></>}
@@ -37,6 +39,7 @@ function App() {
             <Route path="/login" element={<Login />}/>
             <Route path="/user" element={<User />}/>
             <Route path="/signup" element={<Signup />}/>
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
       </header>
     </div>

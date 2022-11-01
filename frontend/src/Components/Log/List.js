@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import "./css/List.css";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
@@ -31,8 +31,22 @@ const List = () => {
 
     return (
       <React.Fragment>
-        <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-          <TableCell>
+        <TableRow
+          sx={{
+            "& > *": {
+              borderBottom: "unset",
+            },
+            "&:hover": {
+              color: "#10b981",
+              backgroundColor: "rgba( 0, 0, 0, 0.08 )",
+            },
+          }}
+        >
+          <TableCell
+            sx={{
+              width: "10%",
+            }}
+          >
             <IconButton
               aria-label="expand row"
               size="small"
@@ -41,7 +55,14 @@ const List = () => {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell component="th" scope="row">
+          <TableCell
+            component="th"
+            scope="row"
+            onClick={() => setOpen(!open)}
+            sx={{
+              cursor: "pointer",
+            }}
+          >
             {row.name}
           </TableCell>
         </TableRow>
@@ -69,7 +90,10 @@ const List = () => {
                 </div>
                 <div className="img-container">
                   <div className="img-box">
-                    <img className="img" src="https://play-lh.googleusercontent.com/Kbu0747Cx3rpzHcSbtM1zDriGFG74zVbtkPmVnOKpmLCS59l7IuKD5M3MKbaq_nEaZM"></img>
+                    <img
+                      className="img"
+                      src="https://play-lh.googleusercontent.com/Kbu0747Cx3rpzHcSbtM1zDriGFG74zVbtkPmVnOKpmLCS59l7IuKD5M3MKbaq_nEaZM"
+                    ></img>
                     <p>time</p>
                   </div>
                 </div>

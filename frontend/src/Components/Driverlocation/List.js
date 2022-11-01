@@ -69,7 +69,14 @@ const List = () => {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell component="th" scope="row" onClick={() => setOpen(!open)}>
+          <TableCell
+            component="th"
+            scope="row"
+            onClick={() => setOpen(!open)}
+            sx={{
+              cursor: "pointer"
+            }}
+          >
             {row.name}
           </TableCell>
         </TableRow>
