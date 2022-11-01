@@ -42,6 +42,10 @@ dependencyManagement {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
 }
+bootJar{
+	mainClass = 'com.GeekHub.userservice.UserServiceApplication'
+	archiveFileName = 'UserService.jar'
+}
 
 tasks.named('test') {
 	useJUnitPlatform()
