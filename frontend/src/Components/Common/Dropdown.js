@@ -52,51 +52,6 @@ const Dropdown = () => {
 
   const [value, setValue] = React.useState(null);
   return (
-    // <Stack
-    //   direction="row"
-    //   spacing={3}
-    //   sx={{ width: 600 }}
-    //   divider={<Divider orientation="vertical" flexItem />}
-    // >
-    //   <Autocomplete
-    //     onChange={(e) => {
-    //       setSelectedLocation(e.target.innerText);
-    //       console.log(selectedLocation);
-    //     }}
-    //     id="size-small-standard"
-    //     size="small"
-    //     sx={{ width: 200 }}
-    //     options={locations}
-    //     getOptionLabel={(option) => option.location}
-    //     // defaultValue={locations[0]}
-    //     renderInput={(params) => (
-    //       <TextField
-    //         {...params}
-    //         variant="standard"
-    //         label="location"
-    //         placeholder="지역"
-    //       />
-    //     )}
-    //   />
-    //   <Autocomplete
-    //     id="size-small-standard"
-    //     size="small"
-    //     sx={{ width: 200 }}
-    //     options={school}
-    //     getOptionLabel={(option) => option.school}
-    //     // defaultValue={locations[0]}
-    //     renderInput={(params) => (
-    //       <TextField
-    //         {...params}
-    //         variant="standard"
-    //         label="school"
-    //         placeholder="학교"
-    //       />
-    //     )}
-    //   />
-
-    //   <Datepicker />
-    // </Stack>
     <div>
       <FormControl variant="standard" sx={{ m: 1, minWidth: 100 }}>
         <InputLabel id="demo-simple-select-standard-label">City</InputLabel>

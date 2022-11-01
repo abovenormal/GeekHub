@@ -11,20 +11,22 @@ import "./css/Signup.css";
 import { duplicateId } from "../api/UserAPI";
 import Toast from "../utils/Toast";
 import { AiFillCheckCircle } from "react-icons/ai";
+import { apiInstance } from "../api";
 
 const Signup = () => {
   const [info, setInfo] = useState({
-    name: "",
-    phoneNumber: "",
-    city: "",
-    school: "",
-    id: "",
+    userName: "",
+    phone: "",
+    local_city: "",
+    local_school: "",
+    userId: "",
     password: "",
   });
+
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [checkId, setCheckId] = useState(false);
   const [checkPassword, setCheckPassword] = useState(false);
-  // const API = apiInstance();
+  const API = apiInstance();
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
   // 비밀번호 확인
@@ -47,13 +49,13 @@ const Signup = () => {
     };
     console.log(nextInfo);
     setInfo(nextInfo);
-    if (nextInfo.city === "서울") {
+    if (nextInfo.local_city === "서울") {
       setSchoolList(schoolSeoul);
-    } else if (nextInfo.city === "광주") {
+    } else if (nextInfo.local_city === "광주") {
       setSchoolList(schoolGwangju);
-    } else if (nextInfo.city === "수원") {
+    } else if (nextInfo.local_city === "수원") {
       setSchoolList(schoolSuwon);
-    } else if (nextInfo.city === "인천") {
+    } else if (nextInfo.local_city === "인천") {
       setSchoolList(schoolIncheon);
     }
   };
@@ -79,9 +81,9 @@ const Signup = () => {
   // 회원 가입
   async function signupSubmit(e) {
     e.preventDefault();
-    if (checkId === true && checkPassword === true) {
+    if (checkPassword === true) {
       try {
-        // await API.post('/users/signup', info);
+        await API.post("admin/createdriver", info);
         await MySwal.fire({
           icon: "success",
           title: "회원가입 성공!",
@@ -114,10 +116,10 @@ const Signup = () => {
         <TextField
           required
           id="name"
-          name="name"
+          name="userName"
           label="Name"
           variant="standard"
-          value={info.name}
+          value={info.userName}
           onChange={onChange}
           sx={{
             // " .MuiInputLabel-root": {
@@ -131,10 +133,10 @@ const Signup = () => {
         <TextField
           required
           id="phoneNumber"
-          name="phoneNumber"
+          name="phone"
           label="Phone Number"
           variant="standard"
-          value={info.phoneNumber}
+          value={info.phone}
           onChange={onChange}
           sx={{ m: 1, minWidth: 310 }}
         />
@@ -144,10 +146,10 @@ const Signup = () => {
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              value={info.city}
+              value={info.local_city}
               onChange={onChange}
               label="City"
-              name="city"
+              name="local_city"
             >
               <MenuItem value={"서울"}>서울</MenuItem>
               <MenuItem value={"광주"}>광주</MenuItem>
@@ -162,10 +164,10 @@ const Signup = () => {
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              value={info.school}
+              value={info.local_school}
               onChange={onChange}
               label="School"
-              name="school"
+              name="local_school"
             >
               {schoolList.map((school) => (
                 <MenuItem key={school} value={school}>
@@ -180,8 +182,8 @@ const Signup = () => {
             required
             id="standard-disabled"
             label="ID"
-            name="id"
-            value={info.id}
+            name="userId"
+            value={info.userId}
             variant="standard"
             onChange={onChange}
             sx={{ m: 1, minWidth: 240 }}
@@ -194,7 +196,7 @@ const Signup = () => {
             <div
               className="signup-check"
               onClick={() => {
-                duplicateId(info.id, Toast, setCheckId);
+                duplicateId(info.userId, Toast, setCheckId);
               }}
             >
               중복확인
