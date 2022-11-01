@@ -43,6 +43,12 @@ dependencyManagement {
 	}
 }
 
+bootJar{
+	mainClass = 'com.GeekHub.KafkaServer.KafkaServerApplication'
+	archiveFileName = 'Kafka.jar'
+}
+
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
