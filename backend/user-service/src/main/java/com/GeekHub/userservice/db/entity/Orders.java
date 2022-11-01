@@ -30,9 +30,9 @@ public class Orders {
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     private LocalDateTime assignTime;
 
-    @Column(name = "fintTime")
+    @Column(name = "finTime")
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
-    private LocalDateTime fintTime;
+    private LocalDateTime finTime;
 
     @Column(name = "orderStatus")
     @Enumerated(EnumType.STRING)
