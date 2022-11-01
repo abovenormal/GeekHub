@@ -8,6 +8,7 @@ import com.GeekHub.userservice.db.repository.DriverRepository;
 import com.GeekHub.userservice.db.repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,13 +21,15 @@ public class AdminServiceImpl implements AdminService {
     private final DriverRepository driverRepository;
     private final OrdersRepository ordersRepository;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Transactional
     public void createDriver(LoginPostReq loginPostReq) {
 
         User driver = User.builder()
                 .userName(loginPostReq.getUserName())
                 .userId(loginPostReq.getUserId())
-                .password(loginPostReq.getPassword())
+                .password(bCryptPasswordEncoder.encode(loginPostReq.getPassword()))
                 .phone(loginPostReq.getPhone())
                 .local_city(loginPostReq.getLocal_city())
                 .local_school(loginPostReq.getLocal_school())
