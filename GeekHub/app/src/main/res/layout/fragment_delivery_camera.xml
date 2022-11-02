@@ -61,7 +61,7 @@
         <ImageView
             android:id="@+id/cook_image"
             android:layout_width="400dp"
-            android:layout_height="225dp"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
             android:layout_marginTop="32dp"
             android:src="@drawable/nfctagging"

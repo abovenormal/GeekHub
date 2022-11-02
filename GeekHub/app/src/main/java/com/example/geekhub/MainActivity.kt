@@ -15,6 +15,7 @@ import android.nfc.tech.Ndef
 import android.nfc.tech.NfcF
 import android.os.Bundle
 import android.provider.MediaStore
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -22,6 +23,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import com.example.geekhub.databinding.ActivityMainBinding
+import com.example.geekhub.model.uriViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.io.File
@@ -44,12 +46,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
                 add<NavFragment>(R.id.main_container_view)
+//                add<CameraxFragment>(R.id.camera_view)
             }
         }
 
@@ -143,6 +147,12 @@ class MainActivity : AppCompatActivity() {
                 clearBackStack()
                 moveFragment(DeliveryFragment())
             }
+            6 -> {
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+                add<CameraxFragment>(R.id.camera_view)
+                }
+            }
 
         }
 
@@ -153,6 +163,15 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.main_container_view, fragment)
+            .addToBackStack(null)
+            .commit()
+
+    }
+
+    fun moveCameraFragment(bundle: Bundle){
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.main_container_view, DeliveryCameraFragment())
             .addToBackStack(null)
             .commit()
 
@@ -177,7 +196,7 @@ class MainActivity : AppCompatActivity() {
                 val convert = String(records.payload, StandardCharsets.UTF_8)
                 println("프린트값")
                 var store = convert.substring(3)
-                changeFragment(4)
+                changeFragment(6)
 
 
             }
