@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: user-service
+    name: UserService
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://k7c205.p.ssafy.io:3306/geekhub
@@ -21,10 +21,10 @@ spring:
       hibernate:
         format_sql: true
 
-#eureka:
-#  client:
-#    register-with-eureka: true
-#    fetch-registry: true
-#    service-url:
-#      defaultZone: http://127.0.0.1:8761/eureka
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
 
