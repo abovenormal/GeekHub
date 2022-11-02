@@ -1,0 +1,17 @@
+
+server:
+  port: 8088
+
+spring:
+  application :
+    name : Chat
+  data:
+    mongodb:
+      uri : mongodb://posi:deleatc205@3.36.113.161/geekhub?authSource=admin
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defualtZone : http://k7c205.p.ssafy.io:8761/eureka
