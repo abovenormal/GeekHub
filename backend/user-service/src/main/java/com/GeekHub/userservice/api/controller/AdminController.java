@@ -54,9 +54,16 @@ public class AdminController {
         try {
             Boolean validation = adminService.validUserId(userId);
 
-            return new ResponseEntity<>(validation,HttpStatus.OK);
-        } catch (Exception e) {
+            if(validation==true){
+                return new ResponseEntity<>(validation,HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(validation,HttpStatus.CONFLICT);
+            }
 
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
