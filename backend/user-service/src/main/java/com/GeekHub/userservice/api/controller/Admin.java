@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-@CrossOrigin(origins = {"http:localhost:3000", "http:k7c205.p.ssafy.io:3000"}, allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "http://k7c205.p.ssafy.io:3000"}, allowCredentials = "true")
 public class Admin {
 
     private final AdminService adminService;
