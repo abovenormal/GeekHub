@@ -17,4 +17,8 @@ spring:
           uri: http://localhost:8081
           predicates:
             - Path=/location/**
+        - id: UserService
+          uri: http://localhost:9003
+          predicates:
+            - Path=/admin/**
 
