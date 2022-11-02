@@ -36,6 +36,11 @@ dependencyManagement {
 	}
 }
 
+bootJar{
+	mainClass = "com.GeekHub.APIGatewayServer.ApiGatewayServerApplication"
+	archiveFileName = 'ApiGateway.jar'
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
