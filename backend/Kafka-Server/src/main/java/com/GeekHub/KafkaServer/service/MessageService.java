@@ -15,7 +15,6 @@ public class MessageService {
     public Message getMessage(String driver){
         Message message = new Message();
         List<Message> messages = repository.getMessage(driver);
-        System.out.println("service-check");
         message = messages.get(0);
         return message;
     }

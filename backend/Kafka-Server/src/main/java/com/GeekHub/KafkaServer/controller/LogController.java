@@ -16,27 +16,19 @@ import java.time.LocalDateTime;
 @Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/kafka")
+@RequestMapping(value = "/location")
 public class LogController {
     @Autowired
     private KafkaTemplate<String, Message> kafkaTemplate;
 
 
-    @PostMapping(value = "/log")
+    @PostMapping(value = "/sendLog")
     public void sendMessage(@RequestBody Message message) {
-        log.info("Produce message : " + message.toString());
-        //message.setTimestamp(LocalDateTime.now().toString());
         try {
             kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, message).get();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-    //  실시간 로그 보내기
-//    @MessageMapping("/sendMessage")
-//    @SendTo("/topic/group")
-//    public Message broadcastGroupMessage(@Payload Message message) {
-//        return message;
-//    }
 
 }

@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/driver")
+@RequestMapping(value = "/location")
 public class DriverLocationController {
     @Autowired
     MessageService messageService;
 
-    @GetMapping("/location")
+    @GetMapping("/getLocation")
     public ResponseEntity<Message> getDriverLocation(@RequestParam String driver){
         try{
             Message message = messageService.getMessage(driver);

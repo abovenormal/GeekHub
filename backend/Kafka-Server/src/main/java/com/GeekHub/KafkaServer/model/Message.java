@@ -25,15 +25,4 @@ public class Message implements Serializable {
         this.driver=driver;
         this.timestamp = timestamp;
     }
-
-
-    @Override
-    public String toString() {
-        return "Message{" +
-                "driver='" + driver + '\'' +
-                ", longitude='" + longitude + '\'' +
-                ", longitude='" + latitude + '\'' +
-                ", timestamp='" + timestamp + '\'' +
-                '}';
-    }
 }
