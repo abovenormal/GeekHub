@@ -2,12 +2,15 @@ server:
   port: 8081
 
 spring:
+  application :
+    name : Kafka
   data:
     mongodb:
       uri : mongodb://posi:deleatc205@3.36.113.161/geekhub?authSource=admin
-#      host: 3.36.113.161
-#      port: 27017
-#      database: geekhub
-#      username : posi
-#      password : deleatc205
-#      authentication-database : geekhub
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defualtZone : http://127.0.0.1:8761/eureka
