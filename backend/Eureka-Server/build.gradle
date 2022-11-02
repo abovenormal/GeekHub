@@ -26,7 +26,10 @@ dependencyManagement {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
 }
-
+bootJar{
+	mainClass = 'com.GeekHub.EurekaServer.EurekaServerApplication'
+	archiveFileName = 'Eureka.jar'
+}
 tasks.named('test') {
 	useJUnitPlatform()
 }
