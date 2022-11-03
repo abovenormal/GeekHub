@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
@@ -14,8 +14,9 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Swal from "sweetalert2";
-
+import RefreshIcon from "@mui/icons-material/Refresh";
 import "./css/List.css";
+import {apiInstance} from "../../api/index"
 const List = () => {
   function createData(name) {
     return {
@@ -42,7 +43,21 @@ const List = () => {
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
-
+    const API = apiInstance();
+    const [longitude, setLongitude] = useState('');
+    const [latitude, setLatitude] = useState('');
+    async function GetLocation(e) {
+      // e.preventDefault();
+      try {
+        const res = await API.get("/location/getLocation?=driver=221343")
+        console.log(res.data)
+        setLatitude(res.data.latitude)
+        setLongitude(res.data.longitude)
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
     return (
       <React.Fragment>
         <TableRow
@@ -64,7 +79,11 @@ const List = () => {
             <IconButton
               aria-label="expand row"
               size="small"
-              onClick={() => setOpen(!open)}
+              onClick={() => {
+                setOpen(!open)
+                GetLocation()
+              }
+              }
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
@@ -72,61 +91,89 @@ const List = () => {
           <TableCell
             component="th"
             scope="row"
-            onClick={() => setOpen(!open)}
+            onClick={() => {
+              setOpen(!open)
+              GetLocation()
+            }}
             sx={{
-              cursor: "pointer"
+              cursor: "pointer",
             }}
           >
             {row.name}
           </TableCell>
         </TableRow>
         <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
             <Collapse in={open} timeout="auto" unmountOnExit>
-              <Box sx={{ margin: 1 }}>
-                <Typography variant="h6" gutterBottom component="div">
-                  배달 현황
-                </Typography>
-                <Table size="small" aria-label="purchases">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>픽업존</TableCell>
-                      <TableCell>도착 예정</TableCell>
-                      <TableCell>도착 시각</TableCell>
-                      <TableCell>픽업 사진</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {row.history.map((historyRow) => (
-                      <TableRow key={historyRow.pickupZone}>
-                        <TableCell component="th" scope="row">
-                          {historyRow.pickupZone}
-                        </TableCell>
-                        <TableCell>{historyRow.arrivalScheduled}</TableCell>
-                        <TableCell>{historyRow.arrivalTime}</TableCell>
-                        <TableCell>
-                          <div
-                            className="pickupPic"
-                            onClick={() => {
-                              const pickupPicture = historyRow.pickupPicture;
-                              Swal.fire({
-                                // title: '픽업 사진',
-                                text: "픽업을 완료하였습니다.",
-                                imageUrl: pickupPicture,
-                                imageWidth: 300,
-                                imageHeight: 300,
-                                imageAlt: "Custom image",
-                              });
-                            }}
-                          >
-                            보기
-                          </div>
-                        </TableCell>
+              <div className="table">
+                <Box sx={{ width: "100%" }}>
+                  <Typography variant="h6" gutterBottom component="div">
+                    배달 현황
+                  </Typography>
+
+                  <Table size="small" aria-label="purchases">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>픽업존</TableCell>
+                        <TableCell>도착 예정</TableCell>
+                        <TableCell>도착 시각</TableCell>
+                        <TableCell>픽업 사진</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Box>
+                    </TableHead>
+                    <TableBody>
+                      {row.history.map((historyRow) => (
+                        <TableRow key={historyRow.pickupZone}>
+                          <TableCell component="th" scope="row">
+                            {historyRow.pickupZone}
+                          </TableCell>
+                          <TableCell>{historyRow.arrivalScheduled}</TableCell>
+                          <TableCell>{historyRow.arrivalTime}</TableCell>
+                          <TableCell>
+                            <div
+                              className="pickupPic"
+                              onClick={() => {
+                                const pickupPicture = historyRow.pickupPicture;
+                                Swal.fire({
+                                  // title: '픽업 사진',
+                                  text: "픽업을 완료하였습니다.",
+                                  imageUrl: pickupPicture,
+                                  imageWidth: 300,
+                                  imageHeight: 300,
+                                  imageAlt: "Custom image",
+                                });
+                              }}
+                            >
+                              보기
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Box>
+                <div className="now-location">
+                  <h3 className="now-title">
+                    <div>현재 위치</div>
+                    <div
+                      className="now-icon"
+                      onClick={GetLocation}
+                    >
+                      <RefreshIcon
+                      sx={{
+                        width: "1rem",
+                        "&:hover": {
+                          color: "#10b981",
+                          backgroundColor: "rgba( 0, 0, 0, 0.08 )",
+                        },
+                      }} />
+                    </div>
+                  </h3>
+                  <h5 className="now-map">
+                    <p>위도 : {latitude}</p>
+                    <p>경도 : {longitude}</p>
+                  </h5>
+                </div>
+              </div>
             </Collapse>
           </TableCell>
         </TableRow>
@@ -157,18 +204,18 @@ const List = () => {
     createData("이배달"),
   ];
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow></TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow></TableRow>
+          </TableHead>
+          <TableBody sx={{ width: 1000 }}>
+            {rows.map((row) => (
+              <Row key={row.name} row={row}></Row>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
   );
 };
 

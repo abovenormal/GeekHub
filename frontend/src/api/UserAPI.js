@@ -14,25 +14,27 @@ export async function duplicateId(userId, Toast, setCheckId) {
     return
   };
   try {
-    await userAPI.post('users/check/id', { id: userId});
+    console.log(userId)
+    const res = await userAPI.get('admin/validUserId', {params : {userId: userId}});
+    console.log(res)
     setCheckId(true);
     Toast.fire({
       icon: "success",
       title: "사용 가능한 아이디입니다.",
       timer: 1000,
-      position: 'top-center',
-      
-    });
-  } catch (error) {
-    if (error.response.status === 409) {
+      position: 'center',
+    })
+  } 
+  catch (error) {
+    if (error.response.status===409) {
       Toast.fire({
         icon: "error",
         title: "이미 존재하는 아이디입니다.",
         timer: 1000,
         position: 'top-center',
       });
-      return
+    }
     }
   };
-};
+
 

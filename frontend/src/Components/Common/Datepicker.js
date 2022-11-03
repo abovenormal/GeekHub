@@ -1,13 +1,23 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-export default function BasicDatePicker() {
-  const [value, setValue] = React.useState(null);
-
+const Datepicker = props => {
+  const selected = props.selected
+  const setSelected = props.setSelected
+  const [value, setValue] = useState('');
+  useEffect(()=> {
+    if (value) {
+    const nextInfo ={
+      ...selected,
+      "date" : `${value.$y}-${value.$M + 1}-${value.$D}`
+    }
+    setSelected(nextInfo)
+  }
+  }, [value])
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
@@ -16,10 +26,14 @@ export default function BasicDatePicker() {
         value={value}
         onChange={(newValue) => {
           setValue(newValue);
-          console.log(value.$y, value.$M + 1, value.$D)
         }}
-        renderInput={(params) => <TextField {...params} />}
+        renderInput={(params) => <TextField {...params} /> }
+        sx={{
+          width:'300px'
+        }}
       />
     </LocalizationProvider>
   );
 }
+
+export default Datepicker;
