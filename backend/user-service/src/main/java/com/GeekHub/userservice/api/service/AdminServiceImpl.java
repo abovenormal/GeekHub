@@ -4,7 +4,6 @@ import com.GeekHub.userservice.api.request.LoginPostReq;
 import com.GeekHub.userservice.common.enums.UserStatus;
 import com.GeekHub.userservice.db.entity.User;
 import com.GeekHub.userservice.db.repository.DriverRepository;
-import com.GeekHub.userservice.db.repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
