@@ -1,0 +1,14 @@
+server:
+    port: 8000
+
+spring:
+    application:
+        name : task-server
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://k7c205.p.ssafy.io:3306/geekhub
+        username: posi
+        password: deleatc205
+
+
+
