@@ -2,10 +2,7 @@ package com.example.geekhub
 
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.util.Log
 import android.util.Size
 import android.view.LayoutInflater
@@ -16,10 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.createBitmap
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import com.example.geekhub.data.SendImageResponse
 import com.example.geekhub.databinding.FragmentCameraxBinding
 import com.example.geekhub.retrofit.NetWorkClient
 import okhttp3.MediaType
@@ -30,8 +24,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.nio.ByteBuffer
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -108,8 +100,6 @@ class CameraxFragment : Fragment() {
         val outputOptions = ImageCapture.OutputFileOptions
             .Builder(imageFile)
             .build()
-        println("찍힘")
-
         imageCapture.takePicture(
             outputOptions,
             ContextCompat.getMainExecutor(requireActivity()),
@@ -127,15 +117,11 @@ class CameraxFragment : Fragment() {
                 }
             }
         )
-        Log.d("여기2?",imageFile.path)
     }
 
 
     private fun startCamera() {
-        println("여기")
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-        
-
         cameraProviderFuture.addListener({
             // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
@@ -202,6 +188,7 @@ class CameraxFragment : Fragment() {
         fragmentManager.popBackStack()
         cameraExecutor.shutdown()
     }
+
     fun send(){
         val body = RequestBody.create(MediaType.parse("image/*"),imageFile)
         val image = MultipartBody.Part.createFormData("image",imageFile.name,body)
@@ -209,32 +196,17 @@ class CameraxFragment : Fragment() {
         call.enqueue(object : Callback<String>{
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Toast.makeText(requireActivity(),"전송을 실패했습니다.",Toast.LENGTH_SHORT).show()
-                Log.e("전송실패",t.message.toString())
             }
-
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                println("전송성공❤😂😊💕")
                 val result: String? =response.body()
-                Log.d("데이타",result.toString())
+                finishFragment()
+                (activity as MainActivity).changeFragment(1)
+
             }
-        })
-
-
-    }
+        })}
 
 
 
 
 }
 
-
-//response: Response<SendImageResponse>
-//) {
-//    println("전송성공")
-//    println(imageFile.path)
-//    Toast.makeText(requireActivity(),"전송을 완료했습니다.",Toast.LENGTH_SHORT).show()
-//}
-//
-//override fun onFailure(call: Call<SendImageResponse>, t: Throwable) {
-//    Log.e("전송실패",t.message.toString())
-//}
