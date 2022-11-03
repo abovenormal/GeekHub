@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class Spot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="taskIdx")
+    @Column(name="spotIdx")
     private long spotIdx;
 
     @Enumerated(EnumType.STRING)
