@@ -1,7 +1,5 @@
 package com.example.geekhub
 
-import android.content.ContentResolver
-import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
 import android.os.Build
@@ -206,20 +204,18 @@ class CameraxFragment : Fragment() {
     }
     fun send(){
         val body = RequestBody.create(MediaType.parse("image/*"),imageFile)
-        val image = MultipartBody.Part.createFormData("image","image",body)
+        val image = MultipartBody.Part.createFormData("image",imageFile.name,body)
         val call = NetWorkClient.GetNetwork.sendimage(image)
-        call.enqueue(object : Callback<SendImageResponse> {
-            override fun onResponse(
-                call: Call<SendImageResponse>,
-                response: Response<SendImageResponse>
-            ) {
-                println("전송성공")
-                println(imageFile.path)
-                Toast.makeText(requireActivity(),"전송을 완료했습니다.",Toast.LENGTH_SHORT).show()
+        call.enqueue(object : Callback<String>{
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Toast.makeText(requireActivity(),"전송을 실패했습니다.",Toast.LENGTH_SHORT).show()
+                Log.e("전송실패",t.message.toString())
             }
 
-            override fun onFailure(call: Call<SendImageResponse>, t: Throwable) {
-                Log.e("전송실패",t.message.toString())
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                println("전송성공❤😂😊💕")
+                val result: String? =response.body()
+                Log.d("데이타",result.toString())
             }
         })
 
@@ -230,3 +226,15 @@ class CameraxFragment : Fragment() {
 
 
 }
+
+
+//response: Response<SendImageResponse>
+//) {
+//    println("전송성공")
+//    println(imageFile.path)
+//    Toast.makeText(requireActivity(),"전송을 완료했습니다.",Toast.LENGTH_SHORT).show()
+//}
+//
+//override fun onFailure(call: Call<SendImageResponse>, t: Throwable) {
+//    Log.e("전송실패",t.message.toString())
+//}
