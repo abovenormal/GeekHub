@@ -1,0 +1,21 @@
+
+server:
+  port: 8011
+
+spring:
+  application:
+    name : task-server
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://k7c205.p.ssafy.io:3306/geekhub?serverTimezone=Asia/Seoul
+    username: posi
+    password: deleatc205
+  jpa:
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+
+
+

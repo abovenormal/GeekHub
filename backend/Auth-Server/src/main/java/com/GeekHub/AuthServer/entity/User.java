@@ -1,6 +1,5 @@
 package com.GeekHub.AuthServer.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @EntityScan
 @Entity
-@Table(name = "user")
+@Table(name = "User")
 public class User implements UserDetails {
 
     @Column(name="userIdx")
@@ -71,7 +70,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userId;
+        return userName;
     }
 
     @Override
