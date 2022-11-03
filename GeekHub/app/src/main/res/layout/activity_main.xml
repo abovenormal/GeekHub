@@ -8,6 +8,26 @@
     android:background="@color/gray_500"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:id="@+id/linearLayoutTmap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/linebutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="root" />
+
+        <Button
+            android:id="@+id/navButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="goNav" />
+
+    </LinearLayout>
+
     <ImageView
         android:layout_width="35dp"
         android:layout_height="35dp"

@@ -11,7 +11,5 @@ interface NetWorkInterface {
         @Part image : MultipartBody.Part
     ):Call<String>
 
-    @GET("s3/upload")
-    fun getlist():Call<DeliveryList>
 
 }
