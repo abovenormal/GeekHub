@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 public class Location {
 
     @Column(name = "lati")
-    private double lati;
+    private double lat;
 
     @Column(name = "longi")
-    private double longi;
+    private double lon;
 
     @Column(name = "locat_time")
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
