@@ -1,0 +1,57 @@
+server:
+  port: 9012
+
+spring:
+  application:
+    name: S3Service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://k7c205.p.ssafy.io:3306/geekhub
+    username: posi
+    password: deleatc205
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+
+
+#AWS S3
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA4P7YZ4HHJMYHA7EE
+      secretKey: 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
+    s3:
+      bucket: geekhub
+      dir: pictures
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+
+#eureka:
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url:
+#      defaultZone: http://127.0.0.1:8761/eureka
+
