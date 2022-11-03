@@ -42,7 +42,7 @@ dependencyManagement {
 }
 
 bootJar{
-	mainClass = 'com.GeekHub.S3server.S3serverApplication'
+	mainClass = 'com.GeekHub.S3Server.S3ServerApplication'
 	archiveFileName = 'S3server.jar'
 }
 
