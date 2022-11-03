@@ -29,7 +29,16 @@
 }
 .nav-link:hover{
   color: #10b981;
-  background-color: rgba( 255, 255, 255, 0.08 );
+  /* background-color: rgba( 255, 255, 255, 0.08 ); */
+  top: 0;
+  left: 0;
+  z-index: -1;
+  box-shadow:
+   -1px -1px 2px 0px #10b981,
+   -2px -2px 5px 0px #10b981,
+   1px 1px 2px 0px #10b981,
+   2px 2px 5px 0px #10b981;
+  transition: all 0.3s ease;
 }
 
 /* .nav-link:focus {

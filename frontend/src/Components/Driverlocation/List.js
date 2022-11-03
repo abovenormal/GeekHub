@@ -17,39 +17,20 @@ import Swal from "sweetalert2";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import "./css/List.css";
 import {apiInstance} from "../../api/index"
-const List = () => {
-  function createData(name) {
-    return {
-      name,
-      history: [
-        {
-          pickupZone: "알촌",
-          arrivalScheduled: "17:20",
-          arrivalTime: "17:21",
-          pickupPicture:
-            "https://play-lh.googleusercontent.com/Kbu0747Cx3rpzHcSbtM1zDriGFG74zVbtkPmVnOKpmLCS59l7IuKD5M3MKbaq_nEaZM",
-        },
-        {
-          pickupZone: "생돈가스",
-          arrivalScheduled: "17:24",
-          arrivalTime: "17:24",
-          pickupPicture:
-            "https://play-lh.googleusercontent.com/Kbu0747Cx3rpzHcSbtM1zDriGFG74zVbtkPmVnOKpmLCS59l7IuKD5M3MKbaq_nEaZM",
-        },
-      ],
-    };
-  }
+const List = props => {
+  const listData = props.listData
 
   function Row(props) {
     const { row } = props;
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const API = apiInstance();
     const [longitude, setLongitude] = useState('');
     const [latitude, setLatitude] = useState('');
-    async function GetLocation(e) {
-      // e.preventDefault();
+    async function GetLocation(id) {
+       // 열릴 때만 Get 요청 보내기 위해 분기 추가 했다가
+       // 열린 채로 새로 고침 안 되서 잠시 삭제
       try {
-        const res = await API.get("/location/getLocation?=driver=221343")
+        const res = await API.get('/location/getLocation', {params : {driver:id}})
         console.log(res.data)
         setLatitude(res.data.latitude)
         setLongitude(res.data.longitude)
@@ -59,6 +40,7 @@ const List = () => {
       }
     }
     return (
+      
       <React.Fragment>
         <TableRow
           sx={{
@@ -81,7 +63,7 @@ const List = () => {
               size="small"
               onClick={() => {
                 setOpen(!open)
-                GetLocation()
+                GetLocation(row.id)
               }
               }
             >
@@ -93,7 +75,7 @@ const List = () => {
             scope="row"
             onClick={() => {
               setOpen(!open)
-              GetLocation()
+              GetLocation(row.id)
             }}
             sx={{
               cursor: "pointer",
@@ -121,25 +103,25 @@ const List = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {row.history.map((historyRow) => (
-                        <TableRow key={historyRow.pickupZone}>
+                      {row.task.map((taskRow) => (
+                        <TableRow key={taskRow.pickupZone}>
                           <TableCell component="th" scope="row">
-                            {historyRow.pickupZone}
+                            {taskRow.pickupZone}
                           </TableCell>
-                          <TableCell>{historyRow.arrivalScheduled}</TableCell>
-                          <TableCell>{historyRow.arrivalTime}</TableCell>
+                          <TableCell>{taskRow.arrivalScheduled}</TableCell>
+                          <TableCell>{taskRow.arrivalTime}</TableCell>
                           <TableCell>
                             <div
                               className="pickupPic"
                               onClick={() => {
-                                const pickupPicture = historyRow.pickupPicture;
+                                const pickupPicture = taskRow.pickupPicture;
                                 Swal.fire({
                                   // title: '픽업 사진',
                                   text: "픽업을 완료하였습니다.",
                                   imageUrl: pickupPicture,
                                   imageWidth: 300,
                                   imageHeight: 300,
-                                  imageAlt: "Custom image",
+                                  imageAlt: "Pickup image",
                                 });
                               }}
                             >
@@ -153,11 +135,12 @@ const List = () => {
                 </Box>
                 <div className="now-location">
                   <h3 className="now-title">
-                    <div>현재 위치</div>
+                    <div>기사님의 현재 위치</div>
                     <div
                       className="now-icon"
-                      onClick={GetLocation}
-                    >
+                      // onClick={()=> {GetLocation(row.id)}}
+                      onClick={() => {GetLocation(row.id)}}
+                      >
                       <RefreshIcon
                       sx={{
                         width: "1rem",
@@ -180,29 +163,9 @@ const List = () => {
       </React.Fragment>
     );
   }
-  Row.propTypes = {
-    row: PropTypes.shape({
-      calories: PropTypes.number.isRequired,
-      carbs: PropTypes.number.isRequired,
-      fat: PropTypes.number.isRequired,
-      history: PropTypes.arrayOf(
-        PropTypes.shape({
-          amount: PropTypes.number.isRequired,
-          customerId: PropTypes.string.isRequired,
-          date: PropTypes.string.isRequired,
-        })
-      ).isRequired,
-      name: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-      protein: PropTypes.number.isRequired,
-    }).isRequired,
-  };
-
-  const rows = [
-    createData("김배달"),
-    createData("최배달"),
-    createData("이배달"),
-  ];
+  
+  const rows = listData;
+  
   return (
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
