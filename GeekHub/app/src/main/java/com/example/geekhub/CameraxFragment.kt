@@ -1,13 +1,8 @@
 package com.example.geekhub
 
-import android.content.ContentResolver
-import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.util.Log
 import android.util.Size
 import android.view.LayoutInflater
@@ -18,14 +13,17 @@ import androidx.activity.OnBackPressedCallback
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.createBitmap
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.geekhub.databinding.FragmentCameraxBinding
+import com.example.geekhub.retrofit.NetWorkClient
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.nio.ByteBuffer
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -35,13 +33,13 @@ typealias LumaListener = (luma: Double) -> Unit
 private var imageCapture: ImageCapture? = null
 private lateinit var cameraExecutor: ExecutorService
 private const val TAG = "카메라"
-private var path = ""
-private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
-private const val REQUEST_CODE_PERMISSIONS = 10
+
 
 class CameraxFragment : Fragment() {
     lateinit var binding : FragmentCameraxBinding
     private lateinit var callback: OnBackPressedCallback
+    lateinit var savedUri:Uri
+    lateinit var imageFile:File
 
     private class LuminosityAnalyzer(private val listener: LumaListener) : ImageAnalysis.Analyzer {
 
@@ -75,19 +73,33 @@ class CameraxFragment : Fragment() {
         // Set up the listeners for take photo and video capture buttons
         binding.imageCaptureButton.setOnClickListener { takePhoto() }
         cameraExecutor = Executors.newSingleThreadExecutor()
+        binding.reTakePicture.setOnClickListener{
+            println("체크")
+            cameraExecutor.shutdown()
+            binding.viewFinder.visibility = View.VISIBLE
+            binding.imageCaptureButton.visibility = View.VISIBLE
+            binding.cameraButtons.visibility = View.INVISIBLE
+            binding.imageViewPreview.visibility = View.INVISIBLE
+            binding.cameraBackground.setBackgroundColor(getResources().getColor(R.color.black))
+            startCamera()
+        }
+
+        binding.sendPicture.setOnClickListener {
+            send()
+        }
 
         return binding.root
     }
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
-        val destPath = requireActivity().externalCacheDir.toString() + "/cache_file.jpg"
-        val image = File(destPath)
-        image.createNewFile()
-        val savedUri = Uri.fromFile(image)
+        val time = System.currentTimeMillis()
+        val destPath = requireActivity().externalCacheDir.toString() + "/${time}cache_file.jpg"
+        imageFile = File(destPath)
+        imageFile.createNewFile()
+        savedUri = Uri.fromFile(imageFile)
         val outputOptions = ImageCapture.OutputFileOptions
-            .Builder(image)
+            .Builder(imageFile)
             .build()
-
         imageCapture.takePicture(
             outputOptions,
             ContextCompat.getMainExecutor(requireActivity()),
@@ -99,20 +111,17 @@ class CameraxFragment : Fragment() {
                     binding.viewFinder.visibility = View.INVISIBLE
                     binding.imageCaptureButton.visibility = View.INVISIBLE
                     binding.cameraButtons.visibility = View.VISIBLE
+                    binding.imageViewPreview.visibility = View.VISIBLE
                     binding.imageViewPreview.setImageURI(savedUri )
                     binding.cameraBackground.setBackgroundColor(getResources().getColor(R.color.white))
                 }
             }
         )
-        Log.d("여기2?",image.path)
     }
 
 
     private fun startCamera() {
-        println("여기")
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-        
-
         cameraProviderFuture.addListener({
             // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
@@ -180,7 +189,24 @@ class CameraxFragment : Fragment() {
         cameraExecutor.shutdown()
     }
 
+    fun send(){
+        val body = RequestBody.create(MediaType.parse("image/*"),imageFile)
+        val image = MultipartBody.Part.createFormData("image",imageFile.name,body)
+        val call = NetWorkClient.GetNetwork.sendimage(image)
+        call.enqueue(object : Callback<String>{
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Toast.makeText(requireActivity(),"전송을 실패했습니다.",Toast.LENGTH_SHORT).show()
+            }
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                val result: String? =response.body()
+                finishFragment()
+                (activity as MainActivity).changeFragment(1)
+
+            }
+        })}
+
 
 
 
 }
+
