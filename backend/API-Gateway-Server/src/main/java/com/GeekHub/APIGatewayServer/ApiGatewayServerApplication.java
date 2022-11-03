@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @SpringBootApplication
 @EnableEurekaClient
-@CrossOrigin(origins = "*")
 public class ApiGatewayServerApplication {
 
 	public static void main(String[] args) {
