@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Token login(@RequestBody RequestUserDto requestUserDto) {
+    public ResponseEntity<Token> login(@RequestBody RequestUserDto requestUserDto) {
         log.info("user id = {}", requestUserDto.getUserId());
         User member = userRepository.findByUserId(requestUserDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 아이디 입니다."));
@@ -45,9 +45,9 @@ public class UserController {
             Token tokenDto = jwtTokenProvider.createAccessToken(member.getUserId(), member.getRoles(),member.getUsername());
             log.info("getrole = {}", member.getRoles());
             authService.login(tokenDto);
-            return tokenDto;
+            return new ResponseEntity<>(tokenDto, HttpStatus.OK);
         }else{
-         return null;
+         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
     }
