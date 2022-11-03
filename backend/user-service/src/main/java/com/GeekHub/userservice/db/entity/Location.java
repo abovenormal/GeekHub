@@ -15,10 +15,10 @@ import java.time.LocalDateTime;
 @Table(name = "Location")
 public class Location {
 
-    @Column(name = "lati")
+    @Column(name = "lat")
     private double lat;
 
-    @Column(name = "longi")
+    @Column(name = "lon")
     private double lon;
 
     @Column(name = "locat_time")
