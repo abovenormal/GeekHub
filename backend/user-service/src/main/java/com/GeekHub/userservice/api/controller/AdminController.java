@@ -72,9 +72,7 @@ public class AdminController {
     public ResponseEntity<?> checkPicture(@RequestParam String orderIdx) {
 
         try {
-            String returnUrl = adminService.loadPictureUrl(orderIdx);
-
-            return new ResponseEntity<>(returnUrl,HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
