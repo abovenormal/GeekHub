@@ -2,6 +2,8 @@ package com.GeekHub.TaskServer.controlloer;
 
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
 import com.GeekHub.TaskServer.dto.response.SpotResponseDto;
+import com.GeekHub.TaskServer.dto.response.WorkResponseDto;
+import com.GeekHub.TaskServer.entity.SpotCategory;
 import com.GeekHub.TaskServer.service.SpotServie;
 import com.GeekHub.TaskServer.service.SpotServieImpl;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -63,25 +67,15 @@ public class SpotController {
         return new ResponseEntity<String>("success",HttpStatus.CREATED);
     }
 
-//    @PutMapping("/{spot_idx}")
-//    public ResponseEntity<String> updateTask(@PathVariable("spot_idx") Long spotIdx,@RequestBody SpotRequestDto SpotDto){
-//        try {
-//            SpotDto.setSpotIdx(spotIdx);
-//            SpotServie.updateSpot(SpotDto);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//        return  new ResponseEntity<String>("success",HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("/{spot_idx}")
-//    public ResponseEntity<String> deleteTask(@PathVariable("spot_idx") Long spotIdx){
-//        try {
-//            SpotServie.deleteSpot(spotIdx);
-//        }catch (Exception e){
-//            throw new RuntimeException();
-//        }
-//        return  new ResponseEntity<String>("success",HttpStatus.OK);
-//    }
+
+    @GetMapping("/work/{driverIdx}")
+    public ResponseEntity<HashMap> sendWork(@PathVariable("driverIdx") Long driverIdx) throws Exception {
+        HashMap<String, Object> workList = new HashMap<>();
+        List<WorkResponseDto> receiveList = SpotServie.work(driverIdx, SpotCategory.STORE);
+        workList.put("rec", receiveList);
+        List<WorkResponseDto> deleveryList = SpotServie.work(driverIdx, SpotCategory.DESTINATION);
+        workList.put("del", deleveryList);
+        return ResponseEntity.status(HttpStatus.OK).body(workList);
+    }
 
 }

@@ -4,7 +4,9 @@ import com.GeekHub.TaskServer.dao.SpotDao;
 import com.GeekHub.TaskServer.dao.UserDao;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
 import com.GeekHub.TaskServer.dto.response.SpotResponseDto;
+import com.GeekHub.TaskServer.dto.response.WorkResponseDto;
 import com.GeekHub.TaskServer.entity.Spot;
+import com.GeekHub.TaskServer.entity.SpotCategory;
 import com.GeekHub.TaskServer.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,6 +73,11 @@ public class SpotServieImpl implements SpotServie{
         }catch (Exception e){
             throw new Exception();
         }
+    }
+
+    @Override
+    public List<WorkResponseDto> work(long driverIdx, SpotCategory spotCategory) throws Exception {
+        return spotDao.work(driverIdx, spotCategory);
     }
 
 //    @Override
