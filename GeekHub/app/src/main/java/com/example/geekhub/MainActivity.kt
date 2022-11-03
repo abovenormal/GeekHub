@@ -73,7 +73,9 @@ class MainActivity : AppCompatActivity() {
         
 
         binding.goChatting.setOnClickListener{
-            moveFragment(ChattingFragment())
+//            moveFragment(ChattingFragment())
+            changeFragment(6)
+
         }
         // 채팅버튼
 
@@ -163,15 +165,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.main_container_view, fragment)
-            .addToBackStack(null)
-            .commit()
-
-    }
-
-    fun moveCameraFragment(bundle: Bundle){
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.main_container_view, DeliveryCameraFragment())
             .addToBackStack(null)
             .commit()
 
