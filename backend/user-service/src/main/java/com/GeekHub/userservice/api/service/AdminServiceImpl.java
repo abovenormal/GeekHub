@@ -3,7 +3,6 @@ package com.GeekHub.userservice.api.service;
 import com.GeekHub.userservice.api.request.LoginPostReq;
 import com.GeekHub.userservice.common.enums.UserStatus;
 import com.GeekHub.userservice.db.entity.User;
-import com.GeekHub.userservice.db.entity.Orders;
 import com.GeekHub.userservice.db.repository.DriverRepository;
 import com.GeekHub.userservice.db.repository.OrdersRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import javax.transaction.Transactional;
 public class AdminServiceImpl implements AdminService {
 
     private final DriverRepository driverRepository;
-    private final OrdersRepository ordersRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -72,14 +70,6 @@ public class AdminServiceImpl implements AdminService {
         log.info("Invalidated userID");
         return false;
 
-    }
-
-    public String loadPictureUrl(String orderIdx) {
-
-        Orders order = ordersRepository.findByOrderIdx(orderIdx).orElse(null);
-        String orderUrl= order.getOrderUrl();
-
-        return orderUrl;
     }
 
 }

@@ -26,5 +26,4 @@ public interface AdminService {
      * 주문번호에 따른 사진 불러오기
      * @param orderIdx
      * */
-    String loadPictureUrl(String orderIdx);
 }
