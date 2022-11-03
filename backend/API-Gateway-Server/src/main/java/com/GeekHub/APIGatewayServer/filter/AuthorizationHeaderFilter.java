@@ -2,6 +2,7 @@ package com.GeekHub.APIGatewayServer.filter;
 
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.env.Environment;
@@ -51,15 +52,18 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         log.error(err);
         return response.setComplete();
     }
-
+    @Value("${jwt.secret}")
+    private String secretKey;
     private boolean isJwtValid(String jwt) {
+
+
 
         boolean returnValue = true;
 
         String subject = null;
 
         try {
-            subject = Jwts.parserBuilder().setSigningKey("VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa").build().parseClaimsJws(jwt).getBody()
+            subject = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(jwt).getBody()
                     .getSubject();
         } catch (Exception ex) {
             returnValue = false;
