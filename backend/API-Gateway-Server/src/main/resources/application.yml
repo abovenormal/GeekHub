@@ -21,4 +21,5 @@ spring:
           uri: http://localhost:9003
           predicates:
             - Path=/admin/**
-
+    main:
+      web-application-type : reactive
