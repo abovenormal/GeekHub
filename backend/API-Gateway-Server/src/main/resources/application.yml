@@ -39,3 +39,6 @@ spring:
               - PUT
               - OPTIONS
               - DELETE
+
+jwt:
+  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
