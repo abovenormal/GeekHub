@@ -38,8 +38,14 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<Token> login(@RequestBody RequestUserDto requestUserDto) {
         log.info("user id = {}", requestUserDto.getUserId());
-        User member = userRepository.findByUserId(requestUserDto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 아이디 입니다."));
+        User member;
+        try {
+            member = userRepository.findByUserId(requestUserDto.getUserId())
+                    .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 아이디 입니다."));
+        }catch (IllegalArgumentException e){
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+
 
         if(bCryptPasswordEncoder.matches(requestUserDto.getPassword(),member.getPassword())){
             Token tokenDto = jwtTokenProvider.createAccessToken(member.getUserId(), member.getRoles(),member.getUsername());

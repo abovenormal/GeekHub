@@ -23,7 +23,10 @@ public class AuthService {
     @Transactional
     public void login(Token tokenDto){
 
-        RefreshToken refreshToken = RefreshToken.builder().keyName(tokenDto.getKey()).refreshToken(tokenDto.getRefreshToken()).build();
+        RefreshToken refreshToken = RefreshToken.builder().
+                keyName(tokenDto.getKey()).
+                refreshToken(tokenDto.getRefreshToken()).
+                build();
         String loginUserName = refreshToken.getKeyName();
         if(refreshTokenRepository.existsByKeyName(loginUserName)){
             log.info("기존의 존재하는 refresh 토큰 삭제");

@@ -25,8 +25,9 @@ public class JwtTokenProvider {
     }
     public Token createAccessToken(String userId, List<String> roles, String userName) {
 
-        Claims claims = Jwts.claims().setSubject(userName); // JWT payload 에 저장되는 정보단위
+        Claims claims = Jwts.claims().setSubject(userId); // JWT payload 에 저장되는 정보단위
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
+        claims.put("username", userName);
         Date now = new Date();
 
         //Access Token
@@ -51,8 +52,8 @@ public class JwtTokenProvider {
     }
 
 
-    public String recreationAccessToken(String userName, Object roles){
-        Claims claims = Jwts.claims().setSubject(userName); // JWT payload 에 저장되는 정보단위
+    public String recreationAccessToken(String userId, Object roles){
+        Claims claims = Jwts.claims().setSubject(userId); // JWT payload 에 저장되는 정보단위
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
 
