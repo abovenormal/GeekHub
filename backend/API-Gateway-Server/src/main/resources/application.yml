@@ -25,7 +25,7 @@ spring:
         corsConfigurations:
           '[/**]':
             allowedOrigins: "*"
-            allow-credentials: true   #추가
+            allow-credentials: false
             allowedHeaders:
               - x-requested-with
               - authorization
