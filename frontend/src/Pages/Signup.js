@@ -11,8 +11,8 @@ import "./css/Signup.css";
 import { duplicateId } from "../api/UserAPI";
 import Toast from "../utils/Toast";
 import { AiFillCheckCircle } from "react-icons/ai";
-import { apiInstance } from "../api";
-
+import { apiInstance } from "../api/index";
+import axios from 'axios';
 const Signup = () => {
   const [info, setInfo] = useState({
     userName: "",
@@ -81,7 +81,7 @@ const Signup = () => {
   // 회원 가입
   async function signupSubmit(e) {
     e.preventDefault();
-    if (checkPassword === true) {
+    if (checkId === true && checkPassword === true) {
       try {
         await API.post("admin/createdriver", info);
         await MySwal.fire({
@@ -101,10 +101,10 @@ const Signup = () => {
     } else {
       MySwal.fire({
         icon: "warning",
-        title: "Oops...",
-        text: `${[!checkId && "아이디", !checkPassword && "비밀번호"]
+        title: "삐~~",
+        text: `${[!checkId && "아이디를", !checkPassword && "비밀번호를"]
           .filter((text) => text.length > 0)
-          .join(", ")}을(를) 확인하세요`,
+          .join(", ")} 확인하세요`,
       });
     }
   }

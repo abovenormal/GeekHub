@@ -3,23 +3,18 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
-import Datepicker from "./Datepicker";
-const Dropdown = () => {
-  const [selected, setSelected] = useState({
-    city: "",
-    school: "",
-    date: "",
-  })
+import { getDriverList } from "../../api/GetDriverList";
+const Dropdown = props => {
+  const selected = props.selected
+  const setSelected = props.setSelected
   const [schoolList, setSchoolList] = useState([]);
   
   const onChange = (e) => {
-    console.log(e);
+    // console.log(e);
     const nextInfo = {
       ...selected,
       [e.target.name]: e.target.value
     }
-    console.log(nextInfo);
     setSelected(nextInfo);
     if (nextInfo.city === "서울") {
       setSchoolList(schoolSeoul);
@@ -49,8 +44,6 @@ const Dropdown = () => {
   const schoolIncheon = ["송도 글로벌캠퍼스", "연세대학교(송도)"];
 
   const schoolGwangju = ["광주과학기술원", "전남대학교"];
-
-  const [value, setValue] = React.useState(null);
   return (
     <div>
       <FormControl variant="standard" sx={{ m: 1, minWidth: 100 }}>
@@ -70,24 +63,24 @@ const Dropdown = () => {
         </Select>
       </FormControl>
       <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
-            <InputLabel id="demo-simple-select-standard-label">
-              School
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-standard-label"
-              id="demo-simple-select-standard"
-              value={selected.school}
-              onChange={onChange}
-              label="School"
-              name="school"
-            >
-              {schoolList.map((school) => (
-                <MenuItem key={school} value={school}>
-                  {school}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <InputLabel id="demo-simple-select-standard-label">
+          School
+        </InputLabel>
+        <Select
+          labelId="demo-simple-select-standard-label"
+          id="demo-simple-select-standard"
+          value={selected.school}
+          onChange={onChange}
+          label="School"
+          name="school"
+        >
+          {schoolList.map((school) => (
+            <MenuItem key={school} value={school}>
+              {school}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </div>
   );
 };
