@@ -41,6 +41,12 @@ dependencyManagement {
 	}
 }
 
+bootJar{
+	mainClass = 'com.GeekHub.S3server.S3serverApplication'
+	archiveFileName = 'S3server.jar'
+}
+
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
