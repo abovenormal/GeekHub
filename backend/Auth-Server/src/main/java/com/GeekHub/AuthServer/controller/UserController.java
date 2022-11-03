@@ -5,7 +5,7 @@ import com.GeekHub.AuthServer.dto.RequestUserDto;
 import com.GeekHub.AuthServer.dto.Token;
 import com.GeekHub.AuthServer.entity.User;
 import com.GeekHub.AuthServer.repository.UserRepository;
-import com.GeekHub.AuthServer.service.JwtService;
+import com.GeekHub.AuthServer.service.AuthService;
 import com.GeekHub.AuthServer.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ import java.util.Map;
 public class UserController {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final JwtService jwtService;
+    private final AuthService authService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/test")
@@ -44,7 +44,7 @@ public class UserController {
         if(bCryptPasswordEncoder.matches(requestUserDto.getPassword(),member.getPassword())){
             Token tokenDto = jwtTokenProvider.createAccessToken(member.getUserId(), member.getRoles(),member.getUsername());
             log.info("getrole = {}", member.getRoles());
-            jwtService.login(tokenDto);
+            authService.login(tokenDto);
             return tokenDto;
         }else{
          return null;
@@ -55,7 +55,7 @@ public class UserController {
     public ResponseEntity<String> validateRefreshToken(@RequestBody HashMap<String, String> bodyJson){
 
         log.info("refresh controller 실행");
-        Map<String, String> map = jwtService.validateRefreshToken(bodyJson.get("refreshToken"));
+        Map<String, String> map = authService.validateRefreshToken(bodyJson.get("refreshToken"));
 
         if(map.get("status").equals("402")){
             log.info("RefreshController - Refresh Token이 만료.");
