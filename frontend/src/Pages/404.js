@@ -5,7 +5,6 @@ import './css/404.css'
 export default function PageNotFound() {
   return (
     <div className="not-found-container ">
-      x
       <h1>Page Not Found</h1>
     </div>
   )

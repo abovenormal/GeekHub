@@ -29,12 +29,11 @@ const Login = () => {
     try {
       console.log(loginInfo);
       const res = await api.post("auth/login", loginInfo);
-      console.log(res);
+      console.log(res.data.accessToken);
       localStorage.setItem("accesstoken", res.data.accessToken);
-
       await new Promise(() => {
         navigate("/");
-        // navigate(0);
+        navigate(0);
         Toast.fire({
           icon: "success",
           title: "로그인 성공!",
