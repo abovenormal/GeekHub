@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Chart from "../Components/Dashboard/Chart"
 import { Link } from "react-router-dom";
 
@@ -13,7 +13,7 @@ const Dashboard = () => {
     <div>
       <Chart />
       <div className="shorcut-block">
-      <Link
+      {/* <Link
         className="shortcut-link"
         to="driverlocation">
         <ShortcutDriverlocation />
@@ -34,7 +34,7 @@ const Dashboard = () => {
         className="shortcut-link"
         to="user">
         <ShortcutUser />
-      </Link>
+      </Link> */}
       </div>
     </div>
   );

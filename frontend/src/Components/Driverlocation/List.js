@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
@@ -24,8 +24,32 @@ const List = props => {
     const { row } = props;
     const [open, setOpen] = useState(false);
     const API = apiInstance();
-    const [longitude, setLongitude] = useState('');
-    const [latitude, setLatitude] = useState('');
+    const [longitude, setLongitude] = useState("0");
+    const [latitude, setLatitude] = useState("0");
+    
+    useEffect(() => {
+      const script = document.createElement("script");
+      console.log(longitude)
+      script.innerHTML = `
+          function initTmap() {
+              var map = new Tmapv2.Map("map_div", {
+                  center: new Tmapv2.LatLng(${latitude},${longitude}),
+                  width: "100%",
+                  height: "100%",
+                  zoom:16
+              });
+          
+              var marker = new Tmapv2.Marker({
+                position: new Tmapv2.LatLng(${latitude},${longitude}),
+                map: map
+              });	
+            }
+          initTmap();
+     `;
+      script.type = "text/javascript";
+      script.async = "async";
+      document.head.appendChild(script);
+    }, [open]);
     async function GetLocation(id) {
        // 열릴 때만 Get 요청 보내기 위해 분기 추가 했다가
        // 열린 채로 새로 고침 안 되서 잠시 삭제
@@ -34,6 +58,7 @@ const List = props => {
         console.log(res.data)
         setLatitude(res.data.latitude)
         setLongitude(res.data.longitude)
+        setOpen(!open)
       }
       catch (err) {
         console.log(err)
@@ -62,7 +87,6 @@ const List = props => {
               aria-label="expand row"
               size="small"
               onClick={() => {
-                setOpen(!open)
                 GetLocation(row.id)
               }
               }
@@ -74,7 +98,6 @@ const List = props => {
             component="th"
             scope="row"
             onClick={() => {
-              setOpen(!open)
               GetLocation(row.id)
             }}
             sx={{
@@ -151,10 +174,10 @@ const List = props => {
                       }} />
                     </div>
                   </h3>
-                  <h5 className="now-map">
-                    <p>위도 : {latitude}</p>
-                    <p>경도 : {longitude}</p>
-                  </h5>
+                  <div id="map_div"></div>
+                  <p>위도 : {latitude}</p>
+                  <p>경도 : {longitude}</p>
+                  
                 </div>
               </div>
             </Collapse>

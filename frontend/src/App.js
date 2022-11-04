@@ -16,22 +16,21 @@ import './App.css';
 
 function App() {
   const token = localStorage.getItem("accesstoken");
-  // const isLogin = !!token
-  const isLogin = true
+  const isLogin = !!token
   return (
     <div className="App">
       { isLogin ? <Nav /> : <></>}
       <header className="App-header">
-          {/* <Routes>
-            <Route path="/" element={<PrivateRoute component={<Dashboard/>} authenticated={token}/>}/>
+          <Routes>
+            <Route path="/" element={<PrivateRoute authenticated={token} component={<Dashboard/>} />}/>
             <Route path="/chat" element={<PrivateRoute component={<Chat/>} authenticated={token}/>}/>
             <Route path="/driverlocation" element={<PrivateRoute component={<Driverlocation/>} authenticated={token}/>}/>
             <Route path="/login" element={<PublicRoute component={<Login/>} authenticated={token}/>}/>
             <Route path="/user" element={<PrivateRoute component={<User/>} authenticated={token}/>}/>
-            <Route path="/signup" element={<PublicRoute component={<Signup/>} authenticated={token}/>}/>
+            <Route path="/signup" element={<PrivateRoute component={<Signup/>} authenticated={token}/>}/>
             <Route path="/log" element={<PrivateRoute component={<Log/>} authenticated={token}/>}/>
-          </Routes> */}
-          <Routes>
+          </Routes>
+          {/* <Routes>
             <Route path="/" element={<Dashboard />}/>
             <Route path="/chat" element={<Chat />}/>
             <Route path="/driverlocation" element={<Driverlocation/>}/>
@@ -40,7 +39,7 @@ function App() {
             <Route path="/user" element={<User />}/>
             <Route path="/signup" element={<Signup />}/>
             <Route path="*" element={<PageNotFound />} />
-          </Routes>
+          </Routes> */}
       </header>
     </div>
   );
