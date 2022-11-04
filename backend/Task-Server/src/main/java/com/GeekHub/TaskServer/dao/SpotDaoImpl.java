@@ -64,11 +64,15 @@ public class SpotDaoImpl implements SpotDao {
         List<WorkResponseDto> result = new ArrayList<>();
         try {
             List<Spot> searchList = spotRepository.findSpotByUserAndSpotCategory(user, spotCategory).orElse(null);
+            String time = "";
             if (searchList != null) {
                 for (Spot spot : searchList) {
+                    int hour = spot.getExpected_time().getHour();
+                    int minute = spot.getExpected_time().getMinute();
+                    time = hour + "시" + minute + "분";
                     WorkResponseDto workResponseDto = new WorkResponseDto();
                     workResponseDto.setSpotName(spot.getSpotName());
-                    workResponseDto.setExpected_time(spot.getExpected_time());
+                    workResponseDto.setExpected_time(time);
                     workResponseDto.setCount(spot.getCount());
                     workResponseDto.setStatus(spot.getStatus());
                     result.add(workResponseDto);

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 public class WorkResponseDto {
     private String spotName;
-    private LocalDateTime expected_time;
+    private String expected_time;
     private int count;
     private int status;
 }
