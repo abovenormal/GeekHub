@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.HashMap;
 import java.util.List;
 
-@FeignClient(name = "fegin", url = "http://k7c205.p.ssafy.io:8012")
+@FeignClient(name = "fegin", url = "http://k7c205.p.ssafy.io:9013")
 public interface FeignTestClient {
 
     @GetMapping("/spot/work/1")
