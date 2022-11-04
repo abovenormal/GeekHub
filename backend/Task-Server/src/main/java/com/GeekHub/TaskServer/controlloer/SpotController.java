@@ -80,9 +80,9 @@ public class SpotController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> workUpdate(@RequestBody Map<String, Long> spotId) {
+    public ResponseEntity<String> workUpdate(@RequestBody Map<String, String> spotId) {
         try {
-            SpotServie.workUpdate(spotId.get("spotId"));
+            SpotServie.workUpdate(Long.valueOf(spotId.get("spotId")));
         } catch (Exception e) {
             throw new RuntimeException();
         }
