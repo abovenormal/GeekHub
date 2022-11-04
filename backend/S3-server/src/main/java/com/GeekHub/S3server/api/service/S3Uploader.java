@@ -43,8 +43,12 @@ public class S3Uploader {
 
         String imagePath = amazonS3Client.getUrl(bucket, originalName).toString();
 
+        /*
+        * url 저장하는 코드 작성
+        * */
+
         log.info("Picture save complete");
-        return imagePath;
+        return "성공";
     }
 
     // 파일의 이름을 암호화

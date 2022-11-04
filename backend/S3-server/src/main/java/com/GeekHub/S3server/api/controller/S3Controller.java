@@ -22,8 +22,8 @@ public class S3Controller {
     public ResponseEntity<?> uploadFile(@RequestBody MultipartFile image) throws IOException {
 
         log.info("Start uploading....");
-        String url = s3Uploader.uploadFile(image);
+        String result = s3Uploader.uploadFile(image);
 
-        return new ResponseEntity<>("성공", HttpStatus.OK);
+        return new ResponseEntity<>("result", HttpStatus.OK);
     }
 }
