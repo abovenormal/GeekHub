@@ -28,7 +28,7 @@ public class S3Uploader {
     public String bucket;
 
     public String uploadFile(UploadFileReq uploadFileReq) throws IOException {
-        log.info("Start uploading picture");
+        log.info("Start uploading picture by : " + uploadFileReq.getUserId());
         String currentUserId = uploadFileReq.getUserId();
         MultipartFile curImage = uploadFileReq.getImage();
 
