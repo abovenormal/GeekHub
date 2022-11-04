@@ -13,4 +13,6 @@ import java.util.Optional;
 @Repository
 public interface SpotRepository extends JpaRepository<Spot,Long> {
     Optional<List<Spot>> findSpotByUserAndSpotCategory(User user, SpotCategory spotCategory);
+
+    Optional<Spot> findSpotBySpotIdx(Long spotIdx);
 }

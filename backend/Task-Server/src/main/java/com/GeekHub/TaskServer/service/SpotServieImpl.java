@@ -80,6 +80,14 @@ public class SpotServieImpl implements SpotServie{
         return spotDao.work(driverIdx, spotCategory);
     }
 
+    @Override
+    @Transactional
+    public void workUpdate(Long spotIdx) throws Exception {
+        //log.info(String.valueOf(spotIdx));
+        System.out.println(spotIdx);
+        spotDao.workUpdate(spotIdx);
+    }
+
 //    @Override
 //    @Transactional
 //    public void updateSpot(SpotRequestDto spotRequestDto,Long spotIdx) throws Exception {
