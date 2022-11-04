@@ -11,6 +11,7 @@ import android.nfc.Tag
 import android.nfc.tech.Ndef
 import android.nfc.tech.NfcF
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tMapTapi: TMapTapi
     private lateinit var tMapPointStart: TMapPoint
     private lateinit var tMapPointEnd: TMapPoint
+    var spotTitle = "공백"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,12 +106,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         val rootBtn = findViewById<Button>(R.id.linebutton)
-        val goNav = findViewById<Button>(R.id.navButton)
+
+        binding.navButton.setOnClickListener {
+            goNav()
+        }
         rootBtn.setOnClickListener {
             findPath()
-        }
-        goNav.setOnClickListener {
-            goNav()
         }
 
         var intentFiltersArray = arrayOf(ndef)
@@ -235,6 +237,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    fun sendData(fragment: Fragment, title: String){
+        val bundle = Bundle()
+        bundle.putString("title", title)
+        fragment.arguments = bundle
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_container_view, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
 
 }
 
