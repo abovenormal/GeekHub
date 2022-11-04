@@ -73,12 +73,6 @@ const Nav = () => {
         <LogoutIcon className="nav-icon"></LogoutIcon> 로그아웃
       </Link>
       </div>
-      {/* <Link className="nav-link" to="user">
-        회원 관리
-      </Link> */}
-      {/* <Link className="nav-link" to="login">
-        로그인
-      </Link> */}
     </nav>
   );
 };
