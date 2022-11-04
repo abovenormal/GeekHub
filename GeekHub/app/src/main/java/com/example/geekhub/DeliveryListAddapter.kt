@@ -1,56 +1,80 @@
-package com.example.geekhub
-
-import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-
 //package com.example.geekhub
+//
 //import android.content.Context
 //import android.view.LayoutInflater
 //import android.view.View
 //import android.view.ViewGroup
+//import android.widget.TextView
 //import androidx.recyclerview.widget.RecyclerView
-//
-//var datas = listOf("1")
-//
-//
-//
-//
-//class MyAdapter(private val context: Context) :
-//    RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-//    var datas =
+//import com.bumptech.glide.Glide
+//import com.example.geekhub.data.DeliveryDeliveryResponse
+//import com.example.geekhub.data.DeliveryRequestResponse
+//import com.example.geekhub.databinding.RecyclerDeliveryListBinding
 //
 //
-//    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-//        val textView: TextView
 //
-//        init {
-//            // Define click listener for the ViewHolder's View.
-//            textView = view.findViewById(R.id.textView)
+//
+//
+//class DeliveryListAddapter :
+//    RecyclerView.Adapter<DeliveryListAddapter.ViewHolder>(){
+//    var datas = ArrayList<DeliveryDeliveryResponse>()
+//
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+////        val binding = RecyclerDeliveryListBinding.inflate(lah)
+//    }
+//
+//    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+//        TODO("Not yet implemented")
+//    }
+//
+//    override fun getItemCount(): Int {
+//        TODO("Not yet implemented")
+//    }
+//
+//
+//    inner class ViewHolder(binding:RecyclerDeliveryListBinding)
+//        : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
+//        override fun onClick(p0: View?) {
+//            // 이후 온클릭 구현
+//        }
+//
+//
 //        }
 //    }
 //
-//    // Create new views (invoked by the layout manager)
-//    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-//        // Create a new view, which defines the UI of the list item
-//        val view = LayoutInflater.from(viewGroup.context)
-//            .inflate(R.layout.text_row_item, viewGroup, false)
+////        var spotName : TextView = itemView.findViewById(R.id.delivery_list_title)
+////        var count : TextView = itemView.findViewById(R.id.delivery_list_count)
+////        var expected_time : TextView = itemView.findViewById(R.id.delivery_list_time)
+////
+////        fun bind(item: DeliveryDeliveryResponse) {
+////            spotName.text = item.spotName
+////            count.text = item.count
+////            expected_time.text = item.expected_time
 //
-//        return ViewHolder(view)
-//    }
 //
-//    // Replace the contents of a view (invoked by the layout manager)
-//    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+////            Glide.with(itemView).load("http://i7c207.p.ssafy.io:8080/harufilm/upload/profile/" + item.userimg).into(userimg)
 //
-//        // Get element from your dataset at this position and replace the
-//        // contents of the view with that element
-//        viewHolder.textView.text = dataSet[position]
-//    }
+////            itemView.setOnClickListener {
+////                itemClickListener.onClick(it, item.userpid.toString())
+////            }
 //
-//    // Return the size of your dataset (invoked by the layout manager)
-//    override fun getItemCount() = dataSet.size
+////    // Create new views (invoked by the layout manager)
+////    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+////        val binding = RecyclerDeliveryListBinding.inflate(infl)
+////
+////
+//////        val view = LayoutInflater.from(context)
+//////            .inflate(R.layout.recycler_delivery_list, viewGroup, false)
+//////
+//////        return ViewHolder(view)
+////    }
+////
+////    // Replace the contents of a view (invoked by the layout manager)
+////    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+////        viewHolder.bind(datas[position])
+////    }
+////
+////    // Return the size of your dataset (invoked by the layout manager)
+////    override fun getItemCount(): Int = datas.size
 //
-//}
+////}

@@ -1,7 +1,7 @@
 package com.example.geekhub.data
 
 class DeliveryList {
-    var request = listOf<DeliveryRequestResponse>()
-    var delivery = listOf<DeliveryDeliveryRespinse>()
+    var rec = ArrayList<DeliveryResponse>()
+    var del = ArrayList<DeliveryResponse>()
 
 }
