@@ -23,7 +23,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import com.example.geekhub.databinding.ActivityMainBinding
-import com.example.geekhub.model.uriViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.io.File
