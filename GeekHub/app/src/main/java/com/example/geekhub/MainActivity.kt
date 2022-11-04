@@ -4,13 +4,18 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.location.Location
 import android.net.Uri
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.Ndef
 import android.nfc.tech.NfcF
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
@@ -26,16 +31,19 @@ import com.google.android.gms.location.LocationServices
 import com.skt.Tmap.*
 import java.nio.charset.StandardCharsets
 import kotlin.concurrent.thread
+import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var nfcAdapter: NfcAdapter? = null
-    private var fusedLocationClient: FusedLocationProviderClient? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var tMapView: TMapView
     private lateinit var tMapTapi: TMapTapi
     private lateinit var tMapPointStart: TMapPoint
     private lateinit var tMapPointEnd: TMapPoint
+    private lateinit var markerItem: TMapMarkerItem
+    private lateinit var bitmap: Bitmap
     var userid = "미래의유저pid"
     val bundle = Bundle()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,9 +51,23 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initialize()
-
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        println("1111111111111111111")
+        fusedLocationClient.lastLocation.addOnSuccessListener {
+            location : Location? ->
+            if (location != null) {
+                tMapPointStart = TMapPoint(location.latitude, location.longitude)
+                tMapView.setCenterPoint(location.latitude, location.longitude)
+                markerItem.tMapPoint = tMapPointStart
+                markerItem.name = "현위치"
+                markerItem.visible = TMapMarkerItem.VISIBLE
+                bitmap = BitmapFactory.decodeResource(Re, R.drawable.placeholder)
+                markerItem.icon = bitmap
+                markerItem.setPosition(0.5F, 1.0F)
+                tMapView.addMarkerItem("현위치", markerItem)
+            }
+        }
+        println("22222222222222222222")
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
@@ -140,7 +162,7 @@ class MainActivity : AppCompatActivity() {
         tMapView = TMapView(this)
         tMapView.setSKTMapApiKey("l7xx9f33576ed47042d3ac571c8a70c73e31")
         val linearLayoutTmap: LinearLayout =
-            findViewById(R.id.linearLayoutTmap) as LinearLayout
+            findViewById<LinearLayout>(R.id.linearLayoutTmap)
         linearLayoutTmap.addView(tMapView)
     }
 
