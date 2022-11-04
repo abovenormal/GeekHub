@@ -48,7 +48,7 @@ public class S3Uploader {
         * */
 
         log.info("Picture save complete");
-        return "성공";
+        return imagePath;
     }
 
     // 파일의 이름을 암호화
