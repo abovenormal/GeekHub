@@ -1,5 +1,6 @@
 package com.GeekHub.S3server.api.service;
 
+import com.GeekHub.S3server.api.request.UploadFileReq;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -26,35 +27,36 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;
 
-    public String uploadFile(MultipartFile multipartFile) throws IOException {
+    public String uploadFile(UploadFileReq uploadFileReq) throws IOException {
         log.info("Start uploading picture");
-        String originalName = LocalDate.now() + "/" + createFileName(multipartFile.getOriginalFilename());
-        long size = multipartFile.getSize(); // 파일 크기
+        String originalName = LocalDate.now() + "/" + uploadFileReq.getUserId() + "/" + createFileName(uploadFileReq.getImage().getOriginalFilename());
+        long size = uploadFileReq.getImage().getSize(); // 파일 크기
 
         ObjectMetadata objectMetaData = new ObjectMetadata();
-        objectMetaData.setContentType(multipartFile.getContentType());
+        objectMetaData.setContentType(uploadFileReq.getImage().getContentType());
         objectMetaData.setContentLength(size);
 
         // S3에 업로드
         amazonS3Client.putObject(
-                new PutObjectRequest(bucket, originalName, multipartFile.getInputStream(), objectMetaData)
+                new PutObjectRequest(bucket, originalName, uploadFileReq.getImage().getInputStream(), objectMetaData)
                         .withCannedAcl(CannedAccessControlList.PublicRead)
         );
 
         String imagePath = amazonS3Client.getUrl(bucket, originalName).toString();
 
         /*
-        * url 저장하는 코드 작성
-        * */
+         * url 저장하는 코드 작성
+         * */
 
         log.info("Picture save complete");
         return imagePath;
     }
 
     // 파일의 이름을 암호화
-    private String createFileName(String fileName){
+    private String createFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName)); // 파일 이름
     }
+
     //
     private String getFileExtension(String fileName) {
         try {
