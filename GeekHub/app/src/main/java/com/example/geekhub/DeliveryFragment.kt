@@ -34,8 +34,14 @@ class DeliveryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDeliveryBinding.inflate(inflater,container,false)
-        binding.receiveLine.visibility = View.VISIBLE
-        getDeliveryList(0)
+        if (nowState == 0 ){
+            binding.receiveLine.visibility = View.VISIBLE
+            getDeliveryList(0)
+        }
+        else{
+            binding.deliveryLine.visibility = View.VISIBLE
+            getDeliveryList(1)
+        }
 
         return binding.root
     }
@@ -82,15 +88,30 @@ class DeliveryFragment : Fragment() {
             override fun onResponse(call: Call<DeliveryList>, response: Response<DeliveryList>) {
                 println("됨")
                 val result = response.body()
-                val recdatas = result!!.rec
-                val deldatas = result!!.del
+
+                val deldatas : ArrayList<DeliveryResponse> = ArrayList()
+                var recdatas : ArrayList<DeliveryResponse> = ArrayList()
+
+                for (i in result!!.rec){
+                    if(i.status !=0){
+                        recdatas.add(i)
+                    }
+                }
+
+                for (i in result!!.del){
+                    if(i.status !=0){
+                        deldatas.add(i)
+                    }
+                }
+
+                println("데이터파싱")
+                println(recdatas)
 
                 binding.deliveryRec.text = "${recdatas.size}개"
                 binding.deliveryDel.text = "${deldatas.size}개"
 
                 if (number == 0){
                     selectDeliveryList(recdatas)
-
 
                 }else{
                     selectDeliveryList(deldatas)
@@ -118,29 +139,49 @@ class DeliveryFragment : Fragment() {
             )
 
             binding.root.layoutParams = layoutParams
-//            println(datas)
-//            println("데이타스")
-
-
 
             return holder
 
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.title.text = datas[position].spotName
-            holder.count.text =  "수량 : ${datas[position].count}개"
-            holder.time.text = datas[position].expected_time
-            holder.title.isSelected = true
-            holder.main.setOnClickListener{
-                if (nowState == 0){
-                    (activity as MainActivity).sendData(NfcFragment(),datas[position].spotName)
+            // status 0 : 내용없음  1 : 배달해야함    2 : 완료
+            println("뷰뷰")
+            println(datas[position].status)
+//            if(datas[position].status != 0){
+            val number = datas[position]
+
+
+
+
+            if(number.status == 1){
+                visibleList(number,holder)
+                holder.title.setTextColor(resources.getColor(R.color.gick_blue))
+                holder.count.setTextColor(resources.getColor(R.color.gick_blue))
+                holder.time.setTextColor(resources.getColor(R.color.gick_blue))
+                holder.main.setOnClickListener{
+                    if (nowState == 0){
+                        (activity as MainActivity).sendData(NfcFragment(),number.spotName)
+                    }
+                    else{
+                        (activity as MainActivity).sendData(DeliveryDetailFragment(),number.spotName)
+                    }
                 }
-                else{
-                    (activity as MainActivity).sendData(DeliveryDetailFragment(),datas[position].spotName)
-                }
+
+            } else{
+                visibleList(number,holder)
+                holder.title.setTextColor(resources.getColor(R.color.gray_500))
+                holder.count.setTextColor(resources.getColor(R.color.gray_500))
+                holder.time.setTextColor(resources.getColor(R.color.gray_500))
             }
 
+
+        }
+        fun visibleList(number: DeliveryResponse,holder:ViewHolder){
+            holder.title.text = number.spotName
+            holder.count.text =  "수량 : ${number.count}개"
+            holder.time.text = number.expected_time
+            holder.title.isSelected = true
         }
 
         override fun getItemCount(): Int {

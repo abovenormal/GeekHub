@@ -14,14 +14,18 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.geekhub.data.SpotBody
 import com.example.geekhub.databinding.FragmentCameraxBinding
 import com.example.geekhub.retrofit.NetWorkClient
+import com.example.geekhub.retrofit.NetWorkInterface
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.nio.ByteBuffer
 import java.util.concurrent.ExecutorService
@@ -40,35 +44,23 @@ class CameraxFragment : Fragment() {
     private lateinit var callback: OnBackPressedCallback
     lateinit var savedUri:Uri
     lateinit var imageFile:File
+    var userid :String? = "안바뀌었습니다"
+    private var spot :String? = "안바뀌었습니다"
 
-    private class LuminosityAnalyzer(private val listener: LumaListener) : ImageAnalysis.Analyzer {
-
-        private fun ByteBuffer.toByteArray(): ByteArray {
-            rewind()    // Rewind the buffer to zero
-            val data = ByteArray(remaining())
-            get(data)   // Copy the buffer into a byte array
-            return data // Return the byte array
-        }
-
-        override fun analyze(image: ImageProxy) {
-
-            val buffer = image.planes[0].buffer
-            val data = buffer.toByteArray()
-            val pixels = data.map { it.toInt() and 0xFF }
-            val luma = pixels.average()
-
-            listener(luma)
-
-            image.close()
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCameraxBinding.inflate(inflater,container,false)
-        // Inflate the layout for this fragment
+
+        spot = arguments?.getString("spot").toString()
+        userid = arguments?.getString("userid").toString()
+        println("체크")
+        println(spot)
+        println(userid)
+        
+
         startCamera()
         // Set up the listeners for take photo and video capture buttons
         binding.imageCaptureButton.setOnClickListener { takePhoto() }
@@ -85,6 +77,8 @@ class CameraxFragment : Fragment() {
         }
 
         binding.sendPicture.setOnClickListener {
+            changeState()
+            println("에러 가기전")
             send()
         }
 
@@ -93,7 +87,7 @@ class CameraxFragment : Fragment() {
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
         val time = System.currentTimeMillis()
-        val destPath = requireActivity().externalCacheDir.toString() + "/${time}cache_file.jpg"
+        val destPath = requireActivity().externalCacheDir.toString() + "/${time}cache_file.png"
         imageFile = File(destPath)
         imageFile.createNewFile()
         savedUri = Uri.fromFile(imageFile)
@@ -189,10 +183,37 @@ class CameraxFragment : Fragment() {
         cameraExecutor.shutdown()
     }
 
+    fun changeState(){
+        val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:9013/")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val callData = retrofit.create(NetWorkInterface::class.java)
+        val Body = SpotBody()
+        Body.spotId = spot!!
+
+        val call = callData.changestate(Body)
+        println("안임")
+//        println(spot)
+        call.enqueue(object :Callback<String>{
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("에러입니다",t.toString())
+            }
+
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                println("안에러입니다")
+                println(response.body())
+            }
+        })
+
+
+    }
+
     fun send(){
         val body = RequestBody.create(MediaType.parse("image/*"),imageFile)
         val image = MultipartBody.Part.createFormData("image",imageFile.name,body)
-        val call = NetWorkClient.GetNetwork.sendimage(image)
+        val userBody = RequestBody.create(MediaType.parse("text/plain"), userid)
+        val spotBody = RequestBody.create(MediaType.parse("text/plain"), spot)
+
+        val call = NetWorkClient.GetNetwork.sendimage(image,userBody,spotBody)
         call.enqueue(object : Callback<String>{
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Toast.makeText(requireActivity(),"전송을 실패했습니다.",Toast.LENGTH_SHORT).show()
@@ -204,6 +225,28 @@ class CameraxFragment : Fragment() {
 
             }
         })}
+
+    private class LuminosityAnalyzer(private val listener: LumaListener) : ImageAnalysis.Analyzer {
+
+        private fun ByteBuffer.toByteArray(): ByteArray {
+            rewind()    // Rewind the buffer to zero
+            val data = ByteArray(remaining())
+            get(data)   // Copy the buffer into a byte array
+            return data // Return the byte array
+        }
+
+        override fun analyze(image: ImageProxy) {
+
+            val buffer = image.planes[0].buffer
+            val data = buffer.toByteArray()
+            val pixels = data.map { it.toInt() and 0xFF }
+            val luma = pixels.average()
+
+            listener(luma)
+
+            image.close()
+        }
+    }
 
 
 
