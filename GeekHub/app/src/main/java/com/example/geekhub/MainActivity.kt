@@ -29,15 +29,15 @@ import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private var nfcAdapter: NfcAdapter? = null
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private lateinit var tMapView: TMapView
     private lateinit var tMapTapi: TMapTapi
     private lateinit var tMapPointStart: TMapPoint
     private lateinit var tMapPointEnd: TMapPoint
-    var spotTitle = "공백"
-
+    var userid = "미래의유저pid"
+    val bundle = Bundle()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -57,10 +57,16 @@ class MainActivity : AppCompatActivity() {
 
         val MY_PERMISSION_ACCESS_ALL = 100
 
-        if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION)
-        != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED
-                    ){
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
             var permissions = arrayOf(
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION
@@ -68,18 +74,17 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, permissions, MY_PERMISSION_ACCESS_ALL)
 
         } // 퍼미션
-        
 
-        binding.goChatting.setOnClickListener{
-//            moveFragment(ChattingFragment())
-            changeFragment(6)
+
+        binding.goChatting.setOnClickListener {
+            moveFragment(ChattingFragment())
 
         }
         // 채팅버튼
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
-    //nfc
+        //nfc
 
     }
 
@@ -91,10 +96,11 @@ class MainActivity : AppCompatActivity() {
     public override fun onResume() {
         super.onResume()
 
-        val intent : Intent = Intent(this, javaClass).apply {
+        val intent: Intent = Intent(this, javaClass).apply {
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
-        var pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE)
+        var pendingIntent: PendingIntent =
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE)
         val ndef = IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED).apply {
             try {
                 addDataType("*/*")    /* Handles all MIME based dispatches.
@@ -116,7 +122,12 @@ class MainActivity : AppCompatActivity() {
 
         var intentFiltersArray = arrayOf(ndef)
         var techListsArray = arrayOf(arrayOf<String>(NfcF::class.java.name))
-        nfcAdapter!!.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListsArray)
+        nfcAdapter!!.enableForegroundDispatch(
+            this,
+            pendingIntent,
+            intentFiltersArray,
+            techListsArray
+        )
         // nfc
     }
 
@@ -134,8 +145,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun changeFragment(index:Int) {
-        when(index){
+    fun changeFragment(index: Int) {
+        when (index) {
             1 -> {
                 moveFragment(DeliveryFragment())
             }
@@ -159,7 +170,7 @@ class MainActivity : AppCompatActivity() {
             6 -> {
                 supportFragmentManager.commit {
                     setReorderingAllowed(true)
-                add<CameraxFragment>(R.id.camera_view)
+                    add<CameraxFragment>(R.id.camera_view)
                 }
             }
 
@@ -186,17 +197,17 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         val tagFromIntent: Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
-        if (tagFromIntent != null){
+        if (tagFromIntent != null) {
             val data = Ndef.get(tagFromIntent)
             data.connect()
             val message = data.ndefMessage
             val record = message.records
-            for (records in record){
+            for (records in record) {
                 println(records.payload)
                 val convert = String(records.payload, StandardCharsets.UTF_8)
                 println("프린트값")
-                var store = convert.substring(3)
-                changeFragment(6)
+                var spot = convert.substring(3)
+                sendUserId(spot)
 
 
             }
@@ -227,9 +238,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun goNav() {
         tMapTapi = TMapTapi(this)
-        if (tMapTapi.isTmapApplicationInstalled){
+        if (tMapTapi.isTmapApplicationInstalled) {
             tMapTapi.invokeRoute("테스트 목적지", 126.90303593521712F, 35.17764936F)
-        } else{
+        } else {
             println("설치 안됨")
             var uri = Uri.parse(tMapTapi.tMapDownUrl[0])
             var intent = Intent(Intent.ACTION_VIEW, uri)
@@ -238,8 +249,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun sendData(fragment: Fragment, title: String){
-        val bundle = Bundle()
+    fun sendData(fragment: Fragment, title: String) {
+
         bundle.putString("title", title)
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
@@ -248,6 +259,16 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
+    private fun sendUserId(spot: String) {
+        val fragment = CameraxFragment()
+        Log.d("스트링",spot)
+        bundle.putString("spot", spot)
+        bundle.putString("userid",userid)
+        fragment.arguments = bundle
+        supportFragmentManager.beginTransaction().add(R.id.camera_view,fragment).commit()
+
+
+    }
 }
 
 
