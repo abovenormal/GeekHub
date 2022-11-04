@@ -1,21 +1,19 @@
 package com.example.geekhub
 
 import android.app.PendingIntent
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
-import android.nfc.NdefMessage
-import android.nfc.NdefRecord
 import android.nfc.NfcAdapter
 import android.nfc.Tag
-import android.nfc.tech.MifareUltralight
 import android.nfc.tech.Ndef
 import android.nfc.tech.NfcF
 import android.os.Bundle
-import android.provider.MediaStore
-import androidx.activity.viewModels
+import android.util.Log
+import android.widget.Button
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -25,25 +23,26 @@ import androidx.fragment.app.commit
 import com.example.geekhub.databinding.ActivityMainBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import java.io.File
-import java.io.FileOutputStream
-import java.nio.charset.Charset
+import com.skt.Tmap.*
 import java.nio.charset.StandardCharsets
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.*
-import kotlin.reflect.typeOf
+import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     private var nfcAdapter: NfcAdapter? = null
     private var fusedLocationClient: FusedLocationProviderClient? = null
+    private lateinit var tMapView: TMapView
+    private lateinit var tMapTapi: TMapTapi
+    private lateinit var tMapPointStart: TMapPoint
+    private lateinit var tMapPointEnd: TMapPoint
+    var spotTitle = "공백"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initialize()
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -80,12 +79,7 @@ class MainActivity : AppCompatActivity() {
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
-
-
     //nfc
-
-
-
 
     }
 
@@ -108,6 +102,16 @@ class MainActivity : AppCompatActivity() {
             } catch (e: IntentFilter.MalformedMimeTypeException) {
                 throw RuntimeException("fail", e)
             }
+
+        }
+
+        val rootBtn = findViewById<Button>(R.id.linebutton)
+
+        binding.navButton.setOnClickListener {
+            goNav()
+        }
+        rootBtn.setOnClickListener {
+            findPath()
         }
 
         var intentFiltersArray = arrayOf(ndef)
@@ -121,9 +125,13 @@ class MainActivity : AppCompatActivity() {
 //        //do something with tagFromIntent
 //    }
 
-
-
-
+    private fun initialize() {
+        tMapView = TMapView(this)
+        tMapView.setSKTMapApiKey("l7xx9f33576ed47042d3ac571c8a70c73e31")
+        val linearLayoutTmap: LinearLayout =
+            findViewById(R.id.linearLayoutTmap) as LinearLayout
+        linearLayoutTmap.addView(tMapView)
+    }
 
 
     fun changeFragment(index:Int) {
@@ -197,6 +205,48 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun findPath() {
+        tMapPointStart = TMapPoint(35.178013, 126.90464)
+        tMapPointEnd = TMapPoint(35.17764128, 126.9042024)
+        thread {
+            try {
+                var tMapPolyLine: TMapPolyLine = TMapData().findPathDataWithType(
+                    TMapData.TMapPathType.CAR_PATH,
+                    tMapPointStart,
+                    tMapPointEnd
+                )
+                println(tMapPolyLine.lineColor)
+                tMapPolyLine.lineColor = Color.RED
+                tMapPolyLine.setLineWidth(2F)
+                tMapView.addTMapPolyLine("Line1", tMapPolyLine)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun goNav() {
+        tMapTapi = TMapTapi(this)
+        if (tMapTapi.isTmapApplicationInstalled){
+            tMapTapi.invokeRoute("테스트 목적지", 126.90303593521712F, 35.17764936F)
+        } else{
+            println("설치 안됨")
+            var uri = Uri.parse(tMapTapi.tMapDownUrl[0])
+            var intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
+    }
+
+
+    fun sendData(fragment: Fragment, title: String){
+        val bundle = Bundle()
+        bundle.putString("title", title)
+        fragment.arguments = bundle
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_container_view, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
 
 }
 

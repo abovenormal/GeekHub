@@ -15,8 +15,7 @@ import com.example.geekhub.databinding.FragmentNfcBinding
 
 class NfcFragment : Fragment() {
     lateinit var binding : FragmentNfcBinding
-    private lateinit var nfcPendingIntent: PendingIntent
-    private lateinit var nfcAdapter: NfcAdapter
+    var title:String? = "s"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,7 +24,15 @@ class NfcFragment : Fragment() {
         binding = FragmentNfcBinding.inflate(inflater,container,false)
         // Inflate the layout for this fragment
 
-        val intent = Intent(context,requireActivity().javaClass)
+
+        arguments?.let{
+            println("체크")
+            title = it.getString("title")
+            println(title)
+            binding.nfcTitle.text = title
+        }
+
+
 
 
 

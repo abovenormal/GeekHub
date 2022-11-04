@@ -11,8 +11,6 @@ interface NetWorkInterface {
     fun sendimage(
         @Part image : MultipartBody.Part
     ):Call<String>
-
     @GET("spot/work/1")
     fun getlist():Call<DeliveryList>
-
 }
