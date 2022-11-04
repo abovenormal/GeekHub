@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintWidth_percent="0.67"
-        android:text="덮덮밥광주용봉점dddddddd"
+        android:text=""
         android:paddingHorizontal="15dp"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -40,7 +40,7 @@
             android:id="@+id/delivery_list_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="15분후  "
+            android:text=""
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -48,7 +48,7 @@
             android:id="@+id/delivery_list_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10개배달"
+            android:text=""
             android:textSize="20sp"
             android:textStyle="bold" />
 
