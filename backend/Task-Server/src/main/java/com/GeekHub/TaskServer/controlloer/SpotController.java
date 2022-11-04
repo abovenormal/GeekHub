@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -76,6 +77,17 @@ public class SpotController {
         List<WorkResponseDto> deleveryList = SpotServie.work(driverIdx, SpotCategory.DESTINATION);
         workList.put("del", deleveryList);
         return ResponseEntity.status(HttpStatus.OK).body(workList);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> workUpdate(@RequestBody Map<String, Long> spotId) {
+        try {
+            SpotServie.workUpdate(spotId.get("spotId"));
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("업무 완료");
     }
 
 }
