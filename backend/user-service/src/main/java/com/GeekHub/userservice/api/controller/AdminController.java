@@ -54,7 +54,7 @@ public class AdminController {
         try {
             Boolean validation = adminService.validUserId(userId);
 
-            if(validation==true){
+            if(validation){
                 return new ResponseEntity<>(validation,HttpStatus.OK);
             }
             else{
