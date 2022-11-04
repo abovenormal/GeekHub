@@ -29,16 +29,19 @@ public class S3Uploader {
 
     public String uploadFile(UploadFileReq uploadFileReq) throws IOException {
         log.info("Start uploading picture");
-        String originalName = LocalDate.now() + "/" + uploadFileReq.getUserId() + "/" + createFileName(uploadFileReq.getImage().getOriginalFilename());
-        long size = uploadFileReq.getImage().getSize(); // 파일 크기
+        String currentUserId = uploadFileReq.getUserId();
+        MultipartFile curImage = uploadFileReq.getImage();
+
+        String originalName = LocalDate.now() + "/" + currentUserId + "/" + createFileName(curImage.getOriginalFilename());
+        long size = curImage.getSize(); // 파일 크기
 
         ObjectMetadata objectMetaData = new ObjectMetadata();
-        objectMetaData.setContentType(uploadFileReq.getImage().getContentType());
+        objectMetaData.setContentType(curImage.getContentType());
         objectMetaData.setContentLength(size);
 
         // S3에 업로드
         amazonS3Client.putObject(
-                new PutObjectRequest(bucket, originalName, uploadFileReq.getImage().getInputStream(), objectMetaData)
+                new PutObjectRequest(bucket, originalName, curImage.getInputStream(), objectMetaData)
                         .withCannedAcl(CannedAccessControlList.PublicRead)
         );
 
