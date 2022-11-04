@@ -1,3 +1,4 @@
 FROM openjdk:11-jdk
-WORKDIR /var/jenkins_home/workspace/Task/backend/Task-Server
-RUN ./gradlew build
+ARG JAR_FILE_PATH=./build/libs/Task-Server-0.0.1-SNAPSHOT.jar
+COPY ${JAR_FILE_PATH} app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
