@@ -2,6 +2,7 @@ package com.GeekHub.AuthServer.config;
 
 import com.GeekHub.AuthServer.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@SpringBootConfiguration
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
