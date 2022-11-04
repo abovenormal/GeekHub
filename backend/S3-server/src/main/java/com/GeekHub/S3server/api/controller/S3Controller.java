@@ -20,7 +20,7 @@ public class S3Controller {
     private final S3Uploader s3Uploader;
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadFile(@RequestBody UploadFileReq uploadFileReq) throws IOException {
+    public ResponseEntity<?> uploadFile(UploadFileReq uploadFileReq) throws IOException {
 
         log.info("Start uploading....");
         String url = s3Uploader.uploadFile(uploadFileReq);
