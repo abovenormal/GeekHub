@@ -1,5 +1,5 @@
 
 FROM openjdk:11-jdk
-ARG JAR_FILE_PATH=./build/libs/APIGateway.jar
-COPY ${JAR_FILE_PATH} app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ARG JAR_FILE_PATH=./build/libs/ApiGateway.jar
+COPY ${JAR_FILE_PATH} APIGateway.jar
+ENTRYPOINT ["java", "-jar", "APIGatewat.jar"]
