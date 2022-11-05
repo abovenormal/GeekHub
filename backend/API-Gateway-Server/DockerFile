@@ -1,9 +1,0 @@
-
-FROM openjdk:11-jdk
-
-
-ARG JAR_FILE_PATH=./build/libs/ApiGateway.jar
-
-COPY ${JAR_FILE_PATH} ApiGateway.jar
-// 실행시킬 파일의 유형과 명칭을 지정하는 명령어 
-ENTRYPOINT ["java", "-jar", "ApiGateway.jar"]
