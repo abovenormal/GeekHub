@@ -39,6 +39,9 @@ const Signup = () => {
     console.log(checkPassword);
   }, [passwordConfirm]);
 
+  useEffect(() => {
+    setCheckId(false);
+  },[info.userId])
   const [schoolList, setSchoolList] = useState([]);
 
   const onChange = (e) => {
@@ -112,7 +115,7 @@ const Signup = () => {
   return (
     <div className="signup-container">
       <form className="signup-form" method="post" onSubmit={signupSubmit}>
-        <h4 className="signup-title">SIGN UP</h4>
+        <h2 className="signup-title">SIGN UP</h2>
         <TextField
           required
           id="name"
@@ -128,6 +131,7 @@ const Signup = () => {
             // },
             m: 1,
             minWidth: 310,
+            width: "80%"
           }}
         />
         <TextField
@@ -138,7 +142,7 @@ const Signup = () => {
           variant="standard"
           value={info.phone}
           onChange={onChange}
-          sx={{ m: 1, minWidth: 310 }}
+          sx={{ m: 1, minWidth: 310, width: "80%" }}
         />
         <div>
           <FormControl required variant="standard" sx={{ m: 1, minWidth: 100 }}>
@@ -157,7 +161,7 @@ const Signup = () => {
               <MenuItem value={"수원"}>수원</MenuItem>
             </Select>
           </FormControl>
-          <FormControl required variant="standard" sx={{ m: 1, minWidth: 200 }}>
+          <FormControl required variant="standard" sx={{ m: 1, minWidth: 280 }}>
             <InputLabel id="demo-simple-select-standard-label">
               School
             </InputLabel>
@@ -186,7 +190,7 @@ const Signup = () => {
             value={info.userId}
             variant="standard"
             onChange={onChange}
-            sx={{ m: 1, minWidth: 240 }}
+            sx={{ m: 1, minWidth: 330 }}
           />
           {checkId ? (
             <div className="signup-check-confirm">
@@ -213,7 +217,7 @@ const Signup = () => {
           variant="standard"
           value={info.password}
           onChange={onChange}
-          sx={{ m: 1, minWidth: 310 }}
+          sx={{ m: 1, minWidth: 310, width: "80%" }}
         />
         <TextField
           required
@@ -226,7 +230,7 @@ const Signup = () => {
           onChange={(e) => {
             setPasswordConfirm(e.target.value);
           }}
-          sx={{ m: 1, minWidth: 310 }}
+          sx={{ m: 1, minWidth: 310, width: "80%" }}
         />
         <button className="signup-button">DONE</button>
       </form>

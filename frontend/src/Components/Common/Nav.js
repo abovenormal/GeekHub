@@ -1,19 +1,34 @@
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import "./css/Nav.css";
-
+import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
 import ChatIcon from "@mui/icons-material/Chat";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import Logout from "@mui/icons-material/Logout";
 const Nav = () => {
   const [nowActive, setNowActive] = useState("overview");
+  const [expanded, setExpanded] = useState(false);
   return (
-    <nav className="navigation">
+    // <nav className={`navigation ${expanded && "expanded"}`}>
+    <nav
+      className={`sidebar ${expanded && "expanded"}`}
+    >
       <div>
+        <Link
+          className={"nav-menu"}
+          onClick={() => {
+            setExpanded(!expanded);
+          }}
+        >
+          <MenuIcon className="nav-icon" />
+          <div
+            className={`description ${expanded && "show-description"}`}
+          >GeekHub</div>
+        </Link>
         <Link
           className={"nav-link" + (nowActive === "overview" ? " active" : "")}
           // className={"nav-link"}
@@ -23,7 +38,9 @@ const Nav = () => {
           }}
         >
           <HomeIcon className="nav-icon" />
-          Overview
+          <p className={`description ${expanded && "show-description"}`}>
+            Overview
+          </p>
         </Link>
         <Link
           className={"nav-link" + (nowActive === "chat" ? " active" : "")}
@@ -33,7 +50,9 @@ const Nav = () => {
           to="chat"
         >
           <ChatIcon className="nav-icon"></ChatIcon>
-          채팅
+          <p className={`description ${expanded && "show-description"}`}>
+            채팅
+          </p>
         </Link>
         <Link
           className={
@@ -45,7 +64,9 @@ const Nav = () => {
           to="driverlocation"
         >
           <LocalShippingIcon className="nav-icon"></LocalShippingIcon>
-          배달 현황 관리
+          <p className={`description ${expanded && "show-description"}`}>
+            배달 현황 관리
+          </p>
         </Link>
         <Link
           className={"nav-link" + (nowActive === "log" ? " active" : "")}
@@ -55,23 +76,36 @@ const Nav = () => {
           to="log"
         >
           <SummarizeIcon className="nav-icon"></SummarizeIcon>
-          로그 확인
+          <p className={`description ${expanded && "show-description"}`}>
+            로그 확인
+          </p>
         </Link>
-        <Link className={"nav-link" + (nowActive === "signup" ? " active" : "")}
+        <Link
+          className={"nav-link" + (nowActive === "signup" ? " active" : "")}
           onClick={() => {
             setNowActive("signup");
-          }} to="signup">
+          }}
+          to="signup"
+        >
           <PersonAddAltIcon className="nav-icon"></PersonAddAltIcon>
-          신규 기사 생성
+          <p className={`description ${expanded && "show-description"}`}>
+            신규 기사 생성
+          </p>
         </Link>
       </div>
       <div>
-      <Link className="logout" onClick={()=>{
-        window.localStorage.setItem("accesstoken", "");
-        Navigate('/');
-      }}>
-        <LogoutIcon className="nav-icon"></LogoutIcon> 로그아웃
-      </Link>
+        <Link
+          className="logout"
+          onClick={() => {
+            window.localStorage.setItem("accesstoken", "");
+            Navigate("/");
+          }}
+        >
+          <LogoutIcon className="nav-icon"></LogoutIcon>
+          <p className={`description ${expanded && "show-description"}`}>
+            로그아웃
+          </p>
+        </Link>
       </div>
     </nav>
   );

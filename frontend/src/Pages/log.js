@@ -130,7 +130,7 @@ const Log = () => {
     console.log(selected);
   }, [selected]);
   return (
-    <div className="container">
+    <div className="log-container">
       <div className="picker">
         <Dropdown selected={selected} setSelected={setSelected} />
         <Datepicker selected={selected} setSelected={setSelected} />

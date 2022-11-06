@@ -7,11 +7,18 @@ import { useNavigate } from "react-router-dom";
 import { apiInstance } from "../api";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useMediaQuery } from "react-responsive"
 import "./css/Login.css";
 const Login = () => {
   const api = apiInstance();
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
+  const isPc = useMediaQuery({
+    query : "(min-width:1024px)"
+  });
+  const isMobile = useMediaQuery({
+    query : "(max-width:767px)"
+  });
 
   const [loginInfo, setLoginInfo] = useState({ userId: "", password: "" });
   const onChange = (e) => {
@@ -49,45 +56,85 @@ const Login = () => {
     }
   }
   return (
-    <div className="login-container">
-      <div className="login-left">
-        <div className="logo">
-          <img className="logo-img" src={logo}></img>
-          <h3 className="logo-name">GeekHub</h3>
+    <div className="login-div">
+      {isMobile ? 
+      <div className="login-container-mobile">
+        <form className="login-form-mobile" method="post" onSubmit={loginSubmit}>
+          {/* <div className="logo">
+            <img className="logo-img-mobile" src={logo}></img>
+          </div> */}
+          <h4>Welcome to GeekHub! 👋🏻</h4>
+          <TextField
+            className="text-field"
+            id="userId"
+            placeholder="ID"
+            onChange={onChange}
+            sx={{
+              " .MuiOutlinedInput-root": {
+                color: "white",
+                border: "1px solid rgba( 255, 255, 255, 0.2 )",
+                marginBottom: "1rem",
+              },
+            }}
+          />
+          <TextField
+            className="text-field"
+            id="password"
+            placeholder="Password"
+            onChange={onChange}
+            type="password"
+            sx={{
+              " .MuiOutlinedInput-root": {
+                color: "white",
+                border: "1px solid rgba( 255, 255, 255, 0.2 )",
+                marginBottom: "1rem",
+              },
+            }}
+          />
+          <button className="login-button">LOGIN</button>
+        </form>
+      </div> : 
+      <div className="login-container">
+        <div className="login-left">
+          <div className="logo">
+            <img className="logo-img" src={logo}></img>
+            <h3 className="logo-name">GeekHub</h3>
+          </div>
         </div>
-      </div>
-      <form className="login-form" method="post" onSubmit={loginSubmit}>
-        <h4>Welcome to GeekHub! 👋🏻</h4>
-        <TextField
-          className="text-field"
-          id="userId"
-          placeholder="ID"
-          onChange={onChange}
-          sx={{
-            " .MuiOutlinedInput-root": {
-              color: "white",
-              border: "1px solid rgba( 255, 255, 255, 0.2 )",
-              marginBottom: "1rem",
-            },
-          }}
-        />
-        <TextField
-          className="text-field"
-          id="password"
-          placeholder="Password"
-          onChange={onChange}
-          type="password"
-          sx={{
-            " .MuiOutlinedInput-root": {
-              color: "white",
-              border: "1px solid rgba( 255, 255, 255, 0.2 )",
-              marginBottom: "1rem",
-            },
-          }}
-        />
-        <button className="login-button">LOGIN</button>
-      </form>
+        <form className="login-form" method="post" onSubmit={loginSubmit}>
+          <h4>Welcome to GeekHub! 👋🏻</h4>
+          <TextField
+            className="text-field"
+            id="userId"
+            placeholder="ID"
+            onChange={onChange}
+            sx={{
+              " .MuiOutlinedInput-root": {
+                color: "white",
+                border: "1px solid rgba( 255, 255, 255, 0.2 )",
+                marginBottom: "1rem",
+              },
+            }}
+          />
+          <TextField
+            className="text-field"
+            id="password"
+            placeholder="Password"
+            onChange={onChange}
+            type="password"
+            sx={{
+              " .MuiOutlinedInput-root": {
+                color: "white",
+                border: "1px solid rgba( 255, 255, 255, 0.2 )",
+                marginBottom: "1rem",
+              },
+            }}
+          />
+          <button className="login-button">LOGIN</button>
+        </form>
+      </div>}
     </div>
+    
   );
 };
 export default Login;
