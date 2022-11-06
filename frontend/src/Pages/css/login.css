@@ -1,20 +1,32 @@
+.login-div {
+  width: 100%;
+  padding: 1rem;
+}
 .login-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
+  /* width: 100%; */
+  height: 100%;
 }
-
+.login-container-mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
 .login-left {
-  width: 200vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: #0b0f19;
-  padding: 1rem;
+  /* background-color: #fff; */
 }
 
 .logo {
   display: flex;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
 }
 .logo-img {
   max-width: 70px;
@@ -24,19 +36,42 @@
   margin: 0 10px;
 }
 
+.logo-img-mobile {
+  max-width: 200px;
+  max-height: 200px;
+  width: auto;
+  height: auto;
+  margin: 0 10px;
+}
+
 .logo-name {
   color: white;
 }
+
 .login-form {
+  /* position: absolute; */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 3rem;
-  width: 70vw;
-  height: 100vh;
+  width: 100%;
+  max-width: 360px;
+  height: 100%;
+  min-height: 100vh;
   /* color: #d1d5db; */
   color: white;
   background-color: #111827;
+  padding: 0 3rem;
+}
+.login-form-mobile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 70%;
+  /* max-width: 360px; */
+  height: 100%;
+  /* color: #d1d5db; */
+  color: white;
+  /* background-color: #111827; */
 }
 
 .login-button {

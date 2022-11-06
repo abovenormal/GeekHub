@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import PrivateRoute from './Components/Login/PrivateRoute';
 import PublicRoute from './Components/Login/PublicRoute';
 import Nav from "./Components/Common/Nav"
+// import Sidebar from "./Components/Common/Sidebar"
 import Dashboard from "./Pages/Dashboard";
 import Chat from "./Pages/Chat";
 import Driverlocation from "./Pages/Driverlocation";
@@ -15,13 +16,13 @@ import './App.css';
 
 
 function App() {
-  const token = localStorage.getItem("accesstoken");
-  const isLogin = !!token
+  // const token = localStorage.getItem("accesstoken");
+  // const isLogin = !!token
+  const isLogin = true
   return (
-    <div className="App">
-      { isLogin ? <Nav /> : <></>}
-      <header className="App-header">
-          <Routes>
+    <div className="App-container">
+        { isLogin ? <Nav /> : <></>}
+          {/* <Routes>
             <Route path="/" element={<PrivateRoute authenticated={token} component={<Dashboard/>} />}/>
             <Route path="/chat" element={<PrivateRoute component={<Chat/>} authenticated={token}/>}/>
             <Route path="/driverlocation" element={<PrivateRoute component={<Driverlocation/>} authenticated={token}/>}/>
@@ -29,8 +30,8 @@ function App() {
             <Route path="/user" element={<PrivateRoute component={<User/>} authenticated={token}/>}/>
             <Route path="/signup" element={<PrivateRoute component={<Signup/>} authenticated={token}/>}/>
             <Route path="/log" element={<PrivateRoute component={<Log/>} authenticated={token}/>}/>
-          </Routes>
-          {/* <Routes>
+          </Routes> */}
+          <Routes>
             <Route path="/" element={<Dashboard />}/>
             <Route path="/chat" element={<Chat />}/>
             <Route path="/driverlocation" element={<Driverlocation/>}/>
@@ -39,9 +40,8 @@ function App() {
             <Route path="/user" element={<User />}/>
             <Route path="/signup" element={<Signup />}/>
             <Route path="*" element={<PageNotFound />} />
-          </Routes> */}
-      </header>
-    </div>
+          </Routes>
+      </div>
   );
 }
 

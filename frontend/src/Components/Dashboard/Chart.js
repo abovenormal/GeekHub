@@ -5,11 +5,6 @@ import "./css/Chart.css";
 const Chart = () => {
   return (
     <div className="chart">
-      <img
-        className="pie-chart"
-        src={pie}
-        alt="piechart"
-      />
     </div>
   );
 };

@@ -9,7 +9,7 @@ export async function duplicateId(userId, Toast, setCheckId) {
       icon: "question",
       title: "아이디를 입력하세요.",
       timer: 1000,
-      position: 'top-center',
+      position: 'center',
     });
     return
   };
