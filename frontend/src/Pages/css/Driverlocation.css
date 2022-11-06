@@ -1,11 +1,11 @@
-.container {
+.driver-location-container {
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   /* align-items: center; */
-  background-color: wheat;
-  width: 70%;
+  background-color: #d8ffe7;
+  width: 100%;
   height: 100vh;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .picker {

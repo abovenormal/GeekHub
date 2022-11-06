@@ -10,7 +10,7 @@ import ShortcutUser from "../Components/Dashboard/ShortcutUser";
 import "./css/Dashboard.css"
 const Dashboard = () => {
   return (
-    <div>
+    <div className="dashboard-container">
       <Chart />
       <div className="shorcut-block">
       {/* <Link
