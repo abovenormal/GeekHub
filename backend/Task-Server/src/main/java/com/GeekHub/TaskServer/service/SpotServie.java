@@ -2,12 +2,14 @@ package com.GeekHub.TaskServer.service;
 
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
+import com.GeekHub.TaskServer.dto.response.NextSpotDto;
 import com.GeekHub.TaskServer.dto.response.SpotLogDto;
 import com.GeekHub.TaskServer.dto.response.SpotResponseDto;
 import com.GeekHub.TaskServer.dto.response.WorkResponseDto;
 import com.GeekHub.TaskServer.entity.SpotCategory;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SpotServie {
     List<SpotResponseDto> getSpotAll() throws Exception;
@@ -20,4 +22,6 @@ public interface SpotServie {
     List<WorkResponseDto> work(long driverIdx, SpotCategory spotCategory) throws Exception;
 
     void workUpdate(Long spotIdx) throws Exception;
+
+    Optional<NextSpotDto> nextWork(Long driverIdx) throws Exception;
 }

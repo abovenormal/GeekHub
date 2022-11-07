@@ -4,6 +4,7 @@ import com.GeekHub.TaskServer.dao.SpotDao;
 import com.GeekHub.TaskServer.dao.UserDao;
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
+import com.GeekHub.TaskServer.dto.response.NextSpotDto;
 import com.GeekHub.TaskServer.dto.response.SpotLogDto;
 import com.GeekHub.TaskServer.dto.response.SpotResponseDto;
 import com.GeekHub.TaskServer.dto.response.WorkResponseDto;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -142,6 +144,12 @@ public class SpotServieImpl implements SpotServie{
             result.add(spotLogDto);
         }
 
+        return result;
+    }
+
+    @Override
+    public Optional<NextSpotDto> nextWork(Long driverIdx) throws Exception {
+        Optional<NextSpotDto> result = spotDao.nextWork(driverIdx);
         return result;
     }
 //    @Override

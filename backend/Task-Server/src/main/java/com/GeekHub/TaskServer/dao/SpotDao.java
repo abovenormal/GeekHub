@@ -1,11 +1,13 @@
 package com.GeekHub.TaskServer.dao;
 
+import com.GeekHub.TaskServer.dto.response.NextSpotDto;
 import com.GeekHub.TaskServer.dto.response.SpotResponseDto;
 import com.GeekHub.TaskServer.dto.response.WorkResponseDto;
 import com.GeekHub.TaskServer.entity.Spot;
 import com.GeekHub.TaskServer.entity.SpotCategory;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SpotDao {
     List<Spot> getSpotAll() throws Exception;
@@ -16,4 +18,6 @@ public interface SpotDao {
     List<WorkResponseDto> work(long driverIdx, SpotCategory spotCategory) throws Exception;
     List<Spot> spotList(long userIdx,String date) throws Exception;
     void workUpdate(Long spotIdx) throws Exception;
+
+    Optional<NextSpotDto> nextWork(Long driverIdx) throws Exception;
 }

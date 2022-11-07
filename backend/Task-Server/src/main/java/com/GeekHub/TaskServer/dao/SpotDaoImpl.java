@@ -1,6 +1,6 @@
 package com.GeekHub.TaskServer.dao;
 
-import com.GeekHub.TaskServer.dto.response.SpotResponseDto;
+import com.GeekHub.TaskServer.dto.response.NextSpotDto;
 import com.GeekHub.TaskServer.dto.response.WorkResponseDto;
 import com.GeekHub.TaskServer.entity.Spot;
 import com.GeekHub.TaskServer.entity.SpotCategory;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.StringTokenizer;
 
 @Component
@@ -126,6 +127,26 @@ public class SpotDaoImpl implements SpotDao {
         Spot spot = spotRepository.findSpotBySpotIdx(spotIdx).orElse(null);
         spot.setStatus(2);
 //        spotRepository.save(spot);
+    }
+
+    @Override
+    public Optional<NextSpotDto> nextWork(Long driverIdx) throws Exception {
+        List<Spot> result = spotRepository.findSpotByUserIdx(driverIdx).orElse(null);
+        NextSpotDto nextSpotDto = new NextSpotDto();
+        try {
+            for (Spot spot : result) {
+                if (spot.getStatus() == 1) {
+                    nextSpotDto.setSpotName(spot.getSpotName());
+                    nextSpotDto.setLat(spot.getLat());
+                    nextSpotDto.setLon(spot.getLon());
+                    return Optional.of(nextSpotDto);
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            throw new Exception();
+        }
+
     }
 
 }

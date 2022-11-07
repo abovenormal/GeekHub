@@ -2,6 +2,7 @@ package com.GeekHub.TaskServer.controlloer;
 
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
+import com.GeekHub.TaskServer.dto.response.NextSpotDto;
 import com.GeekHub.TaskServer.dto.response.SpotLogDto;
 import com.GeekHub.TaskServer.dto.response.SpotResponseDto;
 import com.GeekHub.TaskServer.dto.response.WorkResponseDto;
@@ -92,6 +93,16 @@ public class SpotController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body("업무 완료");
+    }
+
+    @GetMapping("/nextInfo/{driverIdx}")
+    public ResponseEntity<NextSpotDto> nextWork(@PathVariable("driverIdx") long driverIdx) {
+        try {
+            NextSpotDto result = SpotServie.nextWork(driverIdx).orElse(null);
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
 }
