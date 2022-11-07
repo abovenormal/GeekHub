@@ -274,6 +274,7 @@ class MainActivity : AppCompatActivity() {
     fun sendData(fragment: Fragment, title: String) {
 
         bundle.putString("title", title)
+//        class
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_container_view, fragment)
@@ -281,7 +282,7 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun sendUserId(spot: String) {
+    fun sendUserId(spot: String) {
         val fragment = CameraxFragment()
         Log.d("스트링",spot)
         bundle.putString("spot", spot)
@@ -291,6 +292,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
 }
 
 
