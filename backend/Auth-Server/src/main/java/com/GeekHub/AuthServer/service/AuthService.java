@@ -24,7 +24,7 @@ public class AuthService {
     public void login(Token tokenDto){
 
         RefreshToken refreshToken = RefreshToken.builder().
-                keyName(tokenDto.getKey()).
+                keyName(String.valueOf(tokenDto.getKey())).
                 refreshToken(tokenDto.getRefreshToken()).
                 build();
         String loginUserName = refreshToken.getKeyName();

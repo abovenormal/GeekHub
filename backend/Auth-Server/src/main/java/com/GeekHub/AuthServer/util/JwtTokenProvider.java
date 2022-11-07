@@ -23,7 +23,7 @@ public class JwtTokenProvider {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
-    public Token createAccessToken(String userId, List<String> roles, String userName) {
+    public Token createAccessToken(String userId, List<String> roles, String userName,long userIdx) {
 
         Claims claims = Jwts.claims().setSubject(userId); // JWT payload 에 저장되는 정보단위
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
@@ -48,7 +48,7 @@ public class JwtTokenProvider {
                 // signature 에 들어갈 secret값 세팅
                 .compact();
 
-        return Token.builder().accessToken(accessToken).refreshToken(refreshToken).key(userId).build();
+        return Token.builder().accessToken(accessToken).refreshToken(refreshToken).key(userIdx).build();
     }
 
 
