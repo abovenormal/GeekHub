@@ -18,30 +18,37 @@ import java.time.LocalDateTime;
 public class Spot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="spotIdx")
+    @Column
     private long spotIdx;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="spotcategory")
+    @Column
     private SpotCategory spotCategory;
 
-    @Column(name="spotname")
+    @Column
     private String spotName;
 
-    @Column(name="lat")
+    @Column
     private double lat;
 
-    @Column(name="lon")
+    @Column
     private double lon;
 
-    @Column(name = "expected_time")
+    @Column
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
-    private LocalDateTime expected_time;
+    private LocalDateTime expectedTime;
 
-    @Column(name="count")
+    @Column
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
+    private LocalDateTime arrivedTime;
+
+    @Column
+    private String imageUrl;
+
+    @Column
     private int count;
 
-    @Column(name="status")
+    @Column
     private int status;
 
     private long userIdx;

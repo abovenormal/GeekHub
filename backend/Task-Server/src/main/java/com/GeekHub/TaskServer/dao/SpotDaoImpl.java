@@ -7,6 +7,10 @@ import com.GeekHub.TaskServer.entity.SpotCategory;
 import com.GeekHub.TaskServer.entity.User;
 import com.GeekHub.TaskServer.repository.SpotRepository;
 import com.GeekHub.TaskServer.repository.UserRepository;
+import com.GeekHub.TaskServer.service.SpotServieImpl;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +20,10 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 @Component
+@Slf4j
 public class SpotDaoImpl implements SpotDao {
     private final SpotRepository spotRepository;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpotServieImpl.class);
     @Autowired
     private final UserRepository userRepository;
     @Autowired
@@ -70,12 +75,12 @@ public class SpotDaoImpl implements SpotDao {
             String time = "";
             if (searchList != null) {
                 for (Spot spot : searchList) {
-                    int hour = spot.getExpected_time().getHour();
-                    int minute = spot.getExpected_time().getMinute();
+                    int hour = spot.getExpectedTime().getHour();
+                    int minute = spot.getExpectedTime().getMinute();
                     time = hour + "시" + minute + "분";
                     WorkResponseDto workResponseDto = new WorkResponseDto();
                     workResponseDto.setSpotName(spot.getSpotName());
-                    workResponseDto.setExpected_time(time);
+                    workResponseDto.setExpectedTime(time);
                     workResponseDto.setCount(spot.getCount());
                     workResponseDto.setStatus(spot.getStatus());
                     result.add(workResponseDto);
@@ -90,6 +95,7 @@ public class SpotDaoImpl implements SpotDao {
     public List<Spot> spotList(long userIdx,String date){
         List<Spot> result=new ArrayList<>();
         List<Spot> list = spotRepository.findSpotByUserIdx(userIdx).orElse(null);
+
         StringTokenizer st = new StringTokenizer(date,"-");
         String year = st.nextToken();
         String month = st.nextToken();
@@ -106,8 +112,10 @@ public class SpotDaoImpl implements SpotDao {
         }else {
             sb.append(day);
         }
+        LOGGER.info(String.valueOf(list.size()));
         for(Spot spot:list){
-            if(spot.getExpected_time().toString().substring(0,10).equals(sb.toString())){
+            LOGGER.info(spot.getExpectedTime().toString().substring(0,10));
+            if(spot.getExpectedTime().toString().substring(0,10).equals(sb.toString())){
                 result.add(spot);
             }
         }

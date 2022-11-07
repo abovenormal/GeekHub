@@ -67,7 +67,7 @@ public class SpotServieImpl implements SpotServie{
                     .spotName(spotRequestDto.getSpotName())
                     .lat(spotRequestDto.getLat())
                     .lon(spotRequestDto.getLon())
-                    .expected_time(spotRequestDto.getExpected_time())
+                    .expectedTime(spotRequestDto.getExpectedTime())
                     .status(spotRequestDto.getStatus())
                     .count(spotRequestDto.getCount())
                     .userIdx(spotUser.getUserIdx())

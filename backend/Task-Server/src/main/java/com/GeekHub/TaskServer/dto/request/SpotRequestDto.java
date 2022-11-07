@@ -14,7 +14,9 @@ public class SpotRequestDto {
     private String spotName;
     private double lat;
     private double lon;
-    private LocalDateTime expected_time;
+    private LocalDateTime expectedTime;
+    private LocalDateTime arrivedTime;
+    private String imageUrl;
     private int status;
     private int count;
 

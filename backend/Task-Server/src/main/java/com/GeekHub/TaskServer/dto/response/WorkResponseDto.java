@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class WorkResponseDto {
     private String spotIndex;
     private String spotName;
-    private String expected_time;
+    private String expectedTime;
     private int count;
     private int status;
 }
