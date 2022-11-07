@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 public class WorkResponseDto {
+    private String spotIndex;
     private String spotName;
     private String expected_time;
     private int count;

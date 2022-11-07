@@ -1,6 +1,5 @@
 package com.GeekHub.TaskServer.dao;
 
-import com.GeekHub.TaskServer.dto.response.SpotResponseDto;
 import com.GeekHub.TaskServer.dto.response.WorkResponseDto;
 import com.GeekHub.TaskServer.entity.Spot;
 import com.GeekHub.TaskServer.entity.SpotCategory;
