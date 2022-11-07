@@ -15,8 +15,11 @@ interface NetWorkInterface {
         @Part("userId") userId : RequestBody,
         @Part("spotId") spotId : RequestBody
     ):Call<String>
-    @GET("spot/work/1")
-    fun getlist():Call<DeliveryList>
+
+    @GET("spot/work/{driverIdx}")
+    fun getlist(
+        @Path("driverIdx") driverIdx : Int
+    ):Call<DeliveryList>
 
     @PUT("spot/update")
     fun changestate(
