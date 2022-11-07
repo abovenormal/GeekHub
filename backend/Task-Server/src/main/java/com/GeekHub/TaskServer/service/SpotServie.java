@@ -18,4 +18,6 @@ public interface SpotServie {
     List<SpotLogDto> log(LogRequestDto logRequestDto) throws Exception;
 
     List<WorkResponseDto> work(long driverIdx, SpotCategory spotCategory) throws Exception;
+
+    void workUpdate(Long spotIdx) throws Exception;
 }
