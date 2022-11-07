@@ -7,9 +7,9 @@ spring:
     name : task-server
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/geekhub
-    username: root
-    password: 1234
+    url: jdbc:mysql://k7c205.p.ssafy.io:3306/geekhub
+    username: posi
+    password: deleatc205
   jpa:
     hibernate:
       ddl-auto: update
@@ -23,7 +23,7 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
-      
+
 logging:
   level:
     root: info
