@@ -19,7 +19,7 @@ public class SpotResponseDto {
     private String imageUrl;
     private int count;
     private int status;
-
+    private long  dif;
     private long userIdx;
 
     public static SpotResponseDto of(Spot spotEntity){

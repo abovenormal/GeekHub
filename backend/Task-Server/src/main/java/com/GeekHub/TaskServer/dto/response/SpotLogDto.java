@@ -8,5 +8,6 @@ import java.util.List;
 @Data
 public class SpotLogDto {
     private String userName;
-    private List<Spot> spotResponseDtoList;
+    private long userIdx;
+    private List<SpotResponseDto> spotResponseDtoList;
 }

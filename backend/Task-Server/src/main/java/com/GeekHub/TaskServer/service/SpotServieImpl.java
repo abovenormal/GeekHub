@@ -17,7 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -97,14 +101,44 @@ public class SpotServieImpl implements SpotServie{
        String localCity= logRequestDto.getLocalCity();
         String localSchool= logRequestDto.getLocalSchool();
         String date= logRequestDto.getDate();
-        LOGGER.info(String.valueOf(localSchool));
         List<User> users = userDao.getSelectUser(localCity,localSchool);
         List<SpotLogDto> result= new ArrayList<>();
         for(User user:users){
-            LOGGER.info(String.valueOf(user.getUserIdx()));
             SpotLogDto spotLogDto = new SpotLogDto();
             spotLogDto.setUserName(user.getUserName());
-            spotLogDto.setSpotResponseDtoList(spotDao.spotList(user.getUserIdx(),date));
+            spotLogDto.setUserIdx(user.getUserIdx());
+
+            List<Spot> list = spotDao.spotList(user.getUserIdx(),date);
+            List<SpotResponseDto> temp = new ArrayList<>();
+            int total=0;
+            int count=0;
+            for(Spot spot: list){
+                SpotResponseDto spotResponseDto= new SpotResponseDto();
+                spotResponseDto.setSpotIdx(spot.getSpotIdx());
+                spotResponseDto.setSpotCategory(spot.getSpotCategory());
+                spotResponseDto.setSpotName(spot.getSpotName());
+                spotResponseDto.setLat(spot.getLat());
+                spotResponseDto.setLon(spot.getLon());
+                spotResponseDto.setExpectedTime(spot.getExpectedTime());
+                spotResponseDto.setArrivedTime(spot.getArrivedTime());
+                spotResponseDto.setImageUrl(spot.getImageUrl());
+                spotResponseDto.setCount(spot.getCount());
+                spotResponseDto.setStatus(spot.getStatus());
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                Date date1 = null;
+                Date date2 = null;
+                try {
+                    date1 = sdf.parse(String.valueOf(spot.getExpectedTime()).substring(11));
+                    date2 = sdf.parse(String.valueOf(spot.getArrivedTime()).substring(11));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                spotResponseDto.setDif((date2.getTime()-date1.getTime())/60000);
+                temp.add(spotResponseDto);
+                LOGGER.info(String.valueOf(spot.getExpectedTime()));
+            }
+
+            spotLogDto.setSpotResponseDtoList(temp);
             result.add(spotLogDto);
         }
 

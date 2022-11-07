@@ -113,9 +113,7 @@ public class SpotDaoImpl implements SpotDao {
         }else {
             sb.append(day);
         }
-        LOGGER.info(String.valueOf(list.size()));
         for(Spot spot:list){
-            LOGGER.info(spot.getExpectedTime().toString().substring(0,10));
             if(spot.getExpectedTime().toString().substring(0,10).equals(sb.toString())){
                 result.add(spot);
             }
