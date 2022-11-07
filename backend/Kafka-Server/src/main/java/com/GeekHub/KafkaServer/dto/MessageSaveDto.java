@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 public class MessageSaveDto {
     private String driver;
-    private String longitude;
-    private String latitude;
+    private Double longitude;
+    private Double latitude;
     private String timestamp;
 
     public Message toEntity() {

@@ -12,14 +12,14 @@ public class Message implements Serializable {
     @Id
     private String _id;
     private String driver;
-    private String longitude;
-    private String latitude;
+    private Double longitude;
+    private Double latitude;
     private String timestamp;
 
     public Message() {
     }
 
-    public Message(String driver, String longitude,String latitude,String timestamp) {
+    public Message(String driver, Double longitude,Double latitude,String timestamp) {
         this.longitude = longitude;
         this.latitude = latitude;
         this.driver=driver;
