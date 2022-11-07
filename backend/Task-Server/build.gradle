@@ -35,6 +35,12 @@ dependencies {
 
 }
 
+bootJar{
+	mainClass  = 'com.GeekHub.TaskServer.TaskServerApplication'
+	archiveFileName = 'Task.jar'
+
+}
+
 //dependencyManagement {
 //	imports {
 //		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
