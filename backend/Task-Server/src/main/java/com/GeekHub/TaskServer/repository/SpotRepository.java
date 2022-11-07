@@ -1,6 +1,5 @@
 package com.GeekHub.TaskServer.repository;
 
-import com.GeekHub.TaskServer.dto.response.WorkResponseDto;
 import com.GeekHub.TaskServer.entity.Spot;
 import com.GeekHub.TaskServer.entity.SpotCategory;
 import com.GeekHub.TaskServer.entity.User;
