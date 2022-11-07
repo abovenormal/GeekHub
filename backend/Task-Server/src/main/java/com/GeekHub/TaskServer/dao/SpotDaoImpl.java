@@ -72,6 +72,7 @@ public class SpotDaoImpl implements SpotDao {
                     int minute = spot.getExpected_time().getMinute();
                     time = hour + "시" + minute + "분";
                     WorkResponseDto workResponseDto = new WorkResponseDto();
+                    workResponseDto.setSpotIndex(String.valueOf(spot.getSpotIdx()));
                     workResponseDto.setSpotName(spot.getSpotName());
                     workResponseDto.setExpected_time(time);
                     workResponseDto.setCount(spot.getCount());
