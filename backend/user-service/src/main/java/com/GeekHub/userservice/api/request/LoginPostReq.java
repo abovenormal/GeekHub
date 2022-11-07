@@ -13,7 +13,7 @@ public class LoginPostReq {
     String userId;
     String password;
     String phone;
-    String local_city;
-    String local_school;
+    String localCity;
+    String localSchool;
 
 }

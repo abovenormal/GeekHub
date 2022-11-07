@@ -28,8 +28,8 @@ public class AdminServiceImpl implements AdminService {
                 .userId(loginPostReq.getUserId())
                 .password(bCryptPasswordEncoder.encode(loginPostReq.getPassword()))
                 .phone(loginPostReq.getPhone())
-                .local_city(loginPostReq.getLocal_city())
-                .local_school(loginPostReq.getLocal_school())
+                .localCity(loginPostReq.getLocalCity())
+                .localSchool(loginPostReq.getLocalSchool())
                 .userStatus(UserStatus.RESTING)
                 .build();
 
@@ -49,8 +49,8 @@ public class AdminServiceImpl implements AdminService {
         curDriver.setPassword(loginPostReq.getPassword());
         curDriver.setUserName(loginPostReq.getUserName());
         curDriver.setPhone(loginPostReq.getPhone());
-        curDriver.setLocal_city(loginPostReq.getLocal_city());
-        curDriver.setLocal_school(loginPostReq.getLocal_school());
+        curDriver.setLocalCity(loginPostReq.getLocalCity());
+        curDriver.setLocalSchool(loginPostReq.getLocalSchool());
 
         log.info("updating Driver completed");
     }
