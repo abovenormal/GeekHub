@@ -15,7 +15,4 @@ public class LogRequestDto {
     private String localSchool;
     private String date;
 
-    public LogRequestDto() {
-
-    }
 }

@@ -66,16 +66,8 @@ public class SpotController {
         return new ResponseEntity<String>("success",HttpStatus.CREATED);
     }
 
-    @GetMapping("/log")
-    public ResponseEntity<List<SpotLogDto>> sendLog(
-            @RequestParam("localCity") String localCity,
-            @RequestParam("localSchool") String localSchool,
-            @RequestParam("date") String date) throws Exception {
-        LogRequestDto logRequestDto = new LogRequestDto();
-        logRequestDto.setDate(date);
-        logRequestDto.setLocalCity(localCity);
-        logRequestDto.setLocalSchool(localSchool);
-
+    @PostMapping("/log")
+    public ResponseEntity<List<SpotLogDto>> sendLog(@RequestBody LogRequestDto logRequestDto) throws Exception {
         List<SpotLogDto> list = SpotServie.log(logRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(list);
