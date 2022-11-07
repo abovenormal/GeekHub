@@ -29,7 +29,7 @@ public class S3Uploader {
 
     public String uploadFile(UploadFileReq uploadFileReq) throws IOException {
         log.info("Start uploading picture by : " + uploadFileReq.getUserId());
-        log.info("Start uploading picture at : " + uploadFileReq.getSpotId());
+        log.info("Start uploading picture from : " + uploadFileReq.getSpotId());
         String currentUserId = uploadFileReq.getUserId();
         MultipartFile curImage = uploadFileReq.getImage();
 
