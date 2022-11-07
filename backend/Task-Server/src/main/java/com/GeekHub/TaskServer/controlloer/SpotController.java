@@ -1,6 +1,8 @@
 package com.GeekHub.TaskServer.controlloer;
 
+import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
+import com.GeekHub.TaskServer.dto.response.SpotLogDto;
 import com.GeekHub.TaskServer.dto.response.SpotResponseDto;
 import com.GeekHub.TaskServer.dto.response.WorkResponseDto;
 import com.GeekHub.TaskServer.entity.SpotCategory;
@@ -56,17 +58,20 @@ public class SpotController {
 
     @PostMapping
     public ResponseEntity<String> createSpot(@RequestBody SpotRequestDto spotRequestDto){
-        LOGGER.info("11111111111111111111");
         try {
-            LOGGER.info("2222222222222222222");
-            SpotServie.createSpot(spotRequestDto);
-            LOGGER.info("33333333333333333333");
-        }catch (Exception e){
+           SpotServie.createSpot(spotRequestDto);
+         }catch (Exception e){
             throw new RuntimeException();
         }
         return new ResponseEntity<String>("success",HttpStatus.CREATED);
     }
 
+    @PostMapping("/log")
+    public ResponseEntity<List<SpotLogDto>> sendLog(@RequestBody LogRequestDto logRequestDto) throws Exception {
+        List<SpotLogDto> list = SpotServie.log(logRequestDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(list);
+    }
 
     @GetMapping("/work/{driverIdx}")
     public ResponseEntity<HashMap> sendWork(@PathVariable("driverIdx") Long driverIdx) throws Exception {

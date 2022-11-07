@@ -14,4 +14,5 @@ public interface SpotDao {
     void deleteSpot(Long spotIdx) throws Exception;
 
     List<WorkResponseDto> work(long driverIdx, SpotCategory spotCategory) throws Exception;
+    List<Spot> spotList(long userIdx,String date) throws Exception;
 }

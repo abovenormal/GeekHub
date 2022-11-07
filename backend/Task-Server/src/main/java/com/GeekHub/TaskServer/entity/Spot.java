@@ -44,8 +44,6 @@ public class Spot {
     @Column(name="status")
     private int status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userIdx")
-    private User user;
+    private long userIdx;
 
 }

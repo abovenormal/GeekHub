@@ -2,7 +2,9 @@ package com.GeekHub.TaskServer.service;
 
 import com.GeekHub.TaskServer.dao.SpotDao;
 import com.GeekHub.TaskServer.dao.UserDao;
+import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
+import com.GeekHub.TaskServer.dto.response.SpotLogDto;
 import com.GeekHub.TaskServer.dto.response.SpotResponseDto;
 import com.GeekHub.TaskServer.dto.response.WorkResponseDto;
 import com.GeekHub.TaskServer.entity.Spot;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,7 +70,7 @@ public class SpotServieImpl implements SpotServie{
                     .expected_time(spotRequestDto.getExpected_time())
                     .status(spotRequestDto.getStatus())
                     .count(spotRequestDto.getCount())
-                    .user(spotUser)
+                    .userIdx(spotUser.getUserIdx())
                     .build();
             spotDao.saveSpot(spotEntity);
         }catch (Exception e){
@@ -80,6 +83,22 @@ public class SpotServieImpl implements SpotServie{
         return spotDao.work(driverIdx, spotCategory);
     }
 
+    public List<SpotLogDto> log(LogRequestDto logRequestDto) throws Exception{
+       String local_city= logRequestDto.getLocal_city();
+        String local_school= logRequestDto.getLocal_school();
+        String date= logRequestDto.getDate();
+        List<User> users = userDao.getSelectUser(local_city,local_school);
+        List<SpotLogDto> result= new ArrayList<>();
+        for(User user:users){
+            LOGGER.info(String.valueOf(user.getUserIdx()));
+            SpotLogDto spotLogDto = new SpotLogDto();
+            spotLogDto.setUserName(user.getUserName());
+            spotLogDto.setSpotResponseDtoList(spotDao.spotList(user.getUserIdx(),date));
+            result.add(spotLogDto);
+        }
+
+        return result;
+    }
 //    @Override
 //    @Transactional
 //    public void updateSpot(SpotRequestDto spotRequestDto,Long spotIdx) throws Exception {

@@ -34,11 +34,9 @@ public class User {
     @Column(name="phone")
     private String phone;
 
-    @Column(name="local_city")
-    private String local_city;
+    private String localCity;
 
-    @Column(name="local_school")
-    private String local_school;
+    private String localSchool;
 
     @Column(name="userStatus")
     @Enumerated(EnumType.STRING)
