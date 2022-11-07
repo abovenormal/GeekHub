@@ -1,13 +1,10 @@
 package com.example.geekhub
 
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.String
+import retrofit2.http.Body
 
 
 class DeliveryFragment : Fragment() {
@@ -79,7 +76,10 @@ class DeliveryFragment : Fragment() {
         val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:9013/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
-        val call = callData.getlist()
+
+        val call = callData.getlist(1)
+        println("콜")
+        println(call)
         call.enqueue(object : Callback<DeliveryList>{
             override fun onFailure(call: Call<DeliveryList>, t: Throwable) {
                 Log.e("안됨",t.toString())
@@ -88,6 +88,7 @@ class DeliveryFragment : Fragment() {
             override fun onResponse(call: Call<DeliveryList>, response: Response<DeliveryList>) {
                 println("됨")
                 val result = response.body()
+                println(result)
 
                 val deldatas : ArrayList<DeliveryResponse> = ArrayList()
                 var recdatas : ArrayList<DeliveryResponse> = ArrayList()

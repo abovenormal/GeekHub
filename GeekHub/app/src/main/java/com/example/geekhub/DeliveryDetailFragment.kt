@@ -11,6 +11,7 @@ class DeliveryDetailFragment : Fragment() {
 
      lateinit var binding : FragmentDeliveryDetailBinding
      var title:String? = "s"
+     var spot:String? = "스팟"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,7 +25,8 @@ class DeliveryDetailFragment : Fragment() {
         }
 
         binding.detailButton.setOnClickListener{
-            (activity as MainActivity).changeFragment(6)
+
+            (activity as MainActivity).sendUserId("3140")
         }
 
         return binding.root
