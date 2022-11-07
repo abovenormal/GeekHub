@@ -22,8 +22,8 @@ public class UserDaoImpl implements UserDao {
         return userList;
     }
     @Override
-    public List<User> getSelectUser(String local_city, String local_school) throws Exception {
-        List<User> userList =userRepository.findUserByLocalCityAndLocalSchool(local_city,local_school).orElse(null);
+    public List<User> getSelectUser(String localCity, String localSchool) throws Exception {
+        List<User> userList =userRepository.findUserByLocalCityAndLocalSchool(localCity,localSchool).orElse(null);
 
         return userList;
     }

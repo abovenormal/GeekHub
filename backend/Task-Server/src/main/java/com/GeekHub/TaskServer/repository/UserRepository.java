@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
     User findUserByUserIdx(long userIdx);
-    Optional<List<User>> findUserByLocalCityAndLocalSchool(String local_city, String local_school);
+    Optional<List<User>> findUserByLocalCityAndLocalSchool(String localCity, String localSchool);
 }

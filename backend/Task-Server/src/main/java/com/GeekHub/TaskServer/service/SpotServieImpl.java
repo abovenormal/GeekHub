@@ -94,10 +94,11 @@ public class SpotServieImpl implements SpotServie{
 
 
     public List<SpotLogDto> log(LogRequestDto logRequestDto) throws Exception{
-       String local_city= logRequestDto.getLocal_city();
-        String local_school= logRequestDto.getLocal_school();
+       String localCity= logRequestDto.getLocalCity();
+        String localSchool= logRequestDto.getLocalSchool();
         String date= logRequestDto.getDate();
-        List<User> users = userDao.getSelectUser(local_city,local_school);
+        LOGGER.info(String.valueOf(localSchool));
+        List<User> users = userDao.getSelectUser(localCity,localSchool);
         List<SpotLogDto> result= new ArrayList<>();
         for(User user:users){
             LOGGER.info(String.valueOf(user.getUserIdx()));
