@@ -21,6 +21,10 @@ spring:
           uri: http://localhost:9003
           predicates:
             - Path=/admin/**
+        - id: Task
+          uri: http://localhost:9013
+          predicates:
+            - Path=/spot/**
         - id: Auth
           uri: http://localhost:9002
           predicates:
