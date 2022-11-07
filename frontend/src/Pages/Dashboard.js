@@ -12,30 +12,6 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <Chart />
-      <div className="shorcut-block">
-      {/* <Link
-        className="shortcut-link"
-        to="driverlocation">
-        <ShortcutDriverlocation />
-      </Link>
-      <Link
-        className="shortcut-link"
-        to="chat">
-        <ShortcutChat />
-      </Link>
-      </div>
-      <div className="shorcut-block">
-      <Link
-        className="shortcut-link"
-        to="log">
-        <ShortcutLog />
-      </Link>
-      <Link
-        className="shortcut-link"
-        to="user">
-        <ShortcutUser />
-      </Link> */}
-      </div>
     </div>
   );
 };
