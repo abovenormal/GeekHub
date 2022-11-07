@@ -24,30 +24,30 @@ import java.util.stream.Collectors;
 @Table(name = "User")
 public class User implements UserDetails {
 
-    @Column(name="userIdx")
+    @Column
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userIdx;
 
-    @Column(name="username")
+    @Column
     private String userName;
 
-    @Column(name = "userId")
+    @Column
     private String userId;
 
-    @Column(name="password")
+    @Column
     private String password;
 
-    @Column(name="phone")
+    @Column
     private String phone;
 
-    @Column(name="local_city")
-    private String local_city;
+    @Column
+    private String localCity;
 
-    @Column(name="local_school")
-    private String local_school;
+    @Column
+    private String localSchool;
 
-    @Column(name="userStatus")
+    @Column
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
