@@ -10,6 +10,7 @@ import com.GeekHub.TaskServer.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -49,6 +50,7 @@ public class SpotDaoImpl implements SpotDao {
         }
 
     }
+
 
     @Override
     public void deleteSpot(Long spotIdx) throws Exception {
@@ -111,4 +113,12 @@ public class SpotDaoImpl implements SpotDao {
         }
         return result;
     }
+    @Override
+    @Transactional
+    public void workUpdate(Long spotIdx) throws Exception{
+        Spot spot = spotRepository.findSpotBySpotIdx(spotIdx).orElse(null);
+        spot.setStatus(2);
+//        spotRepository.save(spot);
+    }
+
 }

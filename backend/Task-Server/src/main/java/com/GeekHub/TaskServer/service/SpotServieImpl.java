@@ -83,6 +83,16 @@ public class SpotServieImpl implements SpotServie{
         return spotDao.work(driverIdx, spotCategory);
     }
 
+    @Override
+    @Transactional
+    public void workUpdate(Long spotIdx) throws Exception {
+        //log.info(String.valueOf(spotIdx));
+        System.out.println(spotIdx);
+        spotDao.workUpdate(spotIdx);
+    }
+
+
+
     public List<SpotLogDto> log(LogRequestDto logRequestDto) throws Exception{
        String local_city= logRequestDto.getLocal_city();
         String local_school= logRequestDto.getLocal_school();
