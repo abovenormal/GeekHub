@@ -16,6 +16,6 @@ object NetWorkClient {
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 
-    val GetNetwork:NetWorkInterface = retrofit.create(NetWorkInterface::class.java)
+    val GetNetwork: NetWorkInterface = retrofit.create(NetWorkInterface::class.java)
 
 }

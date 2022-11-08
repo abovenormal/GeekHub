@@ -18,7 +18,8 @@ interface NetWorkInterface {
     fun sendimage(
         @Part image : MultipartBody.Part,
         @Part("userId") userId : RequestBody,
-        @Part("spotId") spotId : RequestBody
+        @Part("spotId") spotId : RequestBody,
+        @Part("deliveryTime") deliveryTime : RequestBody
     ):Call<String>
 
     @GET("spot/work/{driverIdx}")
