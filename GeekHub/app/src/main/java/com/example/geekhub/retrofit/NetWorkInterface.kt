@@ -1,8 +1,11 @@
 package com.example.geekhub.retrofit
 
 import com.example.geekhub.data.DeliveryList
+
 import com.example.geekhub.data.LocationInfo
 import com.example.geekhub.data.NextSpotInfo
+import com.example.geekhub.data.LoginRequest
+import com.example.geekhub.data.LoginResponse
 import com.example.geekhub.data.SpotBody
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -35,4 +38,8 @@ interface NetWorkInterface {
     fun nextWork(
         @Path("driverIdx") driverIdx : Int
     ):Call<NextSpotInfo>
+    @POST("auth/login")
+    fun login(
+        @Body loginRequest : LoginRequest
+    ):Call<LoginResponse>
 }
