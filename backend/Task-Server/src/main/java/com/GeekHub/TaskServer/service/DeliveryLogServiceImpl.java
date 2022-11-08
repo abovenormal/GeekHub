@@ -91,7 +91,7 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
         date = new Date(date.getTime()+(1000*60*60*24*-1));
         SimpleDateFormat dSdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         String yesterday = dSdf.format(date);
-        String[] schools= {"전남대학교","광주과학기술원"
+        String[] schools= {"SSAFY","전남대학교","광주과학기술원"
                 ,"건국대학교","경희대학교","마포구공유오피스","서울교육대학교","서울대학교","서울시립대학교","연세대학교","이화여자대학교","카이스트경영대학","한국외국어대학교","한성대학교"
                 ,"송도 글로벌캠퍼스","연세대학교(송도)","성균관대학교(자연과학캠퍼스)"};
         for(String school: schools){
