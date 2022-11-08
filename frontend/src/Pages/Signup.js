@@ -17,8 +17,8 @@ const Signup = () => {
   const [info, setInfo] = useState({
     userName: "",
     phone: "",
-    local_city: "",
-    local_school: "",
+    localCity: "",
+    localSchool: "",
     userId: "",
     password: "",
   });
@@ -52,13 +52,13 @@ const Signup = () => {
     };
     console.log(nextInfo);
     setInfo(nextInfo);
-    if (nextInfo.local_city === "서울") {
+    if (nextInfo.localCity === "서울") {
       setSchoolList(schoolSeoul);
-    } else if (nextInfo.local_city === "광주") {
+    } else if (nextInfo.localCity === "광주") {
       setSchoolList(schoolGwangju);
-    } else if (nextInfo.local_city === "수원") {
+    } else if (nextInfo.localCity === "수원") {
       setSchoolList(schoolSuwon);
-    } else if (nextInfo.local_city === "인천") {
+    } else if (nextInfo.localCity === "인천") {
       setSchoolList(schoolIncheon);
     }
   };
@@ -150,10 +150,10 @@ const Signup = () => {
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              value={info.local_city}
+              value={info.localCity}
               onChange={onChange}
               label="City"
-              name="local_city"
+              name="localCity"
             >
               <MenuItem value={"서울"}>서울</MenuItem>
               <MenuItem value={"광주"}>광주</MenuItem>
@@ -168,10 +168,10 @@ const Signup = () => {
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              value={info.local_school}
+              value={info.localSchool}
               onChange={onChange}
               label="School"
-              name="local_school"
+              name="localSchool"
             >
               {schoolList.map((school) => (
                 <MenuItem key={school} value={school}>

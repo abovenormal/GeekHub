@@ -22,9 +22,11 @@ const List = (props) => {
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = useState(false);
+    const [nowOpen, setNowOpen] = useState(false);
     const API = apiInstance();
     const [longitude, setLongitude] = useState("0");
     const [latitude, setLatitude] = useState("0");
+    const [timestamp, setTimestamp] = useState("0");
 
     useEffect(() => {
       const script = document.createElement("script");
@@ -60,8 +62,8 @@ const List = (props) => {
         console.log(res.data);
         setLatitude(res.data.latitude);
         setLongitude(res.data.longitude);
-        if ( !open ) {
-        setOpen(!open);}
+        setTimestamp(res.data.timestamp); // timestamp
+        setOpen(!open);
       } catch (err) {
         console.log(err);
       }
@@ -89,7 +91,7 @@ const List = (props) => {
               size="small"
               onClick={() => {
                 // GetLocation(row.id)
-                GetLocation(221343);
+                GetLocation(1);
               }}
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -100,7 +102,7 @@ const List = (props) => {
             scope="row"
             onClick={() => {
               // GetLocation(row.id)
-              GetLocation(221343);
+              GetLocation(1);
             }}
             sx={{
               cursor: "pointer",
@@ -124,6 +126,7 @@ const List = (props) => {
                         <TableCell><div className="list-header">픽업존</div></TableCell>
                         <TableCell><div className="list-header">도착 예정</div></TableCell>
                         <TableCell><div className="list-header">도착 시각</div></TableCell>
+                        <TableCell><div className="list-header">오차</div></TableCell>
                         <TableCell><div className="list-header">픽업 사진</div></TableCell>
                       </TableRow>
                     </TableHead>
@@ -133,8 +136,9 @@ const List = (props) => {
                           <TableCell component="th" scope="row">
                             <div className="list-body">{taskRow.spotName}</div>
                           </TableCell>
-                          <TableCell><div className="list-body">{taskRow.expectedTime}</div></TableCell>
-                          <TableCell><div className="list-body">{taskRow.arrivedTime}</div></TableCell>
+                          <TableCell><div className="list-body">{taskRow.expectedTime.slice(11,16)}</div></TableCell>
+                          <TableCell><div className="list-body">{taskRow.arrivedTime.slice(11,16)}</div></TableCell>
+                          <TableCell><div className={`list-body + ${(taskRow.dif > 0) ? "dif" : ""}`}>{taskRow.dif}분</div></TableCell>
                           <TableCell>
                             <div
                               className="pickupPic"
@@ -160,12 +164,12 @@ const List = (props) => {
                 </Box>
                 <div className="now-location">
                   <div className="now-title">
-                    기사님의 최근 위치
+                    기사님의 최근 위치 | {timestamp}
                     <div
                       className="now-icon"
                       // onClick={()=> {GetLocation(row.id)}}
                       onClick={() => {
-                        GetLocation(221343);
+                        GetLocation(1);
                       }}
                     >
                       <RefreshIcon

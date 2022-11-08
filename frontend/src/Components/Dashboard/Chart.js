@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import MyResponsivePie from "./MyResponsivePie";
 import MyResponsiveLine from "./MyResponsiveLine";
+import GetSuccess from "../../api/GetSuccess";
+import { apiInstance } from "../../api";
 import "./css/Chart.css";
 import { Info } from "@material-ui/icons";
 
 const Chart = () => {
+  const API = apiInstance();
   const [success, setSuccess] = useState([
     {
       name: "전남대",
@@ -17,11 +20,8 @@ const Chart = () => {
       fail: 2,
     },
   ]);
-
-  success.map((school, index) => {
-    console.log(school.name);
-    console.log(school.success);
-  });
+  // const data = API.get("/spot/success")
+  const data = GetSuccess("/spot/success/")
   const data_pie = {
     전남대: [
       {
@@ -97,6 +97,7 @@ const Chart = () => {
   ]
   return (
     <div className="chart-container">
+      <div>{data}</div>
       <div className="pie-chart-container">
         <div className="pie-chart-title">Current Success</div>
         <div className="pie-chart-body">

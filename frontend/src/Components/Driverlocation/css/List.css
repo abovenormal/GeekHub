@@ -21,7 +21,9 @@
   font-weight: bold;
 }
 
-
+.dif {
+  color: red;
+}
 .now-location {
   display: flex;
   flex-direction: column;

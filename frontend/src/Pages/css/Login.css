@@ -1,6 +1,6 @@
 .login-div {
   width: 100%;
-  padding: 1rem;
+
 }
 .login-container {
   display: flex;
@@ -25,6 +25,7 @@
 
 .logo {
   display: flex;
+  margin : 1rem;
   /* justify-content: center;
   align-items: center; */
 }
