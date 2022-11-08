@@ -16,13 +16,13 @@ const Dropdown = props => {
       [e.target.name]: e.target.value
     }
     setSelected(nextInfo);
-    if (nextInfo.city === "서울") {
+    if (nextInfo.localCity === "서울") {
       setSchoolList(schoolSeoul);
-    } else if (nextInfo.city === "광주") {
+    } else if (nextInfo.localCity === "광주") {
       setSchoolList(schoolGwangju);
-    } else if (nextInfo.city === "수원") {
+    } else if (nextInfo.localCity === "수원") {
       setSchoolList(schoolSuwon);
-    } else if (nextInfo.city === "인천") {
+    } else if (nextInfo.localCity === "인천") {
       setSchoolList(schoolIncheon);
     }
   }
@@ -51,10 +51,10 @@ const Dropdown = props => {
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          value={selected.city}
+          value={selected.localCity}
           onChange={onChange}
           label="City"
-          name="city"
+          name="localCity"
         >
           <MenuItem value={"서울"}>서울</MenuItem>
           <MenuItem value={"광주"}>광주</MenuItem>
@@ -62,21 +62,21 @@ const Dropdown = props => {
           <MenuItem value={"수원"}>수원</MenuItem>
         </Select>
       </FormControl>
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+      <FormControl variant="standard" sx={{ m: 1, minWidth: 170 }}>
         <InputLabel id="demo-simple-select-standard-label">
           School
         </InputLabel>
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          value={selected.school}
+          value={selected.localSchool}
           onChange={onChange}
           label="School"
-          name="school"
+          name="localSchool"
         >
-          {schoolList.map((school) => (
-            <MenuItem key={school} value={school}>
-              {school}
+          {schoolList.map((localSchool) => (
+            <MenuItem key={localSchool} value={localSchool}>
+              {localSchool}
             </MenuItem>
           ))}
         </Select>

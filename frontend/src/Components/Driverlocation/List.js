@@ -16,20 +16,21 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Swal from "sweetalert2";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import "./css/List.css";
-import {apiInstance} from "../../api/index"
-const List = props => {
-  const listData = props.listData
+import { apiInstance } from "../../api/index";
+const List = (props) => {
 
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = useState(false);
+    const [nowOpen, setNowOpen] = useState(false);
     const API = apiInstance();
     const [longitude, setLongitude] = useState("0");
     const [latitude, setLatitude] = useState("0");
-    
+    const [timestamp, setTimestamp] = useState("0");
+
     useEffect(() => {
       const script = document.createElement("script");
-      console.log(longitude)
+      console.log(longitude);
       script.innerHTML = `
           function initTmap() {
               var map = new Tmapv2.Map("map_div", {
@@ -51,21 +52,23 @@ const List = props => {
       document.head.appendChild(script);
     }, [open]);
     async function GetLocation(id) {
-       // 열릴 때만 Get 요청 보내기 위해 분기 추가 했다가
-       // 열린 채로 새로 고침 안 되서 잠시 삭제
+      // 열릴 때만 Get 요청 보내기 위해 분기 추가 했다가
+      // 열린 채로 새로 고침 안 되서 잠시 삭제
+      // 아래 if문 추가로 해결 완료
       try {
-        const res = await API.get('/location/getLocation', {params : {driver:id}})
-        console.log(res.data)
-        setLatitude(res.data.latitude)
-        setLongitude(res.data.longitude)
-        setOpen(!open)
-      }
-      catch (err) {
-        console.log(err)
+        const res = await API.get("/location/getLocation", {
+          params: { driver: id },
+        });
+        console.log(res.data);
+        setLatitude(res.data.latitude);
+        setLongitude(res.data.longitude);
+        setTimestamp(res.data.timestamp); // timestamp
+        setOpen(!open);
+      } catch (err) {
+        console.log(err);
       }
     }
     return (
-      
       <React.Fragment>
         <TableRow
           sx={{
@@ -87,9 +90,9 @@ const List = props => {
               aria-label="expand row"
               size="small"
               onClick={() => {
-                GetLocation(row.id)
-              }
-              }
+                // GetLocation(row.id)
+                GetLocation(1);
+              }}
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
@@ -98,13 +101,14 @@ const List = props => {
             component="th"
             scope="row"
             onClick={() => {
-              GetLocation(row.id)
+              // GetLocation(row.id)
+              GetLocation(1);
             }}
             sx={{
               cursor: "pointer",
             }}
           >
-            {row.name}
+            <div className="list-username">{row.userName}</div>
           </TableCell>
         </TableRow>
         <TableRow>
@@ -113,31 +117,33 @@ const List = props => {
               <div className="table">
                 <Box sx={{ width: "100%" }}>
                   <Typography variant="h6" gutterBottom component="div">
-                    배달 현황
+                    
                   </Typography>
 
                   <Table size="small" aria-label="purchases">
                     <TableHead>
                       <TableRow>
-                        <TableCell>픽업존</TableCell>
-                        <TableCell>도착 예정</TableCell>
-                        <TableCell>도착 시각</TableCell>
-                        <TableCell>픽업 사진</TableCell>
+                        <TableCell><div className="list-header">픽업존</div></TableCell>
+                        <TableCell><div className="list-header">도착 예정</div></TableCell>
+                        <TableCell><div className="list-header">도착 시각</div></TableCell>
+                        <TableCell><div className="list-header">오차</div></TableCell>
+                        <TableCell><div className="list-header">픽업 사진</div></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {row.task.map((taskRow) => (
-                        <TableRow key={taskRow.pickupZone}>
+                      {row.spotResponseDtoList.map((taskRow) => (
+                        <TableRow key={taskRow.spotName}>
                           <TableCell component="th" scope="row">
-                            {taskRow.pickupZone}
+                            <div className="list-body">{taskRow.spotName}</div>
                           </TableCell>
-                          <TableCell>{taskRow.arrivalScheduled}</TableCell>
-                          <TableCell>{taskRow.arrivalTime}</TableCell>
+                          <TableCell><div className="list-body">{taskRow.expectedTime.slice(11,16)}</div></TableCell>
+                          <TableCell><div className="list-body">{taskRow.arrivedTime.slice(11,16)}</div></TableCell>
+                          <TableCell><div className={`list-body + ${(taskRow.dif > 0) ? "dif" : ""}`}>{taskRow.dif}분</div></TableCell>
                           <TableCell>
                             <div
                               className="pickupPic"
                               onClick={() => {
-                                const pickupPicture = taskRow.pickupPicture;
+                                const pickupPicture = taskRow.imageUrl;
                                 Swal.fire({
                                   // title: '픽업 사진',
                                   text: "픽업을 완료하였습니다.",
@@ -157,27 +163,27 @@ const List = props => {
                   </Table>
                 </Box>
                 <div className="now-location">
-                  <h3 className="now-title">
-                    <div>기사님의 현재 위치</div>
+                  <div className="now-title">
+                    기사님의 최근 위치 | {timestamp}
                     <div
                       className="now-icon"
                       // onClick={()=> {GetLocation(row.id)}}
-                      onClick={() => {GetLocation(row.id)}}
-                      >
+                      onClick={() => {
+                        GetLocation(1);
+                      }}
+                    >
                       <RefreshIcon
-                      sx={{
-                        width: "1rem",
-                        "&:hover": {
-                          color: "#10b981",
-                          backgroundColor: "rgba( 0, 0, 0, 0.08 )",
-                        },
-                      }} />
+                        sx={{
+                          width: "1rem",
+                          "&:hover": {
+                            color: "#10b981",
+                            backgroundColor: "rgba( 0, 0, 0, 0.08 )",
+                          },
+                        }}
+                      />
                     </div>
-                  </h3>
-                  <div id="map_div"></div>
-                  <p>위도 : {latitude}</p>
-                  <p>경도 : {longitude}</p>
-                  
+                  </div>
+                  <div className="now-map" id="map_div"></div>
                 </div>
               </div>
             </Collapse>
@@ -186,22 +192,22 @@ const List = props => {
       </React.Fragment>
     );
   }
-  
-  const rows = listData;
-  
+
+  const rows = props.listData;
+  console.log(rows)
   return (
-      <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow></TableRow>
-          </TableHead>
-          <TableBody sx={{ width: 1000 }}>
-            {rows.map((row) => (
-              <Row key={row.name} row={row}></Row>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+    <TableContainer component={Paper}>
+      <Table aria-label="collapsible table">
+        <TableHead>
+          <TableRow></TableRow>
+        </TableHead>
+        <TableBody sx={{ width: 1000 }}>
+          {rows.map((row) => (
+            <Row key={row.userName} row={row}></Row>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 

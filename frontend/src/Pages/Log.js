@@ -6,13 +6,13 @@ import "./css/Log.css";
 import { getDriverList } from "../api/GetDriverList";
 const Log = () => {
   const [selected, setSelected] = useState({
-    city: "",
-    school: "",
+    localCity: "",
+    localSchool: "",
     date: "",
   });
   const [driverData, setDriverData] = useState([]);
   useEffect(() => {
-    if (selected.city && selected.school && selected.date) {
+    if (selected.localCity && selected.localSchool && selected.date) {
       // const driver = getDriverList(selected);
       // setDriverData(driver);
       //-------아래는 임시 prop 확인용 -> Api 완성시 위에 두 줄 사용
@@ -131,6 +131,7 @@ const Log = () => {
   }, [selected]);
   return (
     <div className="log-container">
+      <h1>로그 기록 조회</h1>
       <div className="picker">
         <Dropdown selected={selected} setSelected={setSelected} />
         <Datepicker selected={selected} setSelected={setSelected} />

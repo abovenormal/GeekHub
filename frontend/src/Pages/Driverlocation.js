@@ -4,12 +4,12 @@ import Datepicker from "../Components/Common/Datepicker";
 import List from "../Components/Driverlocation/List";
 import "./css/Driverlocation.css";
 import { apiInstance } from "../api/index";
-import { getDriverList } from "../api/GetDriverList";
+import getDriverList from "../api/GetDriverList";
 
 const Driverlocation = () => {
   const [selected, setSelected] = useState({
-    city: "",
-    school: "",
+    localCity: "",
+    localSchool: "",
     date: "",
   });
   const [listData, setListData] = useState([]);
@@ -27,72 +27,82 @@ const Driverlocation = () => {
   //     console.log(err)
   //   }
   // }
-  useEffect(() => {
-    if (selected.city && selected.school && selected.date) {
-      // List는 기사를 누를 때마다 해당 기사의 위치 정보 불러오기 (getLocation)
-      // const res = GetLocations("");
-      // console.log(res)
-      // ----------------------위 내용은 List.js에 완료-------------
-      // 해당 페이지에서는 기사 List+Task 받아오는 (getDriverList)
-      // 해당 res를 <List /> prop 전달
+  // useEffect(() => {
+  //   if (selected.localCity && selected.localSchool && selected.date) {
+  //     // ----------------------위 내용은 List.js에 완료-------------
+  //     // 해당 페이지에서는 기사 List+Task 받아오는 (getDriverList)
+  //     // 해당 res를 <List /> prop 전달
+  //     // const driverData = getDriverList(selected);
+  //   }}, [selected]);
+    useEffect(() => {
+      if (selected.localCity && selected.localSchool && selected.date) {
+      async function getData() {
+        const res = await apiInstance().post('spot/log', selected);
+        setListData(res.data)
+      }
+      getData();}
+    }, [selected])
+      
 
-      // const driverData = getDriverList(selected);
+      // console.log(driverData);
       // setListData(driverData);
+    
       //-------아래는 임시 prop 확인용 -> Api 완성시 위에 두 줄 사용
-      setListData([
-        {
-          name: "형준",
-          id: 221343,
-          task: [
-            {
-              pickupZone: "d",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "d",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "d",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "d",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-          ],
-        },
-        {
-          name: "세환",
-          id: 221343,
-          task: [
-            {
-              pickupZone: "dㅁㄴㅇ",
-              arrivalScheduled: "ㄴa",
-              arrivalTime: "cㅇ",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-          ],
-        },
-      ]);
-    }
-    console.log(selected);
-  }, [selected]);
+    //   setListData([
+    //     {
+    //       name: "형준",
+    //       id: 221343,
+    //       task: [
+    //         {
+    //           pickupZone: "d",
+    //           arrivalScheduled: "a",
+    //           arrivalTime: "c",
+    //           pickupPicture:
+    //             "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
+    //         },
+    //         {
+    //           pickupZone: "d",
+    //           arrivalScheduled: "a",
+    //           arrivalTime: "c",
+    //           pickupPicture:
+    //             "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
+    //         },
+    //         {
+    //           pickupZone: "d",
+    //           arrivalScheduled: "a",
+    //           arrivalTime: "c",
+    //           pickupPicture:
+    //             "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
+    //         },
+    //         {
+    //           pickupZone: "d",
+    //           arrivalScheduled: "a",
+    //           arrivalTime: "c",
+    //           pickupPicture:
+    //             "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       name: "세환",
+    //       id: 221343,
+    //       task: [
+    //         {
+    //           pickupZone: "dㅁㄴㅇ",
+    //           arrivalScheduled: "ㄴa",
+    //           arrivalTime: "cㅇ",
+    //           pickupPicture:
+    //             "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
+    //         },
+    //       ],
+    //     },
+    //   ]);
+    // }
+    // console.log(selected);
+  
   return (
     <div className="driver-location-container">
+      <h1>배달 현황 조회</h1>
       <div className="picker">
         <Dropdown selected={selected} setSelected={setSelected} />
         <Datepicker selected={selected} setSelected={setSelected} />

@@ -5,10 +5,11 @@
   align-items: center;
   padding: 1rem;
   width: 100%;
+  
 }
-
 .signup-title {
   color: black;
+  font-size: 1.5rem;
 }
 .signup-form {
   display: flex;
@@ -20,25 +21,26 @@
   max-height: 700px;
   width: 100%;
   height: 100%;
-  background-color: #7582eb;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 .signup-id {
   display: flex;
   align-items: start;
-  min-width: "80%"
+  min-width: "80%";
 }
 
 .signup-check {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
-  height: 20px;
+  width: 70px;
+  height: 40px;
   border-radius: 12px;
-  padding: 0.5rem 0.5rem;
+  /* padding: 0.5rem 0.5rem; */
   font-size: 12px;
-  color: #111827;
+  color: #fff;
   border: none;
   font-weight: bold;
   background-color: #10b981;
@@ -61,11 +63,10 @@
   border-radius: 12px;
   padding: 0.5rem 2rem;
   font-size: 1rem;
-  color: #111827;
+  color: #fff;
   border: none;
   font-weight: bold;
   background-color: #10b981;
   cursor: pointer;
   margin: 1rem 0;
 }
-
