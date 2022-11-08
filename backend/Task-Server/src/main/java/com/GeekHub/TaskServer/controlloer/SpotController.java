@@ -2,10 +2,7 @@ package com.GeekHub.TaskServer.controlloer;
 
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
-import com.GeekHub.TaskServer.dto.response.NextSpotDto;
-import com.GeekHub.TaskServer.dto.response.SpotLogDto;
-import com.GeekHub.TaskServer.dto.response.SpotResponseDto;
-import com.GeekHub.TaskServer.dto.response.WorkResponseDto;
+import com.GeekHub.TaskServer.dto.response.*;
 import com.GeekHub.TaskServer.entity.SpotCategory;
 import com.GeekHub.TaskServer.service.SpotServie;
 import com.GeekHub.TaskServer.service.SpotServieImpl;
@@ -70,6 +67,13 @@ public class SpotController {
     @PostMapping("/log")
     public ResponseEntity<List<SpotLogDto>> sendLog(@RequestBody LogRequestDto logRequestDto) throws Exception {
         List<SpotLogDto> list = SpotServie.log(logRequestDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(list);
+    }
+
+    @GetMapping("/success")
+    public ResponseEntity<List<SchoolSuccessDto>> getSuccess() throws Exception {
+        List<SchoolSuccessDto> list = SpotServie.getSuccess();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(list);
     }

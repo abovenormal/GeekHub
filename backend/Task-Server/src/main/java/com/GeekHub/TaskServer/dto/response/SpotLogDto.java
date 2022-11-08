@@ -1,6 +1,5 @@
 package com.GeekHub.TaskServer.dto.response;
 
-import com.GeekHub.TaskServer.entity.Spot;
 import lombok.Data;
 
 import java.util.List;

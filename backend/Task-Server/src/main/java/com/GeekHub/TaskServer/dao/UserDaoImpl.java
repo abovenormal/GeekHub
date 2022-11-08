@@ -28,6 +28,12 @@ public class UserDaoImpl implements UserDao {
         return userList;
     }
     @Override
+    public List<User> getSchoolUser(String localSchool) throws Exception{
+        List<User> userList =userRepository.findUserByLocalSchool(localSchool).orElse(null);
+
+        return userList;
+    }
+    @Override
     public User getUser(Long userIdx) throws Exception {
         User userEntity = userRepository.findUserByUserIdx(userIdx);
         if(userEntity == null) {
