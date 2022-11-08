@@ -32,7 +32,6 @@ class NavFragment : Fragment() {
         binding.main.setOnClickListener {
             (activity as MainActivity).changeFragment(1)
         }
-        nextSpot(userid)
 
 
 
@@ -42,6 +41,13 @@ class NavFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val pref = requireActivity().getSharedPreferences("idKey", 0)
+        var userid = pref.getString("id", "").toString()
+        nextSpot(userid)
     }
 
     fun nextSpot(userid: String) {
