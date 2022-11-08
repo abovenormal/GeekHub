@@ -1,9 +1,11 @@
 package com.example.geekhub
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
@@ -36,6 +39,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.nio.ByteBuffer
+import java.sql.Time
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -70,6 +74,7 @@ class CameraxFragment : Fragment() {
     //권한
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -261,13 +266,16 @@ class CameraxFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     fun send(){
+        var time = (requireActivity() as MainActivity).getTime()
         val body = RequestBody.create(MediaType.parse("image/*"),imageFile)
         val image = MultipartBody.Part.createFormData("image",imageFile.name,body)
         val userBody = RequestBody.create(MediaType.parse("text/plain"), userid)
         val spotBody = RequestBody.create(MediaType.parse("text/plain"), spot)
+        var timeBody = RequestBody.create(MediaType.parse("text/plain"), time)
 
-        val call = NetWorkClient.GetNetwork.sendimage(image,userBody,spotBody)
+        val call = NetWorkClient.GetNetwork.sendimage(image,userBody,spotBody,timeBody)
         call.enqueue(object : Callback<String>{
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Toast.makeText(requireActivity(),"전송을 실패했습니다.",Toast.LENGTH_SHORT).show()

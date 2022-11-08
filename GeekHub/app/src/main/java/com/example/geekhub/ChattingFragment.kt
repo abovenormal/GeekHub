@@ -12,12 +12,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.geekhub.databinding.FragmentChattingBinding
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import kotlin.reflect.typeOf
 
 class ChattingFragment : Fragment() {
 
     lateinit var binding : FragmentChattingBinding
     lateinit var listener : RecognitionListener
+    lateinit var client : OkHttpClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,9 +40,18 @@ class ChattingFragment : Fragment() {
             mRecognizer.setRecognitionListener(listener)
             mRecognizer.startListening((intent))
         }
+        client = OkHttpClient()
 
+        val request : Request = Request.Builder()
+            .url("http:k7c205.p.ssafy.io:8088/chat/test")
+            .build()
+        val listener: WebSocketListener = WebSocketListener()
+
+        client.newWebSocket(request, listener)
+        client.dispatcher().executorService().shutdown()
 
         return binding.root
+
     }
 
     override fun onResume() {

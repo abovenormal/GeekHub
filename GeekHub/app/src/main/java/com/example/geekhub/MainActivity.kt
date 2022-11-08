@@ -41,6 +41,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.nio.charset.StandardCharsets
+import java.time.LocalDate
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -177,6 +178,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         linearLayoutTmap.addView(tMapView)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onLocationChange(location: Location?) {
         if (location != null) {
             sendLocation()
@@ -319,7 +321,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 //        markerItem.visible = TMapMarkerItem.VISIBLE
         bitmap = BitmapFactory.decodeResource(this.resources, R.drawable.pin_r_m_1)
         markerItem.icon = bitmap
-        markerItem.setPosition(0.5F, 0.5F)
+        markerItem.setPosition(0F, 0F)
         tMapView.addMarkerItem("현위치", markerItem)
     }
 
@@ -348,7 +350,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
-    private fun getTime() : String {
+    fun getTime() : String {
         val now = System.currentTimeMillis()
         val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd.HH:mm", Locale.KOREA).format(now)
         val date : String = simpleDateFormat
