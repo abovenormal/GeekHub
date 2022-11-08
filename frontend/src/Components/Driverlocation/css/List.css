@@ -6,31 +6,53 @@
   display: flex;
   justify-content: space-between;
 }
+
+.list-username {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.list-header {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.list-body {
+  font-weight: bold;
+}
+
+.dif {
+  color: red;
+}
 .now-location {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 300px; 
-  height: 300px;
-  
+  width: 500px;
+  height: 500px;
 }
 
 .now-title {
   display: flex;
+  font-size: 1rem;
+  font-weight: bold;
   width: 100%;
   justify-content: space-between;
   align-items: center;
   height: 36.5px;
   margin: 0;
+  padding-left: 1rem;
 }
 
 .now-icon {
   display: flex;
   align-items: center;
-  margin-left: 1rem;
+  padding-right: 1rem;
   cursor: pointer;
 }
 .now-map {
+  max-width: 350px;
   width: 100%;
+  max-height: 350px;
   height: 100%;
 }

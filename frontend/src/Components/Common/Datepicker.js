@@ -8,7 +8,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 const Datepicker = props => {
   const selected = props.selected
   const setSelected = props.setSelected
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState('11-18-22');
   useEffect(()=> {
     if (value) {
     const nextInfo ={
