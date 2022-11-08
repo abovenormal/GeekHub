@@ -64,15 +64,19 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
                 spotResponseDto.setCount(deliveryLog.getCount());
                 spotResponseDto.setStatus(deliveryLog.getStatus());
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                Date date1 = null;
-                Date date2 = null;
-                try {
-                    date1 = sdf.parse(String.valueOf(deliveryLog.getExpectedTime()).substring(11));
-                    date2 = sdf.parse(String.valueOf(deliveryLog.getArrivedTime()).substring(11));
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                if(deliveryLog.getArrivedTime()==null) {
+                }else {
+                    Date date1 = null;
+                    Date date2 = null;
+                    try {
+                        date1 = sdf.parse(String.valueOf(deliveryLog.getExpectedTime()).substring(11));
+                        date2 = sdf.parse(String.valueOf(deliveryLog.getArrivedTime()).substring(11));
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    spotResponseDto.setDif((date2.getTime()-date1.getTime())/60000);
                 }
-                spotResponseDto.setDif((date2.getTime()-date1.getTime())/60000);
+
                 temp.add(spotResponseDto);
                 LOGGER.info(String.valueOf(deliveryLog.getExpectedTime()));
             }
@@ -104,6 +108,9 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
                 List<DeliveryLog> deliveryLogList = spotList(user.getUserIdx(), "2022-11-02");;
                 for(DeliveryLog deliveryLog:deliveryLogList){
                     if(deliveryLog.getStatus()==2){
+                        if(deliveryLog.getArrivedTime()==null){
+                            continue;
+                        }
                         totalSpot++;
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                         Date date1 = null;
