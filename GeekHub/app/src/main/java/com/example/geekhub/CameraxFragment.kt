@@ -1,8 +1,13 @@
 package com.example.geekhub
 
+import android.Manifest
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.util.Size
 import android.view.LayoutInflater
@@ -12,12 +17,14 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.geekhub.data.SpotBody
 import com.example.geekhub.databinding.FragmentCameraxBinding
 import com.example.geekhub.retrofit.NetWorkClient
 import com.example.geekhub.retrofit.NetWorkInterface
+import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -37,6 +44,7 @@ typealias LumaListener = (luma: Double) -> Unit
 private var imageCapture: ImageCapture? = null
 private lateinit var cameraExecutor: ExecutorService
 private const val TAG = "카메라"
+var snackbar : Snackbar? = null
 
 
 class CameraxFragment : Fragment() {
@@ -46,6 +54,19 @@ class CameraxFragment : Fragment() {
     lateinit var imageFile:File
     var userid :String? = "안바뀌었습니다"
     private var spot :String? = "안바뀌었습니다"
+
+
+    private val REQUEST_CODE_PERMISSIONS = 10
+    private val REQUIRED_PERMISSIONS =
+        mutableListOf (
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO
+        ).apply {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+        }.toTypedArray()
+    //권한
 
 
     override fun onCreateView(
@@ -59,9 +80,12 @@ class CameraxFragment : Fragment() {
         println("체크")
         println(spot)
         println(userid)
-        
 
-        startCamera()
+        requestPermission()
+
+
+
+
         // Set up the listeners for take photo and video capture buttons
         binding.imageCaptureButton.setOnClickListener { takePhoto() }
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -83,6 +107,35 @@ class CameraxFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // 권한이 거절된 상태
+            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.CAMERA)) {
+                // 1. 사용자가 승인 거절을 누른경우
+                println("승인거절")
+            } else {
+                println("다시표시하지않기 횩은 승인요청안함")
+                // 2. 사용자가 승인 거절과 동시에 다시 표시하지 않기 옵션을 선택한 경우
+                // 3. 혹은 아직 승인요청을 한적이 없는 경우
+                val snackBar = Snackbar.make(binding.permissionCheck, "카메라 권한을 사용하지 않으면 사진을 찍을 수 없어요!", Snackbar.LENGTH_LONG)
+                snackBar.setAction("허락하러 가기") {
+                    val intent = Intent()
+                    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                    val uri = Uri.fromParts("package", requireContext().packageName, null)
+                    intent.data = uri
+                    startActivity(intent)
+                }
+                snackBar.show()
+            }
+        } else {
+            // 4. 권한이 승인된 상태
+        }
+
+
+        startCamera()
     }
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
@@ -159,10 +212,10 @@ class CameraxFragment : Fragment() {
     }
 
 
-
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
+
     }
 
     override fun onAttach(context: Context) {
@@ -247,6 +300,21 @@ class CameraxFragment : Fragment() {
             image.close()
         }
     }
+
+    fun requestPermission() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+
+        ) {
+            ActivityCompat.requestPermissions(requireActivity(), REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+        }
+
+    }
+
+
+
 
 
 

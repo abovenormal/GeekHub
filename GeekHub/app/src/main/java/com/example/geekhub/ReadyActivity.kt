@@ -4,7 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geekhub.data.DeliveryList
@@ -20,13 +22,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ReadyActivity : AppCompatActivity() {
     lateinit var binding: ActivityReadyBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReadyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val pref = getSharedPreferences("idKey", 0)
+        var userid = pref.getString("id", "").toString()
+        getDeliveryList(userid.toInt())
+        println(userid.toInt())
 
-        getDeliveryList(1)
-
+        binding.deliveryFree.visibility = View.INVISIBLE
+        binding.readyTitleView.visibility = View.VISIBLE
+        binding.deliveryStartButton.visibility = View.VISIBLE
 
 
 
@@ -41,7 +49,6 @@ class ReadyActivity : AppCompatActivity() {
         val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:9013/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
-
         val call = callData.getlist(number)
 
         call.enqueue(object : Callback<DeliveryList> {
@@ -52,7 +59,19 @@ class ReadyActivity : AppCompatActivity() {
             override fun onResponse(call: Call<DeliveryList>, response: Response<DeliveryList>) {
                 println("됨")
                 val result = response.body()
-                println(result)
+                println(response.code())
+                if (result == null){
+                    return
+                }
+                if (result!!.del.size + result!!.rec.size == 0){
+                    binding.deliveryDobby.setImageResource(R.drawable.dobby)
+                    binding.deliveryFree.visibility = View.VISIBLE
+                    binding.readyTitleView.visibility = View.INVISIBLE
+                    binding.deliveryStartButton.visibility = View.INVISIBLE
+
+                    return
+                }
+
 
                 val readyDatas : ArrayList<DeliveryResponse> = ArrayList()
 
@@ -61,6 +80,8 @@ class ReadyActivity : AppCompatActivity() {
                 startRespons.status = 4
 
                 readyDatas.add(startRespons)
+
+
 
                 for (i in result!!.rec){
                         readyDatas.add(i)
@@ -89,9 +110,13 @@ class ReadyActivity : AppCompatActivity() {
 
 
     fun selectDeliveryList(datas: ArrayList<DeliveryResponse>){
-        val deliveryListAddapter = DeliveryListAddapter(datas)
-        binding.recyclerReady.adapter = deliveryListAddapter
-        binding.recyclerReady.layoutManager =  GridLayoutManager(this,4)
+
+        try {
+            val deliveryListAddapter = DeliveryListAddapter(datas)
+            binding.recyclerReady.adapter = deliveryListAddapter
+            binding.recyclerReady.layoutManager =  GridLayoutManager(this,4)
+        }catch(e:java.lang.Exception){
+        }
 
     }
 

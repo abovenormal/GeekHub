@@ -1,5 +1,6 @@
 package com.example.geekhub
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,12 +25,16 @@ import retrofit2.http.Body
 class DeliveryFragment : Fragment() {
     lateinit var binding : FragmentDeliveryBinding
     var nowState = 0
+    lateinit var userid :String
     
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val pref = requireActivity().getSharedPreferences("idKey",0)
+        userid = pref.getString("id", "").toString()
+        Log.d("체크입니다",userid)
         binding = FragmentDeliveryBinding.inflate(inflater,container,false)
         if (nowState == 0 ){
             binding.receiveLine.visibility = View.VISIBLE
@@ -77,7 +82,7 @@ class DeliveryFragment : Fragment() {
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
 
-        val call = callData.getlist(1)
+        val call = callData.getlist(userid.toInt())
         println("콜")
         println(call)
         call.enqueue(object : Callback<DeliveryList>{
@@ -92,7 +97,9 @@ class DeliveryFragment : Fragment() {
 
                 val deldatas : ArrayList<DeliveryResponse> = ArrayList()
                 var recdatas : ArrayList<DeliveryResponse> = ArrayList()
-
+                if (result == null){
+                    return
+                }
                 for (i in result!!.rec){
                     if(i.status !=0){
                         recdatas.add(i)
@@ -162,10 +169,10 @@ class DeliveryFragment : Fragment() {
                 holder.time.setTextColor(resources.getColor(R.color.gick_blue))
                 holder.main.setOnClickListener{
                     if (nowState == 0){
-                        (activity as MainActivity).sendData(NfcFragment(),number.spotName)
+                        (activity as MainActivity).sendData(NfcFragment(),number.spotName,number.spotIndex)
                     }
                     else{
-                        (activity as MainActivity).sendData(DeliveryDetailFragment(),number.spotName)
+                        (activity as MainActivity).sendData(DeliveryDetailFragment(),number.spotName,number.spotIndex)
                     }
                 }
 

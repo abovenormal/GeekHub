@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tMapTapi: TMapTapi
     private lateinit var tMapPointStart: TMapPoint
     private lateinit var tMapPointEnd: TMapPoint
-    var userid = "미래의유저pid"
     val bundle = Bundle()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -196,6 +195,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        val pref = getSharedPreferences("idKey", 0)
+        var userid = pref.getString("id", "").toString()
         val tagFromIntent: Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
         if (tagFromIntent != null) {
             val data = Ndef.get(tagFromIntent)
@@ -207,7 +208,7 @@ class MainActivity : AppCompatActivity() {
                 val convert = String(records.payload, StandardCharsets.UTF_8)
                 println("프린트값")
                 var spot = convert.substring(3)
-                sendUserId(spot)
+                sendUserId(spot,userid)
 
 
             }
@@ -249,10 +250,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun sendData(fragment: Fragment, title: String) {
-
+    fun sendData(fragment: Fragment, title: String,idx: String) {
         bundle.putString("title", title)
-//        class
+        bundle.putString("idx",idx)
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_container_view, fragment)
@@ -260,11 +260,13 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    fun sendUserId(spot: String) {
+    fun sendUserId(spot: String,userid:String) {
         val fragment = CameraxFragment()
         Log.d("스트링",spot)
         bundle.putString("spot", spot)
         bundle.putString("userid",userid)
+        println("유저아이디체크")
+        println(userid)
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction().add(R.id.camera_view,fragment).commit()
 
