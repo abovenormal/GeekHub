@@ -58,12 +58,14 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     private var gps : TMapGpsManager? = null
     private var nextSpotInfo : NextSpotInfo? = null
     val bundle = Bundle()
-
+    lateinit var userid: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initialize()
+        val pref = getSharedPreferences("idKey", 0)
+        var userid = pref.getString("id", "").toString()
+        initialize(userid)
         val permissionCheck : Int = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
         if (permissionCheck == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this,
@@ -171,13 +173,13 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 //        //do something with tagFromIntent
 //    }
 
-    private fun initialize() {
+    private fun initialize(userid: String) {
         tMapView = TMapView(this)
         tMapView.setSKTMapApiKey("l7xx9f33576ed47042d3ac571c8a70c73e31")
         val linearLayoutTmap: LinearLayout =
             findViewById<LinearLayout>(R.id.linearLayoutTmap)
         linearLayoutTmap.addView(tMapView)
-        next()
+        next(userid)
     }
 
     override fun onLocationChange(location: Location?) {
@@ -369,11 +371,11 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         return date
     }
 
-    private fun next() {
+    fun next(userid: String) {
         val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8000/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
-        val call = callData.nextWork(1)
+        val call = callData.nextWork(userid.toInt())
         call.enqueue(object : Callback<NextSpotInfo>{
             override fun onFailure(call: Call<NextSpotInfo>, t: Throwable) {
                 Log.e("에러났다", t.toString())
@@ -382,6 +384,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             override fun onResponse(call: Call<NextSpotInfo>, response: Response<NextSpotInfo>) {
                 println("여기" + response.body()?.spotName)
                 nextSpotInfo = response.body()
+
             }
         })
     }

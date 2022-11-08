@@ -154,9 +154,6 @@ class DeliveryFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             // status 0 : 내용없음  1 : 배달해야함    2 : 완료
-            println("뷰뷰")
-            println(datas[position].status)
-//            if(datas[position].status != 0){
             val number = datas[position]
 
 
@@ -188,7 +185,9 @@ class DeliveryFragment : Fragment() {
         fun visibleList(number: DeliveryResponse,holder:ViewHolder){
             holder.title.text = number.spotName
             holder.count.text =  "수량 : ${number.count}개"
-            holder.time.text = number.expected_time
+            holder.time.text = number.expectedTime
+            println("빰")
+            println(number.expectedTime)
             holder.title.isSelected = true
         }
 

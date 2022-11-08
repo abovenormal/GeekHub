@@ -163,7 +163,7 @@ class ReadyActivity : AppCompatActivity() {
                 holder.image.setColorFilter(R.color.gick_blue)
                 println("짜잔도착")
             }else{
-                holder.time.text = number.expected_time
+                holder.time.text = number.expectedTime
                 holder.image.setImageResource(R.drawable.go_arrow)
                 holder.image.setColorFilter(R.color.gick_blue)
             }
