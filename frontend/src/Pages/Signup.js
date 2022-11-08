@@ -12,7 +12,6 @@ import { duplicateId } from "../api/UserAPI";
 import Toast from "../utils/Toast";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { apiInstance } from "../api/index";
-import axios from 'axios';
 const Signup = () => {
   const [info, setInfo] = useState({
     userName: "",

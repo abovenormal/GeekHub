@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
-import Input from "@mui/material/Input";
 import logo from "../asset/image/logo.png";
 import Toast from "../utils/Toast";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +11,6 @@ import "./css/Login.css";
 const Login = () => {
   const api = apiInstance();
   const navigate = useNavigate();
-  const MySwal = withReactContent(Swal);
   const isPc = useMediaQuery({
     query : "(min-width:1024px)"
   });

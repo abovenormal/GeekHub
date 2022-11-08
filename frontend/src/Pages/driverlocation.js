@@ -41,6 +41,7 @@ const Driverlocation = () => {
         setListData(res.data)
       }
       getData();}
+      console.log(selected)
     }, [selected])
       
 

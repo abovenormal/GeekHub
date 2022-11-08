@@ -8,24 +8,38 @@
 .pie-chart-container {
   display: flex;
   flex-direction: column;
-  width: 500px;
-  height: 350px;
+  overflow: auto;
+  /* overflow: scroll; */
+  width: 1000px;
+  height: 320px;
   border-radius: 12px;
   background-color: #fff;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   margin: 1rem;
 }
+
+.pie-chart-container::-webkit-scrollbar {
+	display:none
+}
 .pie-chart-body {
+  display: flex;
+  align-items: center;
+  width: 5000px;
+  height: 100%;
+  min-height: 220px;
+  
+}
+.pie-chart {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 300px;
-  height: 220px;
-}
-.pie-chart {
-
-  display: flex;
-
+  justify-content: center;
+  width: 400px;
+  height: 100%;
+  max-height: 200px;
+  color: black;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .pie-chart-title {

@@ -137,8 +137,8 @@ const List = (props) => {
                             <div className="list-body">{taskRow.spotName}</div>
                           </TableCell>
                           <TableCell><div className="list-body">{taskRow.expectedTime.slice(11,16)}</div></TableCell>
-                          <TableCell><div className="list-body">{taskRow.arrivedTime.slice(11,16)}</div></TableCell>
-                          <TableCell><div className={`list-body + ${(taskRow.dif > 0) ? "dif" : ""}`}>{taskRow.dif}분</div></TableCell>
+                          <TableCell><div className="list-body">{(taskRow.arrivedTime !== null) ? taskRow.arrivedTime.slice(11,16) : ""}</div></TableCell>
+                          <TableCell><div className={`list-body + ${(taskRow.dif > 0) ? "dif" : ""}`}>{(taskRow.arrivedTime !== null) ? `${taskRow.dif}분` : ""}</div></TableCell>
                           <TableCell>
                             <div
                               className="pickupPic"
