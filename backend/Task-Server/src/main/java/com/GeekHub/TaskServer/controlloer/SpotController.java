@@ -1,5 +1,6 @@
 package com.GeekHub.TaskServer.controlloer;
 
+import com.GeekHub.TaskServer.dto.request.ImgRequestDto;
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
 import com.GeekHub.TaskServer.dto.response.*;
@@ -110,6 +111,17 @@ public class SpotController {
         } catch (Exception e) {
             throw new RuntimeException();
         }
+    }
+
+    @PostMapping("/img")
+    public ResponseEntity<String> saveImg(@RequestBody ImgRequestDto imgRequestDto) {
+        try {
+            SpotService.saveImg(imgRequestDto);
+            return ResponseEntity.status(HttpStatus.OK).body("성공");
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+
     }
 
 }

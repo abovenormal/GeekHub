@@ -1,5 +1,6 @@
 package com.GeekHub.TaskServer.service;
 
+import com.GeekHub.TaskServer.dto.request.ImgRequestDto;
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
 import com.GeekHub.TaskServer.dto.response.*;
@@ -18,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -251,6 +254,26 @@ public class SpotServiceImpl implements SpotService {
         } catch (Exception e) {
             throw new Exception();
         }
+    }
+
+    @Override
+    @Transactional
+    public void saveImg(ImgRequestDto imgRequestDto) throws Exception{
+        try {
+            Spot spot = spotRepository.findSpotByUserIdxAndSpotIdx(Long.parseLong(imgRequestDto.getUserId()), Long.parseLong(imgRequestDto.getSpotId()));
+            spot.setImageUrl(imgRequestDto.getS3PictureUrl());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH:mm", Locale.KOREA);
+            log.info(imgRequestDto.getDeliveryTime());
+            LocalDateTime dateTime = LocalDateTime.parse(imgRequestDto.getDeliveryTime(), formatter);
+            log.info("안나오니?");
+            log.info(dateTime.toString());
+            log.info("진짜??");
+            spot.setArrivedTime(dateTime);
+        }catch (Exception e) {
+            throw new Exception();
+        }
+
+
     }
 }
 

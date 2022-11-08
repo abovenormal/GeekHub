@@ -1,5 +1,6 @@
 package com.GeekHub.TaskServer.service;
 
+import com.GeekHub.TaskServer.dto.request.ImgRequestDto;
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
 import com.GeekHub.TaskServer.dto.response.*;
@@ -21,4 +22,6 @@ public interface SpotService {
     void workUpdate(Long spotIdx) throws Exception;
 
     Optional<NextSpotDto> nextWork(Long driverIdx) throws Exception;
+
+    void saveImg(ImgRequestDto imgRequestDto) throws Exception;
 }
