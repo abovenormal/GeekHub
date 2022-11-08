@@ -107,7 +107,7 @@ public class SpotServiceImpl implements SpotService {
                     workResponseDto.setExpectedTime(time);
                     workResponseDto.setCount(spot.getCount());
                     workResponseDto.setStatus(spot.getStatus());
-                    workResponseDto.setImgUrl(spotImg.getImgUrl());
+                    workResponseDto.setIconUrl(spotImg.getImgUrl());
                     result.add(workResponseDto);
                 }
             }
