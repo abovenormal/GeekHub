@@ -20,6 +20,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.geekhub.data.SpotBody
 import com.example.geekhub.databinding.FragmentCameraxBinding
 import com.example.geekhub.retrofit.NetWorkClient
@@ -274,7 +275,11 @@ class CameraxFragment : Fragment() {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 val result: String? =response.body()
                 finishFragment()
-                (activity as MainActivity).changeFragment(1)
+                (activity as MainActivity).next()
+                (activity as MainActivity).findPath()
+                (activity as MainActivity).clearBackStack()
+//
+//            (activity as MainActivity).changeFragment(1)
 
             }
         })}

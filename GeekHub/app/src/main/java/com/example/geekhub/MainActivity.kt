@@ -112,20 +112,15 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 android.Manifest.permission.ACCESS_COARSE_LOCATION
             )
             ActivityCompat.requestPermissions(this, permissions, MY_PERMISSION_ACCESS_ALL)
-
         } // 퍼미션
 
 
         binding.goChatting.setOnClickListener {
             moveFragment(ChattingFragment())
-
         }
         // 채팅버튼
-
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
-
         //nfc
-
     }
 
     public override fun onPause() {
@@ -135,6 +130,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     public override fun onResume() {
         super.onResume()
+        next()
 
         val intent: Intent = Intent(this, javaClass).apply {
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -148,7 +144,6 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             } catch (e: IntentFilter.MalformedMimeTypeException) {
                 throw RuntimeException("fail", e)
             }
-
         }
 
         binding.navButton.setOnClickListener {
@@ -177,7 +172,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         val linearLayoutTmap: LinearLayout =
             findViewById<LinearLayout>(R.id.linearLayoutTmap)
         linearLayoutTmap.addView(tMapView)
-        next()
+//        next()
     }
 
     override fun onLocationChange(location: Location?) {
@@ -185,8 +180,8 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             sendLocation()
             addMarker()
             tMapPointStart = gps!!.location
-            tMapView.setLocationPoint(tMapPointStart.longitude, tMapPointStart.latitude)
-            tMapView.setIconVisibility(true)
+//            tMapView.setLocationPoint(tMapPointStart.longitude, tMapPointStart.latitude)
+//            tMapView.setIconVisibility(true)
             tMapView.setCenterPoint(tMapPointStart.longitude, tMapPointStart.latitude)
             println(nextSpotInfo!!.spotName)
             findPath()
@@ -222,10 +217,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                     add<CameraxFragment>(R.id.camera_view)
                 }
             }
-
         }
-
-
     }
 
     private fun moveFragment(fragment: Fragment) {
@@ -259,15 +251,13 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 println("프린트값")
                 var spot = convert.substring(3)
                 sendUserId(spot,userid)
-
-
             }
 
         }
 
     }
 
-    private fun findPath() {
+    fun findPath() {
         tMapPointEnd = TMapPoint(nextSpotInfo!!.lat, nextSpotInfo!!.lon)
         thread {
             try {
@@ -318,15 +308,13 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         println(userid)
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction().add(R.id.camera_view,fragment).commit()
-
-
     }
 
     private fun addMarker() {
         var markerItem : TMapMarkerItem = TMapMarkerItem()
         markerItem.tMapPoint = tMapPointStart
         markerItem.name = "현위치"
-        markerItem.visible = TMapMarkerItem.VISIBLE
+//        markerItem.visible = TMapMarkerItem.VISIBLE
         bitmap = BitmapFactory.decodeResource(this.resources, R.drawable.pin_r_m_1)
         markerItem.icon = bitmap
         markerItem.setPosition(0.5F, 0.5F)
@@ -342,17 +330,13 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         val locationBody = LocationInfo()
         locationBody.driver = "1"
         locationBody.longitude = tMapPointStart.longitude.toString()
-        println(tMapPointStart.longitude)
-        println(tMapPointStart.latitude)
         locationBody.latitude = tMapPointStart.latitude.toString()
         locationBody.timestamp = getTime()
-        println(locationBody.timestamp)
 
         val call = callData.sendLocationLog(locationBody)
         call.enqueue(object : Callback<String?>{
             override fun onFailure(call: Call<String?>, t: Throwable) {
                 Log.e("에러났다", t.toString())
-                println("로그 떳냐")
             }
 
             override fun onResponse(call: Call<String?>, response: Response<String?>) {
@@ -369,7 +353,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         return date
     }
 
-    private fun next() {
+    fun next() {
         val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8000/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
@@ -380,8 +364,8 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             }
 
             override fun onResponse(call: Call<NextSpotInfo>, response: Response<NextSpotInfo>) {
-                println("여기" + response.body()?.spotName)
                 nextSpotInfo = response.body()
+                tMapPointEnd = TMapPoint(response.body()!!.lat, response.body()!!.lon)
             }
         })
     }
