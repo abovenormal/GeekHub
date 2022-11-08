@@ -11,7 +11,6 @@ import Log from "./Pages/Log";
 import Login from "./Pages/Login";
 import User from "./Pages/User";
 import Signup from "./Pages/Signup";
-import PageNotFound from "./Pages/404";
 import './App.css';
 
 

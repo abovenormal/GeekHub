@@ -3,7 +3,6 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { getDriverList } from "../../api/GetDriverList";
 const Dropdown = props => {
   const selected = props.selected
   const setSelected = props.setSelected
@@ -43,7 +42,7 @@ const Dropdown = props => {
   const schoolSuwon = ["성균관대학교(자연과학캠퍼스)"];
   const schoolIncheon = ["송도 글로벌캠퍼스", "연세대학교(송도)"];
 
-  const schoolGwangju = ["광주과학기술원", "전남대학교"];
+  const schoolGwangju = ["광주과학기술원", "전남대학교", "SSAFY"];
   return (
     <div>
       <FormControl variant="standard" sx={{ m: 1, minWidth: 100 }}>
