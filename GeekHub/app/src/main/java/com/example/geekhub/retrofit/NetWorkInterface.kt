@@ -1,6 +1,9 @@
 package com.example.geekhub.retrofit
 
 import com.example.geekhub.data.DeliveryList
+
+import com.example.geekhub.data.LocationInfo
+import com.example.geekhub.data.NextSpotInfo
 import com.example.geekhub.data.LoginRequest
 import com.example.geekhub.data.LoginResponse
 import com.example.geekhub.data.SpotBody
@@ -27,7 +30,14 @@ interface NetWorkInterface {
     fun changestate(
         @Body spotId : SpotBody
     ):Call<String>
-
+    @POST("location/sendLog")
+    fun sendLocationLog(
+        @Body locationInfo : LocationInfo
+    ) :Call<String?>
+    @GET("spot/nextInfo/{driverIdx}")
+    fun nextWork(
+        @Path("driverIdx") driverIdx : Int
+    ):Call<NextSpotInfo>
     @POST("auth/login")
     fun login(
         @Body loginRequest : LoginRequest
