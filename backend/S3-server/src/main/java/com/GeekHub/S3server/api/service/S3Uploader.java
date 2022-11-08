@@ -1,6 +1,7 @@
 package com.GeekHub.S3server.api.service;
 
 import com.GeekHub.S3server.api.request.UploadFileReq;
+import com.GeekHub.S3server.api.response.UploadFileRes;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -27,9 +28,12 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;
 
-    public String uploadFile(UploadFileReq uploadFileReq) throws IOException {
+    public UploadFileRes uploadFile(UploadFileReq uploadFileReq) throws IOException {
         log.info("Start uploading picture by : " + uploadFileReq.getUserId());
         log.info("Start uploading picture from : " + uploadFileReq.getSpotId());
+
+        UploadFileRes uploadFileRes = new UploadFileRes();
+
         String currentUserId = uploadFileReq.getUserId();
         MultipartFile curImage = uploadFileReq.getImage();
 
@@ -48,12 +52,13 @@ public class S3Uploader {
 
         String imagePath = amazonS3Client.getUrl(bucket, originalName).toString();
 
-        /*
-         * url 저장하는 코드 작성
-         * */
+        uploadFileRes.setS3PictureUrl(imagePath);
+        uploadFileRes.setUserId(currentUserId);
+        uploadFileRes.setSpotId(uploadFileReq.getSpotId());
+        uploadFileRes.setDeliveryTime(uploadFileReq.getDeliveryTime());
 
         log.info("Picture save complete");
-        return imagePath;
+        return uploadFileRes;
     }
 
     // 파일의 이름을 암호화
@@ -69,9 +74,4 @@ public class S3Uploader {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일(" + fileName + ") 입니다.");
         }
     }
-
-//    private String setFileNameAsDriver(){
-//     return getName
-//    }
-
 }
