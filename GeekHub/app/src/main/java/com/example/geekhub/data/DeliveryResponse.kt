@@ -5,4 +5,5 @@ class DeliveryResponse {
     var spotName = ""
     var count = ""
     var expected_time = ""
+    var spotIndex = ""
 }

@@ -51,7 +51,7 @@
         </provider>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".ReadyActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -79,7 +79,7 @@
                 android:resource="@xml/tech_list" />
         </activity>
         <activity
-            android:name=".ReadyActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
