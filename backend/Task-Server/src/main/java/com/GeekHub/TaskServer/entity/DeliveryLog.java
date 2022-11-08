@@ -1,23 +1,23 @@
 package com.GeekHub.TaskServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
-@Builder
+@Entity @Getter
+@Setter @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "spot")
-public class Spot {
+@Table(name = "DELIVERY_LOG")
+public class DeliveryLog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private long logIdx;
+
     @Column
     private long spotIdx;
 
@@ -53,5 +53,6 @@ public class Spot {
 
     @Column
     private long userIdx;
+
 
 }
