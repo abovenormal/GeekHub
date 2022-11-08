@@ -4,8 +4,9 @@ import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
 import com.GeekHub.TaskServer.dto.response.*;
 import com.GeekHub.TaskServer.entity.SpotCategory;
-import com.GeekHub.TaskServer.service.SpotServie;
-import com.GeekHub.TaskServer.service.SpotServieImpl;
+import com.GeekHub.TaskServer.service.DeliveryLogService;
+import com.GeekHub.TaskServer.service.SpotService;
+import com.GeekHub.TaskServer.service.SpotServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -23,9 +24,11 @@ import java.util.Map;
 @RequestMapping("/spot")
 @RequiredArgsConstructor
 public class SpotController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpotServieImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpotServiceImpl.class);
 
-    private final SpotServie SpotServie;
+    private final SpotService SpotService;
+
+    private final DeliveryLogService deliveryLogService;
 
     @GetMapping("/test")
     public String test(){
@@ -36,7 +39,7 @@ public class SpotController {
     public ResponseEntity<List<SpotResponseDto>> getSpotAll(){
         List<SpotResponseDto> result = null;
         try {
-            result = SpotServie.getSpotAll();
+            result = SpotService.getSpotAll();
         }catch (Exception e){
             throw new RuntimeException();
         }
@@ -47,7 +50,7 @@ public class SpotController {
     public ResponseEntity<SpotResponseDto> getSpot(@PathVariable("spot_idx") Long spotIdx){
         SpotResponseDto result=null;
         try {
-            result = SpotServie.getSpot(spotIdx);
+            result = SpotService.getSpot(spotIdx);
         }catch (Exception e){
             throw  new RuntimeException();
         }
@@ -57,7 +60,7 @@ public class SpotController {
     @PostMapping
     public ResponseEntity<String> createSpot(@RequestBody SpotRequestDto spotRequestDto){
         try {
-           SpotServie.createSpot(spotRequestDto);
+           SpotService.createSpot(spotRequestDto);
          }catch (Exception e){
             throw new RuntimeException();
         }
@@ -66,14 +69,14 @@ public class SpotController {
 
     @PostMapping("/log")
     public ResponseEntity<List<SpotLogDto>> sendLog(@RequestBody LogRequestDto logRequestDto) throws Exception {
-        List<SpotLogDto> list = SpotServie.log(logRequestDto);
+        List<SpotLogDto> list = deliveryLogService.log(logRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(list);
     }
 
     @GetMapping("/success")
     public ResponseEntity<List<SchoolSuccessDto>> getSuccess() throws Exception {
-        List<SchoolSuccessDto> list = SpotServie.getSuccess();
+        List<SchoolSuccessDto> list = deliveryLogService.getSuccess();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(list);
     }
@@ -81,9 +84,9 @@ public class SpotController {
     @GetMapping("/work/{driverIdx}")
     public ResponseEntity<HashMap> sendWork(@PathVariable("driverIdx") Long driverIdx) throws Exception {
         HashMap<String, Object> workList = new HashMap<>();
-        List<WorkResponseDto> receiveList = SpotServie.work(driverIdx, SpotCategory.STORE);
+        List<WorkResponseDto> receiveList = SpotService.work(driverIdx, SpotCategory.STORE);
         workList.put("rec", receiveList);
-        List<WorkResponseDto> deleveryList = SpotServie.work(driverIdx, SpotCategory.DESTINATION);
+        List<WorkResponseDto> deleveryList = SpotService.work(driverIdx, SpotCategory.DESTINATION);
         workList.put("del", deleveryList);
         return ResponseEntity.status(HttpStatus.OK).body(workList);
     }
@@ -91,7 +94,7 @@ public class SpotController {
     @PutMapping("/update")
     public ResponseEntity<String> workUpdate(@RequestBody Map<String, String> spotId) {
         try {
-            SpotServie.workUpdate(Long.valueOf(spotId.get("spotId")));
+            SpotService.workUpdate(Long.valueOf(spotId.get("spotId")));
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -102,7 +105,7 @@ public class SpotController {
     @GetMapping("/nextInfo/{driverIdx}")
     public ResponseEntity<NextSpotDto> nextWork(@PathVariable("driverIdx") long driverIdx) {
         try {
-            NextSpotDto result = SpotServie.nextWork(driverIdx).orElse(null);
+            NextSpotDto result = SpotService.nextWork(driverIdx).orElse(null);
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
             throw new RuntimeException();
