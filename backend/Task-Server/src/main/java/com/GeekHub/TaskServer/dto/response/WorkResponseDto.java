@@ -17,4 +17,5 @@ public class WorkResponseDto {
     private String expectedTime;
     private int count;
     private int status;
+    private String imgUrl;
 }

@@ -6,7 +6,9 @@ import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
 import com.GeekHub.TaskServer.dto.response.*;
 import com.GeekHub.TaskServer.entity.Spot;
 import com.GeekHub.TaskServer.entity.SpotCategory;
+import com.GeekHub.TaskServer.entity.SpotImg;
 import com.GeekHub.TaskServer.entity.User;
+import com.GeekHub.TaskServer.repository.SpotImgRepository;
 import com.GeekHub.TaskServer.repository.SpotRepository;
 import com.GeekHub.TaskServer.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,8 @@ public class SpotServiceImpl implements SpotService {
     private final SpotRepository spotRepository;
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private final SpotImgRepository spotImgRepository;
 
 
     @Override
@@ -93,6 +97,7 @@ public class SpotServiceImpl implements SpotService {
             String  time = "";
             if (searchList != null) {
                 for (Spot spot : searchList) {
+                    SpotImg spotImg = spotImgRepository.findSpotImgBySpotName(spot.getSpotName()).orElse(null);
                     int hour = spot.getExpectedTime().getHour();
                     int minute = spot.getExpectedTime().getMinute();
                     time = hour + "시" + minute + "분";
@@ -102,6 +107,7 @@ public class SpotServiceImpl implements SpotService {
                     workResponseDto.setExpectedTime(time);
                     workResponseDto.setCount(spot.getCount());
                     workResponseDto.setStatus(spot.getStatus());
+                    workResponseDto.setImgUrl(spotImg.getImgUrl());
                     result.add(workResponseDto);
                 }
             }
