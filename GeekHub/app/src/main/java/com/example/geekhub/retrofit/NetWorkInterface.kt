@@ -1,6 +1,8 @@
 package com.example.geekhub.retrofit
 
 import com.example.geekhub.data.DeliveryList
+import com.example.geekhub.data.LocationInfo
+import com.example.geekhub.data.NextSpotInfo
 import com.example.geekhub.data.SpotBody
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -25,4 +27,12 @@ interface NetWorkInterface {
     fun changestate(
         @Body spotId : SpotBody
     ):Call<String>
+    @POST("location/sendLog")
+    fun sendLocationLog(
+        @Body locationInfo : LocationInfo
+    ) :Call<String?>
+    @GET("spot/nextInfo/{driverIdx}")
+    fun nextWork(
+        @Path("driverIdx") driverIdx : Int
+    ):Call<NextSpotInfo>
 }

@@ -1,40 +1,52 @@
 package com.example.geekhub
 
+import android.Manifest
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.icu.text.SimpleDateFormat
 import android.location.Location
 import android.net.Uri
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.Ndef
 import android.nfc.tech.NfcF
+import android.os.Build
 import android.os.Bundle
-import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import com.example.geekhub.data.LocationInfo
+import com.example.geekhub.data.NextSpotInfo
 import com.example.geekhub.databinding.ActivityMainBinding
+import com.example.geekhub.retrofit.NetWorkInterface
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.skt.Tmap.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.nio.charset.StandardCharsets
+import java.util.*
 import kotlin.concurrent.thread
-import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallback {
+
     private lateinit var binding: ActivityMainBinding
     private var nfcAdapter: NfcAdapter? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -42,32 +54,39 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tMapTapi: TMapTapi
     private lateinit var tMapPointStart: TMapPoint
     private lateinit var tMapPointEnd: TMapPoint
-    private lateinit var markerItem: TMapMarkerItem
     private lateinit var bitmap: Bitmap
+    private var gps : TMapGpsManager? = null
+    private var nextSpotInfo : NextSpotInfo? = null
     var userid = "미래의유저pid"
     val bundle = Bundle()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initialize()
+        val permissionCheck : Int = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (permissionCheck == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0);
+        }
+        gps = TMapGpsManager(this)
+        gps!!.minTime = 10000
+        gps!!.minDistance = 0F
+        gps!!.provider = TMapGpsManager.GPS_PROVIDER
+        gps!!.OpenGps()
+        gps!!.provider = TMapGpsManager.NETWORK_PROVIDER
+        gps!!.OpenGps()
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        println("1111111111111111111")
         fusedLocationClient.lastLocation.addOnSuccessListener {
             location : Location? ->
             if (location != null) {
                 tMapPointStart = TMapPoint(location.latitude, location.longitude)
-                tMapView.setCenterPoint(location.latitude, location.longitude)
-                markerItem.tMapPoint = tMapPointStart
-                markerItem.name = "현위치"
-                markerItem.visible = TMapMarkerItem.VISIBLE
-                bitmap = BitmapFactory.decodeResource(Re, R.drawable.placeholder)
-                markerItem.icon = bitmap
-                markerItem.setPosition(0.5F, 1.0F)
-                tMapView.addMarkerItem("현위치", markerItem)
+                tMapView.setCenterPoint(tMapPointStart.longitude, tMapPointStart.latitude)
+                }
             }
-        }
-        println("22222222222222222222")
+
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
@@ -133,13 +152,8 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        val rootBtn = findViewById<Button>(R.id.linebutton)
-
         binding.navButton.setOnClickListener {
             goNav()
-        }
-        rootBtn.setOnClickListener {
-            findPath()
         }
 
         var intentFiltersArray = arrayOf(ndef)
@@ -164,6 +178,20 @@ class MainActivity : AppCompatActivity() {
         val linearLayoutTmap: LinearLayout =
             findViewById<LinearLayout>(R.id.linearLayoutTmap)
         linearLayoutTmap.addView(tMapView)
+        next()
+    }
+
+    override fun onLocationChange(location: Location?) {
+        if (location != null) {
+            sendLocation()
+            addMarker()
+            tMapPointStart = gps!!.location
+            tMapView.setLocationPoint(tMapPointStart.longitude, tMapPointStart.latitude)
+            tMapView.setIconVisibility(true)
+            tMapView.setCenterPoint(tMapPointStart.longitude, tMapPointStart.latitude)
+            println(nextSpotInfo!!.spotName)
+            findPath()
+        }
     }
 
 
@@ -239,8 +267,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun findPath() {
-        tMapPointStart = TMapPoint(35.178013, 126.90464)
-        tMapPointEnd = TMapPoint(35.17764128, 126.9042024)
+        tMapPointEnd = TMapPoint(nextSpotInfo!!.lat, nextSpotInfo!!.lon)
         thread {
             try {
                 var tMapPolyLine: TMapPolyLine = TMapData().findPathDataWithType(
@@ -248,8 +275,7 @@ class MainActivity : AppCompatActivity() {
                     tMapPointStart,
                     tMapPointEnd
                 )
-                println(tMapPolyLine.lineColor)
-                tMapPolyLine.lineColor = Color.RED
+                tMapPolyLine.lineColor = Color.BLUE
                 tMapPolyLine.setLineWidth(2F)
                 tMapView.addTMapPolyLine("Line1", tMapPolyLine)
             } catch (e: Exception) {
@@ -261,9 +287,10 @@ class MainActivity : AppCompatActivity() {
     private fun goNav() {
         tMapTapi = TMapTapi(this)
         if (tMapTapi.isTmapApplicationInstalled) {
-            tMapTapi.invokeRoute("테스트 목적지", 126.90303593521712F, 35.17764936F)
+            tMapTapi.invokeRoute(nextSpotInfo!!.spotName, nextSpotInfo!!.lon.toFloat(),
+                nextSpotInfo!!.lat.toFloat()
+            )
         } else {
-            println("설치 안됨")
             var uri = Uri.parse(tMapTapi.tMapDownUrl[0])
             var intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
@@ -293,6 +320,69 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun addMarker() {
+        var markerItem : TMapMarkerItem = TMapMarkerItem()
+        markerItem.tMapPoint = tMapPointStart
+        markerItem.name = "현위치"
+        markerItem.visible = TMapMarkerItem.VISIBLE
+        bitmap = BitmapFactory.decodeResource(this.resources, R.drawable.pin_r_m_1)
+        markerItem.icon = bitmap
+        markerItem.setPosition(0.5F, 0.5F)
+        tMapView.addMarkerItem("현위치", markerItem)
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun sendLocation() {
+        val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8000/")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val callData = retrofit.create(NetWorkInterface::class.java)
+        val locationBody = LocationInfo()
+        locationBody.driver = "1"
+        locationBody.longitude = tMapPointStart.longitude.toString()
+        println(tMapPointStart.longitude)
+        println(tMapPointStart.latitude)
+        locationBody.latitude = tMapPointStart.latitude.toString()
+        locationBody.timestamp = getTime()
+        println(locationBody.timestamp)
+
+        val call = callData.sendLocationLog(locationBody)
+        call.enqueue(object : Callback<String?>{
+            override fun onFailure(call: Call<String?>, t: Throwable) {
+                Log.e("에러났다", t.toString())
+                println("로그 떳냐")
+            }
+
+            override fun onResponse(call: Call<String?>, response: Response<String?>) {
+                println("에러 안남")
+            }
+        })
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun getTime() : String {
+        val now = System.currentTimeMillis()
+        val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd.HH:mm", Locale.KOREA).format(now)
+        val date : String = simpleDateFormat
+        return date
+    }
+
+    private fun next() {
+        val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8000/")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val callData = retrofit.create(NetWorkInterface::class.java)
+        val call = callData.nextWork(1)
+        call.enqueue(object : Callback<NextSpotInfo>{
+            override fun onFailure(call: Call<NextSpotInfo>, t: Throwable) {
+                Log.e("에러났다", t.toString())
+            }
+
+            override fun onResponse(call: Call<NextSpotInfo>, response: Response<NextSpotInfo>) {
+                println("여기" + response.body()?.spotName)
+                nextSpotInfo = response.body()
+            }
+        })
+    }
 }
 
 
