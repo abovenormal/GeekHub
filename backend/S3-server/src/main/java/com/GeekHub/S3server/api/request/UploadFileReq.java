@@ -13,5 +13,6 @@ public class UploadFileReq {
     MultipartFile image;
     String userId;
     String spotId;
+    String deliveryTime;
 
 }
