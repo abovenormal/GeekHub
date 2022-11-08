@@ -6,4 +6,5 @@ class DeliveryResponse {
     var count = ""
     var expectedTime = ""
     var spotIndex = ""
+    var iconUrl = ""
 }
