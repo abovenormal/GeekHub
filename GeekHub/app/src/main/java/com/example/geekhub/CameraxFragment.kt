@@ -53,7 +53,7 @@ class CameraxFragment : Fragment() {
     private lateinit var callback: OnBackPressedCallback
     lateinit var savedUri:Uri
     lateinit var imageFile:File
-    var userid :String? = "안바뀌었습니다"
+    var userid :String? = null
     private var spot :String? = "안바뀌었습니다"
 
 
@@ -275,7 +275,7 @@ class CameraxFragment : Fragment() {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 val result: String? =response.body()
                 finishFragment()
-                (activity as MainActivity).next()
+                (activity as MainActivity).next(userid!!)
                 (activity as MainActivity).findPath()
                 (activity as MainActivity).clearBackStack()
 //

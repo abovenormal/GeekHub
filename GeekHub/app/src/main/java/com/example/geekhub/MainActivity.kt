@@ -58,34 +58,15 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     private var gps : TMapGpsManager? = null
     private var nextSpotInfo : NextSpotInfo? = null
     val bundle = Bundle()
-
+    lateinit var userid: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initialize()
-        val permissionCheck : Int = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        if (permissionCheck == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0);
-        }
-        gps = TMapGpsManager(this)
-        gps!!.minTime = 10000
-        gps!!.minDistance = 0F
-        gps!!.provider = TMapGpsManager.GPS_PROVIDER
-        gps!!.OpenGps()
-        gps!!.provider = TMapGpsManager.NETWORK_PROVIDER
-        gps!!.OpenGps()
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        fusedLocationClient.lastLocation.addOnSuccessListener {
-            location : Location? ->
-            if (location != null) {
-                tMapPointStart = TMapPoint(location.latitude, location.longitude)
-                tMapView.setCenterPoint(tMapPointStart.longitude, tMapPointStart.latitude)
-                }
-            }
-
+        val pref = getSharedPreferences("idKey", 0)
+        var userid = pref.getString("id", "").toString()
+        next(userid)
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
@@ -114,6 +95,29 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             ActivityCompat.requestPermissions(this, permissions, MY_PERMISSION_ACCESS_ALL)
         } // 퍼미션
 
+        initialize(userid)
+        val permissionCheck : Int = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (permissionCheck == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0);
+        }
+        gps = TMapGpsManager(this)
+        gps!!.minTime = 10000
+        gps!!.minDistance = 0F
+        gps!!.provider = TMapGpsManager.GPS_PROVIDER
+        gps!!.OpenGps()
+        gps!!.provider = TMapGpsManager.NETWORK_PROVIDER
+        gps!!.OpenGps()
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient.lastLocation.addOnSuccessListener {
+                location : Location? ->
+            if (location != null) {
+                tMapPointStart = TMapPoint(location.latitude, location.longitude)
+                tMapView.setCenterPoint(tMapPointStart.longitude, tMapPointStart.latitude)
+            }
+        }
+
 
         binding.goChatting.setOnClickListener {
             moveFragment(ChattingFragment())
@@ -130,7 +134,6 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     public override fun onResume() {
         super.onResume()
-        next()
 
         val intent: Intent = Intent(this, javaClass).apply {
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -166,13 +169,12 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 //        //do something with tagFromIntent
 //    }
 
-    private fun initialize() {
+    private fun initialize(userid: String) {
         tMapView = TMapView(this)
         tMapView.setSKTMapApiKey("l7xx9f33576ed47042d3ac571c8a70c73e31")
         val linearLayoutTmap: LinearLayout =
             findViewById<LinearLayout>(R.id.linearLayoutTmap)
         linearLayoutTmap.addView(tMapView)
-//        next()
     }
 
     override fun onLocationChange(location: Location?) {
@@ -353,11 +355,12 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         return date
     }
 
-    fun next() {
+
+    fun next(userid: String) {
         val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8000/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
-        val call = callData.nextWork(1)
+        val call = callData.nextWork(userid.toInt())
         call.enqueue(object : Callback<NextSpotInfo>{
             override fun onFailure(call: Call<NextSpotInfo>, t: Throwable) {
                 Log.e("에러났다", t.toString())

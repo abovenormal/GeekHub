@@ -78,21 +78,8 @@ class NfcFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        println("이곳이 온리쥼입니까")
         getNfc()
     }
-
-    override fun onPause() {
-        super.onPause()
-        println("이곳이 온포즈입니까")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        println("이곳이 온스탑입니까")
-    }
-
-
 
 
 }
