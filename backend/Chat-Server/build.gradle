@@ -13,7 +13,9 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
-
+ext {
+	set('springCloudVersion', "2021.0.4")
+}
 repositories {
 	mavenCentral()
 }
@@ -25,9 +27,23 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	///
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 }
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+
+bootJar{
+	mainClass = "com.Geekhub.ChatServer.ChatServerApplication"
+	archiveFileName = 'Chat.jar'
+}
+
 
 tasks.named('test') {
 	useJUnitPlatform()
