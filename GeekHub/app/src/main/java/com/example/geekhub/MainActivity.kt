@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -51,30 +52,29 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     private lateinit var binding: ActivityMainBinding
     private var nfcAdapter: NfcAdapter? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var tMapView: TMapView
-    private lateinit var tMapTapi: TMapTapi
-    private lateinit var tMapPointStart: TMapPoint
-    private lateinit var tMapPointEnd: TMapPoint
-    private lateinit var bitmap: Bitmap
-    private var cnt = 0
-    private var gps : TMapGpsManager? = null
-    private var nextSpotInfo : NextSpotInfo? = null
+    lateinit var tMapView: TMapView
+    lateinit var tMapTapi: TMapTapi
+    lateinit var bitmap: Bitmap
+    var gps : TMapGpsManager? = null
+    var nextSpotInfo : NextSpotInfo? = null
+    var isNext = 0
+    var cnt = 0
+    var focusStatus = 0
     val bundle = Bundle()
     lateinit var userid: String
-    var focusStatus = 0
+    lateinit var pref : SharedPreferences
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         focusStatus = 0
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val pref = getSharedPreferences("idKey", 0)
-        var userid = pref.getString("id", "").toString()
-        try {
-            next(userid)
-        }catch (e:java.lang.Error){
+        pref = getSharedPreferences("idKey", 0)
+        userid = pref.getString("id", "").toString()
 
-        }
+        next(userid)
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         } // 퍼미션
 
         initialize(userid)
+
         val permissionCheck : Int = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
         if (permissionCheck == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this,
@@ -121,12 +122,9 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         fusedLocationClient.lastLocation.addOnSuccessListener {
                 location : Location? ->
             if (location != null) {
-                tMapPointStart = TMapPoint(location.latitude, location.longitude)
-                println("시작점 찍었다.")
-                tMapView.setCenterPoint(tMapPointStart.longitude, tMapPointStart.latitude)
+                tMapView.setCenterPoint(location.longitude, location.latitude)
             }
         }
-
 
         binding.goChatting.setOnClickListener {
             moveFragment(ChattingFragment())
@@ -195,25 +193,21 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         val linearLayoutTmap: LinearLayout =
             findViewById<LinearLayout>(R.id.linearLayoutTmap)
         linearLayoutTmap.addView(tMapView)
-        println("이니셜라이즈")
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onLocationChange(location: Location?) {
-        println("cnt 확인하기" + cnt)
         if (location != null) {
             sendLocation()
             addMarker()
-            tMapPointStart = gps!!.location
-//            tMapView.setLocationPoint(tMapPointStart.longitude, tMapPointStart.latitude)
-//            tMapView.setIconVisibility(true)
+//            tMapPointStart = gps!!.location
             if (focusStatus == 1){
-                tMapView.setCenterPoint(tMapPointStart.longitude, tMapPointStart.latitude)
+                tMapView.setCenterPoint(gps!!.location.longitude, gps!!.location.latitude)
             }
 
             if (cnt == 0) {
                 findPath()
-                cnt += 1
+                cnt = 1
             }
         }
     }
@@ -271,8 +265,8 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        var pref = getSharedPreferences("idKey", 0)
-        var userid = pref.getString("id", "").toString()
+        pref = getSharedPreferences("idKey", 0)
+        userid = pref.getString("id", "").toString()
         var tagFromIntent: Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
         if (tagFromIntent != null) {
             var data = Ndef.get(tagFromIntent)
@@ -292,20 +286,20 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     }
 
     fun findPath() {
-        tMapPointEnd = TMapPoint(nextSpotInfo!!.lat, nextSpotInfo!!.lon)
-        println("길찾기")
-        thread {
-            try {
-                var tMapPolyLine: TMapPolyLine = TMapData().findPathDataWithType(
-                    TMapData.TMapPathType.CAR_PATH,
-                    TMapPoint(gps!!.location.latitude, gps!!.location.longitude),
-                    tMapPointEnd
-                )
-                tMapPolyLine.lineColor = Color.BLUE
-                tMapPolyLine.setLineWidth(2F)
-                tMapView.addTMapPolyLine("Line1", tMapPolyLine)
-            } catch (e: Exception) {
-                e.printStackTrace()
+        if (nextSpotInfo != null) {
+            thread {
+                try {
+                    var tMapPolyLine: TMapPolyLine = TMapData().findPathDataWithType(
+                        TMapData.TMapPathType.CAR_PATH,
+                        TMapPoint(gps!!.location.latitude, gps!!.location.longitude),
+                        TMapPoint(nextSpotInfo!!.lat, nextSpotInfo!!.lon)
+                    )
+                    tMapPolyLine.lineColor = Color.BLUE
+                    tMapPolyLine.setLineWidth(2F)
+                    tMapView.addTMapPolyLine("Line1", tMapPolyLine)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }
@@ -346,8 +340,8 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     }
 
     private fun addMarker() {
-        var markerItem : TMapMarkerItem = TMapMarkerItem()
-        markerItem.tMapPoint = tMapPointStart
+        var markerItem = TMapMarkerItem()
+        markerItem.tMapPoint = TMapPoint(gps!!.location.latitude, gps!!.location.longitude)
         markerItem.name = "현위치"
 //        markerItem.visible = TMapMarkerItem.VISIBLE
         bitmap = BitmapFactory.decodeResource(this.resources, R.drawable.pin_r_m_1)
@@ -363,9 +357,15 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
         val locationBody = LocationInfo()
-        locationBody.driver = "1"
-        locationBody.longitude = tMapPointStart.longitude.toString()
-        locationBody.latitude = tMapPointStart.latitude.toString()
+
+        pref = getSharedPreferences("idKey", 0)
+        userid = pref.getString("id", "").toString()
+
+
+
+        locationBody.driver = userid
+        locationBody.longitude = gps!!.location.longitude.toString()
+        locationBody.latitude = gps!!.location.latitude.toString()
         locationBody.timestamp = getTime()
 
         val call = callData.sendLocationLog(locationBody)
@@ -398,16 +398,13 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             override fun onFailure(call: Call<NextSpotInfo>, t: Throwable) {
                 Log.e("에러났다", t.toString())
             }
-
             override fun onResponse(call: Call<NextSpotInfo>, response: Response<NextSpotInfo>) {
                 nextSpotInfo = response.body()
-                try{
-                    tMapPointEnd = TMapPoint(response.body()!!.lat, response.body()!!.lon)
-                    println("END 담았다.")
 
-                }catch (e : java.lang.Error){
 
-                }
+                if (nextSpotInfo!!.isFinished == true) {
+                    isNext = 0
+                }else{isNext = 1}
 
             }
         })

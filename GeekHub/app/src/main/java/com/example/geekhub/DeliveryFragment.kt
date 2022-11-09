@@ -117,21 +117,21 @@ class DeliveryFragment : Fragment() {
 
     fun getDeliveryList(number : Int){
         if (number == 0){
-            binding.receiveButton.setBackgroundResource(R.drawable.recycler_list)
+            binding.receiveButton.setBackgroundResource(R.drawable.del_title)
             binding.deliveryButton.setBackgroundResource(0)
-            binding.deliveryRec.setTextColor(resources.getColor(R.color.black))
-            binding.deliveryRecTitle.setTextColor(resources.getColor(R.color.black))
+            binding.deliveryRec.setTextColor(resources.getColor(R.color.white))
+            binding.deliveryRecTitle.setTextColor(resources.getColor(R.color.white))
             binding.deliveryDel.setTextColor(resources.getColor(R.color.gray_500))
             binding.deliveryDelTitle.setTextColor(resources.getColor(R.color.gray_500))
 
         }
         else{
-            binding.deliveryButton.setBackgroundResource(R.drawable.recycler_list)
+            binding.deliveryButton.setBackgroundResource(R.drawable.del_title)
             binding.receiveButton.setBackgroundResource(0)
             binding.deliveryRec.setTextColor(resources.getColor(R.color.gray_500))
             binding.deliveryRecTitle.setTextColor(resources.getColor(R.color.gray_500))
-            binding.deliveryDel.setTextColor(resources.getColor(R.color.black))
-            binding.deliveryDelTitle.setTextColor(resources.getColor(R.color.black))
+            binding.deliveryDel.setTextColor(resources.getColor(R.color.white))
+            binding.deliveryDelTitle.setTextColor(resources.getColor(R.color.white))
         }
         val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:9013/")
             .addConverterFactory(GsonConverterFactory.create()).build()
