@@ -1,6 +1,8 @@
 package com.example.geekhub
 
+import OnSwipeTouchListener
 import android.app.Activity
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -27,20 +29,22 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import java.security.cert.PKIXRevocationChecker.Option
+import java.util.Objects
 
 
 class DeliveryFragment : Fragment() {
     lateinit var binding : FragmentDeliveryBinding
     var nowState = 0
-    lateinit var userid :String
     var spot : String? = null
+    lateinit var pref : SharedPreferences
+    lateinit var userid : String
     
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val pref = requireActivity().getSharedPreferences("idKey",0)
+        pref = requireActivity().getSharedPreferences("idKey",0)
         userid = pref.getString("id", "").toString()
         Log.d("체크입니다",userid)
         nextSpot(userid)
@@ -53,9 +57,36 @@ class DeliveryFragment : Fragment() {
 //            binding.deliveryLine.visibility = View.VISIBLE
             getDeliveryList(1)
         }
+        binding.mainFragmentDelivery.setOnTouchListener(object: OnSwipeTouchListener(requireContext()){
+            override fun onSwipeBottom() {
+                super.onSwipeBottom()
+                println("짜잔아래")
+                (activity as MainActivity).changeFragment(7)
+            }
+
+            override fun onSwipeLeft() {
+                super.onSwipeLeft()
+                println("짜잔왼쪽")
+                getDeliveryList(0)
+            }
+
+            override fun onSwipeRight() {
+                super.onSwipeRight()
+                println("짜잔오른")
+                getDeliveryList(1)
+            }
+
+            override fun onSwipeTop() {
+                super.onSwipeTop()
+                println("짜잔위쪽")
+            }
+        })
+
 
         return binding.root
     }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -88,21 +119,21 @@ class DeliveryFragment : Fragment() {
 
     fun getDeliveryList(number : Int){
         if (number == 0){
-            binding.receiveLine.visibility = View.VISIBLE
-            binding.deliveryLine.visibility = View.INVISIBLE
-            binding.deliveryRec.setTextColor(resources.getColor(R.color.black))
-            binding.deliveryRecTitle.setTextColor(resources.getColor(R.color.black))
+            binding.receiveButton.setBackgroundResource(R.drawable.del_title)
+            binding.deliveryButton.setBackgroundResource(0)
+            binding.deliveryRec.setTextColor(resources.getColor(R.color.white))
+            binding.deliveryRecTitle.setTextColor(resources.getColor(R.color.white))
             binding.deliveryDel.setTextColor(resources.getColor(R.color.gray_500))
             binding.deliveryDelTitle.setTextColor(resources.getColor(R.color.gray_500))
 
         }
         else{
-            binding.receiveLine.visibility = View.INVISIBLE
-            binding.deliveryLine.visibility = View.VISIBLE
+            binding.deliveryButton.setBackgroundResource(R.drawable.del_title)
+            binding.receiveButton.setBackgroundResource(0)
             binding.deliveryRec.setTextColor(resources.getColor(R.color.gray_500))
             binding.deliveryRecTitle.setTextColor(resources.getColor(R.color.gray_500))
-            binding.deliveryDel.setTextColor(resources.getColor(R.color.black))
-            binding.deliveryDelTitle.setTextColor(resources.getColor(R.color.black))
+            binding.deliveryDel.setTextColor(resources.getColor(R.color.white))
+            binding.deliveryDelTitle.setTextColor(resources.getColor(R.color.white))
         }
         val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:9013/")
             .addConverterFactory(GsonConverterFactory.create()).build()
@@ -140,9 +171,13 @@ class DeliveryFragment : Fragment() {
 
                 println("데이터파싱")
                 println(recdatas)
+                try {
+                    binding.deliveryRec.text = "${recdatas.size}개"
+                    binding.deliveryDel.text = "${deldatas.size}개"
 
-                binding.deliveryRec.text = "${recdatas.size}개"
-                binding.deliveryDel.text = "${deldatas.size}개"
+                }catch (e : Error){
+
+                }
 
                 if (number == 0){
                     selectDeliveryList(recdatas)
@@ -270,6 +305,8 @@ class DeliveryFragment : Fragment() {
             }
         })
     }
+
+
 
 
 

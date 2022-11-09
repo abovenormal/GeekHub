@@ -1,6 +1,7 @@
 package com.example.geekhub
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -23,13 +24,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ReadyActivity : AppCompatActivity() {
     lateinit var binding: ActivityReadyBinding
+    lateinit var pref : SharedPreferences
+    lateinit var userid : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReadyBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val pref = getSharedPreferences("idKey", 0)
-        var userid = pref.getString("id", "").toString()
+        pref = getSharedPreferences("idKey", 0)
+        userid = pref.getString("id", "").toString()
         getDeliveryList(userid.toInt())
         println(userid.toInt())
 
@@ -59,14 +62,20 @@ class ReadyActivity : AppCompatActivity() {
                 println("됨")
                 val result = response.body()
                 println(response.code())
+
+                if (result!!.isFinished == true){
+                    dobby()
+                    binding.deliveryFree.setText("오늘의 일을 완료했어요!")
+                    return
+                }
+
+
                 if (result == null){
                     return
                 }
                 if (result!!.del.size + result!!.rec.size == 0){
-                    binding.deliveryDobby.setImageResource(R.drawable.dobby)
-                    binding.deliveryFree.visibility = View.VISIBLE
-                    binding.readyTitleView.visibility = View.INVISIBLE
-                    binding.deliveryStartButton.visibility = View.INVISIBLE
+                    dobby()
+                    binding.deliveryFree.setText("오늘의 일을 완료했어요!")
 
                     return
                 }
@@ -188,4 +197,16 @@ class ReadyActivity : AppCompatActivity() {
             val time = binding.readyDeliveryTime
 
         } }
+
+    override fun onRestart() {
+        super.onRestart()
+
+    }
+
+    fun dobby() {
+        binding.deliveryDobby.setImageResource(R.drawable.dobby)
+        binding.deliveryFree.visibility = View.VISIBLE
+        binding.readyTitleView.visibility = View.INVISIBLE
+        binding.deliveryStartButton.visibility = View.INVISIBLE
+    }
 }

@@ -14,7 +14,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.geekhub.databinding.FragmentNfcBinding
+import kotlinx.android.synthetic.main.fragment_delivery.*
 
 
 class NfcFragment : Fragment() {
@@ -28,6 +30,12 @@ class NfcFragment : Fragment() {
     ): View? {
         binding = FragmentNfcBinding.inflate(inflater,container,false)
         // Inflate the layout for this fragment
+
+        binding.nfcInfomation1.setText("아래 버튼을 눌러 nfc를 켜주세요!\nnfc를 꼭 일반모드로 설정해주세요")
+
+        Glide.with(requireContext())
+            .load(R.drawable.nfc_animation) // 불러올 이미지 url
+            .into(binding.nfcImage) // 이미지를 넣을 뷰
 
 
         arguments?.let{
@@ -50,8 +58,7 @@ class NfcFragment : Fragment() {
 
             if(nfcAdapter.isEnabled){
                 println("nfc 켜져있어용")
-                binding.nfcInfomation1.setText(resources.getText(R.string.nfc_scan))
-                binding.nfcInfomation1.setText(resources.getText(R.string.nfc_playing))
+                binding.nfcInfomation1.setText("스캔 준비가 완료되었습니다.")
                 state = 0
 
             }else{
@@ -59,9 +66,8 @@ class NfcFragment : Fragment() {
                     startActivity(Intent(android.provider.Settings.ACTION_NFC_SETTINGS))
                     state += 1
                 }
-                println("nfc 꺼져있어용")
-                binding.nfcInfomation1.setText("아래 버튼을 눌러 nfc를 켜주세요!")
-                binding.nfcInfomation2.setText("nfc를 꼭 일반모드로 설정해주세요")
+                println("nfc 꺼져있t습")
+                binding.nfcInfomation1.setText("NFC가 꺼져있습니다 위 그림을 눌러서 꼭 일반모드로 켜주세요")
                 binding.nfcImage.setOnClickListener{
                     startActivity(Intent(android.provider.Settings.ACTION_NFC_SETTINGS))
                 }

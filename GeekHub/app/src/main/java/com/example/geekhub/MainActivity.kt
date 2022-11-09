@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         pref = getSharedPreferences("idKey", 0)
         userid = pref.getString("id", "").toString()
+
         next(userid)
 
         if (savedInstanceState == null) {
@@ -240,6 +241,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                     add<CameraxFragment>(R.id.camera_view)
                 }
             }
+            7 -> {
+                clearBackStack()
+                moveFragment(NavFragment())
+            }
         }
     }
 
@@ -260,17 +265,17 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        val pref = getSharedPreferences("idKey", 0)
-        var userid = pref.getString("id", "").toString()
-        val tagFromIntent: Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
+        pref = getSharedPreferences("idKey", 0)
+        userid = pref.getString("id", "").toString()
+        var tagFromIntent: Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
         if (tagFromIntent != null) {
-            val data = Ndef.get(tagFromIntent)
+            var data = Ndef.get(tagFromIntent)
             data.connect()
-            val message = data.ndefMessage
-            val record = message.records
+            var message = data.ndefMessage
+            var record = message.records
             for (records in record) {
                 println(records.payload)
-                val convert = String(records.payload, StandardCharsets.UTF_8)
+                var convert = String(records.payload, StandardCharsets.UTF_8)
                 println("프린트값")
                 var spot = convert.substring(3)
                 sendUserId(spot,userid)
@@ -339,7 +344,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         markerItem.tMapPoint = TMapPoint(gps!!.location.latitude, gps!!.location.longitude)
         markerItem.name = "현위치"
 //        markerItem.visible = TMapMarkerItem.VISIBLE
-        bitmap = BitmapFactory.decodeResource(this.resources, R.drawable.pin_r_m_1)
+        bitmap = BitmapFactory.decodeResource(this.resources, R.drawable.pin_r_rn_1)
         markerItem.icon = bitmap
         markerItem.setPosition(0F, 0F)
         tMapView.addMarkerItem("현위치", markerItem)
@@ -395,11 +400,18 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             }
             override fun onResponse(call: Call<NextSpotInfo>, response: Response<NextSpotInfo>) {
                 nextSpotInfo = response.body()
+
+
                 if (nextSpotInfo!!.isFinished == true) {
                     isNext = 0
                 }else{isNext = 1}
+
             }
         })
+    }
+    fun cntClear() {
+        cnt = 0
+        println("cnt확인하기2")
     }
 }
 
