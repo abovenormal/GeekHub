@@ -286,6 +286,7 @@ class CameraxFragment : Fragment() {
                 (activity as MainActivity).next(userid!!)
                 (activity as MainActivity).findPath()
                 (activity as MainActivity).changeFragment(7)
+                (activity as MainActivity).cntClear()
 //
 //            (activity as MainActivity).changeFragment(1)
 

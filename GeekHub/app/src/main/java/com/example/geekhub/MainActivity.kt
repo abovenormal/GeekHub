@@ -387,6 +387,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             }
         })
     }
+    fun cntClear() {
+        cnt = 0
+        println("cnt확인하기2")
+    }
 }
 
 

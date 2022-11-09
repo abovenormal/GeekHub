@@ -1,5 +1,6 @@
 package com.example.geekhub
 
+import OnSwipeTouchListener
 import android.app.Activity
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -27,6 +28,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import java.security.cert.PKIXRevocationChecker.Option
+import java.util.Objects
 
 
 class DeliveryFragment : Fragment() {
@@ -53,9 +55,36 @@ class DeliveryFragment : Fragment() {
 //            binding.deliveryLine.visibility = View.VISIBLE
             getDeliveryList(1)
         }
+        binding.mainFragmentDelivery.setOnTouchListener(object: OnSwipeTouchListener(requireContext()){
+            override fun onSwipeBottom() {
+                super.onSwipeBottom()
+                println("짜잔아래")
+                (activity as MainActivity).changeFragment(7)
+            }
+
+            override fun onSwipeLeft() {
+                super.onSwipeLeft()
+                println("짜잔왼쪽")
+                getDeliveryList(0)
+            }
+
+            override fun onSwipeRight() {
+                super.onSwipeRight()
+                println("짜잔오른")
+                getDeliveryList(1)
+            }
+
+            override fun onSwipeTop() {
+                super.onSwipeTop()
+                println("짜잔위쪽")
+            }
+        })
+
 
         return binding.root
     }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -270,6 +299,8 @@ class DeliveryFragment : Fragment() {
             }
         })
     }
+
+
 
 
 

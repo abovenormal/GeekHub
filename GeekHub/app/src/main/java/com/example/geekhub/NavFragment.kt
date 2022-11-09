@@ -1,5 +1,6 @@
 package com.example.geekhub
 
+import OnSwipeTouchListener
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
@@ -28,6 +29,13 @@ class NavFragment : Fragment() {
         val pref = requireActivity().getSharedPreferences("idKey", 0)
         var userid = pref.getString("id", "").toString()
         binding = FragmentNavBinding.inflate(inflater,container,false)
+
+//        binding.swifeNav.setOnTouchListener(object :OnSwipeTouchListener(requireContext()){
+//            override fun onSwipeTop() {
+//                super.onSwipeTop()
+//                (activity as MainActivity).changeFragment(1)
+//            }
+//        })
 
         binding.main.setOnClickListener {
             (activity as MainActivity).changeFragment(1)

@@ -8,7 +8,13 @@
     tools:context=".DeliveryFragment">
 
     <View
-        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_fragment_delivery"
+        />
+
+    <View
+        android:id="@+id/holder"
         android:layout_width="40dp"
         android:layout_height="4dp"
         android:layout_marginTop="7dp"
@@ -26,9 +32,10 @@
         android:paddingTop="15dp"
         android:paddingBottom="10dp"
         android:background="@drawable/recycler_list"
-        app:layout_constraintTop_toBottomOf="@+id/view">
+        app:layout_constraintTop_toBottomOf="@+id/holder">
 
         <LinearLayout
+            android:id="@+id/receive_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
