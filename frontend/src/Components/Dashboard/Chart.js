@@ -7,9 +7,16 @@ import "./css/Chart.css";
 import { Info } from "@material-ui/icons";
 import { datePickerValueManager } from "@mui/x-date-pickers/DatePicker/shared";
 import YesterdayPie from "./YesterdayPie";
+import { Carousel } from "react-responsive-carousel";
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import ApexChart from "react-apexcharts";
 
 const Chart = () => {
   const [data, setData] = useState([]);
+  const [map, setMap] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+
 
   useEffect(() => {
     async function getData() {
@@ -23,7 +30,107 @@ const Chart = () => {
     }
     getData();
   }, []);
+  useEffect(() => {
+    let result = [];
+    let temp = []
+    for (let i = 0; i < data.length; i++) {
+      let item = data[i];
+      if (item.totalSpot == 0) {
+        temp.push(<ApexChart
+          className="carousel-container-chart"
+          type="donut" height={300}
+          series={[0]}
+          options={{
+            chart: {
+              type: 'donut',
+            },
+            legend: {
+              position: 'bottom'
+            },
+            responsive: [{
+              breakpoint: 480,
+            }],
+            plotOptions: {
+              pie: {
+                donut: {
+                  labels: {
+                    show: true,
+                    // total: {
+                    //   showAlways: true,
+                    //   show: true,
+                    //   label: 'ALARM',
+                    //   fontSize: '12px',
+                    //   color: 'red'
+                    // },
+                    value: {
+                      fontSize: '22px',
+                      show: true,
+                      color: 'blue',
+                    },
+                  },
+                }
+              }
+            }
+            , title: {
+              text: item.schoolName,
+              align: 'center'
+            }
+            , labels: ["주문", "실패"],
+          }}></ApexChart>)
+      } else {
+        temp.push(<ApexChart
+          className="carousel-container-chart"
+          type="donut" height={300}
+          series={[item.successSpot, data[i].totalSpot - item.successSpot]}
+          options={{
+            chart: {
+              type: 'donut',
+            },
+            legend: {
+              position: 'bottom'
+            },
+            responsive: [{
+              breakpoint: 480,
+            }],
+            plotOptions: {
+              pie: {
+                donut: {
+                  labels: {
+                    show: true,
+                    // total: {
+                    //   showAlways: true,
+                    //   show: true,
+                    //   label: 'ALARM',
+                    //   fontSize: '12px',
+                    //   color: 'red'
+                    // },
+                    value: {
+                      fontSize: '22px',
+                      show: true,
+                      color: 'blue',
+                    },
+                  },
+                }
+              }
+            }
+            , title: {
+              text: item.schoolName,
+              align: 'center'
+            }
+            , labels: ["성공", "실패"],
+          }}></ApexChart>)
+      }
 
+      if (i % 3 == 2 || i == data.length - 1) {
+        result.push(<div className="carousel-container">{temp}</div>)
+        temp = [];
+      }
+    }
+    setMap(result);
+  }, [data]);
+  useEffect(() => {
+    setLoading(false);
+  }, [map]);
   const pie = [];
   let yTotalSuccess = 0;
   let yTotalfail = 0;
@@ -69,63 +176,21 @@ const Chart = () => {
       color: "hsl(220, 70%, 50%)",
     },
   ];
-  console.log(pie);
-  const data_line = [
-    {
-      id: "픽업존",
-      color: "#fff",
-      data: [
-        {
-          x: "plane",
-          y: 0,
-        },
-        {
-          x: "helicopter",
-          y: 3,
-        },
-        {
-          x: "boat",
-          y: 2,
-        },
-        {
-          x: "train",
-          y: -1,
-        },
-        {
-          x: "subway",
-          y: 3,
-        },
-        {
-          x: "bus",
-          y: 2,
-        },
-        {
-          x: "car",
-          y: 1,
-        },
-        {
-          x: "moto",
-          y: 0,
-        },
-        {
-          x: "bicycle",
-          y: 0,
-        },
-        {
-          x: "horse",
-          y: 3,
-        },
-        {
-          x: "skateboard",
-          y: 2,
-        },
-        {
-          x: "others",
-          y: 2,
-        },
-      ],
-    },
-  ];
+  // console.log(pie); 
+
+  // useEffect(() => {
+  //   var temp = [];
+  //   temp.push(
+  //     <div key={1}>
+  //       <div className="pie-chart2">
+  //         <YesterdayPie data={pieTotal} />
+  //         <div>전국</div>
+  //       </div>
+  //     </div>
+
+  //   );
+  //   setMap(temp);
+  // }, [data]);
   return (
     <div className="chart-container">
       <div className="pie-container">
@@ -139,23 +204,22 @@ const Chart = () => {
           </div>
         </div>
         <div className="pie-chart-container">
-          <div className="pie-chart-title">학교별 배달 요약</div>
-          <div className="pie-chart-body">
-            {pie.map((elem, index) => (
-              <div className="pie-chart">
-                <MyResponsivePie data={elem} key={index} />
-                <div>{elem[0].school}</div>
-              </div>
-            ))}
-          </div>
+          {loading ? <></> :
+            <Carousel
+              autoPlay
+              infiniteLoop
+              useKeyboardArrows
+              interval="2000"
+              showArrows="false"
+              showStatus="false"
+              showIndicators="false"
+              showThumbs="false"
+              swipeable="false">
+              {map}
+            </Carousel>}
+
         </div>
       </div>
-      {/* <div className="line-chart-container">
-        <div className="line-chart-title">Arrival Time Difference</div>
-        <div className="line-chart">
-          <MyResponsiveLine data_line={data_line} />
-        </div>
-      </div> */}
     </div>
   );
 };

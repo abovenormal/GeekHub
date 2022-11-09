@@ -112,3 +112,26 @@
   font-weight: bold;
   padding: 1rem;
 }
+
+.carousel-container{
+  margin-top: 30px;
+  text-align: center;
+  display: flex;
+    flex-direction: row;
+    align-items: center
+}
+
+.carousel-container-chart{
+  display: inline-block;
+  width: 30%;
+  text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center
+}
+.control-dots{
+  display: none;
+}
+.carousel-status{
+  display: none;
+}
