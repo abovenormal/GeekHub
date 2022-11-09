@@ -90,7 +90,7 @@ public class SpotServiceImpl implements SpotService {
         User user = userRepository.findUserByUserIdx(driverIdx);
         List<WorkResponseDto> result = new ArrayList<>();
         try {
-            List<Spot> searchList = spotRepository.findSpotByUserIdxAndSpotCategory(user.getUserIdx(), spotCategory).orElse(null);
+            List<Spot> searchList = spotRepository.findSpotByUserIdxAndSpotCategoryOrderByExpectedTime(user.getUserIdx(), spotCategory).orElse(null);
             String  time = "";
             if (searchList != null) {
                 for (Spot spot : searchList) {
@@ -242,7 +242,7 @@ public class SpotServiceImpl implements SpotService {
 
     @Override
     public Optional<NextSpotDto> nextWork(Long driverIdx) throws Exception {
-        List<Spot> result = spotRepository.findSpotByUserIdx(driverIdx).orElse(null);
+        List<Spot> result = spotRepository.findSpotByUserIdxOrderByExpectedTime(driverIdx).orElse(null);
         NextSpotDto nextSpotDto = new NextSpotDto();
         try {
             for (Spot spot : result) {
@@ -328,7 +328,7 @@ public class SpotServiceImpl implements SpotService {
     }
     private List<Spot> spotList(long userIdx, String date) {
         List<Spot> result = new ArrayList<>();
-        List<Spot> list = spotRepository.findSpotByUserIdx(userIdx).orElse(null);
+        List<Spot> list = spotRepository.findSpotByUserIdxOrderByExpectedTime(userIdx).orElse(null);
 
         StringTokenizer st = new StringTokenizer(date, "-");
         String year = st.nextToken();
