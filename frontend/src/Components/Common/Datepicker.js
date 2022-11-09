@@ -6,14 +6,18 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const Datepicker = props => {
+  let today = new Date();   
+  let year = today.getFullYear(); // 년도
+  let month = today.getMonth() + 1;  // 월
+  let date = today.getDate();  // 날짜
   const selected = props.selected
   const setSelected = props.setSelected
-  const [value, setValue] = useState('11-18-22');
+  const [value, setValue] = useState(today);
   useEffect(()=> {
-    if (value) {
+    if (value !== today) {
     const nextInfo ={
       ...selected,
-      "date" : `${value.$y}-${value.$M + 1}-${value.$D}`
+      "date": `${value.$y}-${value.$M + 1}-${value.$D}`
     }
     setSelected(nextInfo)
   }
@@ -23,9 +27,10 @@ const Datepicker = props => {
       <DatePicker
         className="date-picker"
         label="Date"
-        value={value}
+        value={selected.date}
+        name="date"
         onChange={(newValue) => {
-          setValue(newValue);
+          setValue(newValue)
         }}
         renderInput={(params) => <TextField {...params} /> }
         sx={{

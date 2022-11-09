@@ -21,9 +21,14 @@
   font-weight: bold;
 }
 
-.dif {
+.dif-red {
   color: red;
 }
+
+.dif-blue {
+  color: blue;
+}
+
 .now-location {
   display: flex;
   flex-direction: column;

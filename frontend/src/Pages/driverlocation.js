@@ -7,10 +7,16 @@ import { apiInstance } from "../api/index";
 import getDriverList from "../api/GetDriverList";
 
 const Driverlocation = () => {
+
+  let today = new Date();   
+  let year = today.getFullYear(); // 년도
+  let month = today.getMonth() + 1;  // 월
+  let date = today.getDate();  // 날짜
+
   const [selected, setSelected] = useState({
     localCity: "",
     localSchool: "",
-    date: "",
+    date: `${year}-${month}-${date}`,
   });
   const [listData, setListData] = useState([]);
   const API = apiInstance();
@@ -34,13 +40,27 @@ const Driverlocation = () => {
   //     // 해당 res를 <List /> prop 전달
   //     // const driverData = getDriverList(selected);
   //   }}, [selected]);
+
+    
     useEffect(() => {
       if (selected.localCity && selected.localSchool && selected.date) {
-      async function getData() {
-        const res = await apiInstance().post('spot/log', selected);
-        setListData(res.data)
+        if (`${year}-${month}-${date}` === selected.date) {
+          console.log("선택한 날짜는 오늘")
+          async function getData() {
+            const res = await apiInstance().post('spot/current', selected);
+            setListData(res.data)
+          }
+          getData();}
+        else {
+          console.log("선택한 날짜는 오늘이 아님")
+            async function getData() {
+              const res = await apiInstance().post('spot/log', selected);
+              setListData(res.data)
+            }
+            getData();
+          }
       }
-      getData();}
+      
       console.log(selected)
     }, [selected])
       
