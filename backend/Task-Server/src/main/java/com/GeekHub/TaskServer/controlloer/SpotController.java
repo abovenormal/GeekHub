@@ -92,10 +92,18 @@ public class SpotController {
     @GetMapping("/work/{driverIdx}")
     public ResponseEntity<HashMap> sendWork(@PathVariable("driverIdx") Long driverIdx) throws Exception {
         HashMap<String, Object> workList = new HashMap<>();
+        boolean check = true;
         List<WorkResponseDto> receiveList = SpotService.work(driverIdx, SpotCategory.STORE);
         workList.put("rec", receiveList);
         List<WorkResponseDto> deleveryList = SpotService.work(driverIdx, SpotCategory.DESTINATION);
         workList.put("del", deleveryList);
+        for (WorkResponseDto workResponseDto : deleveryList) {
+            if (workResponseDto.getStatus() == 1) {
+                check = false;
+                break;
+            }
+        }
+        workList.put("isFinished", check);
         return ResponseEntity.status(HttpStatus.OK).body(workList);
     }
 
