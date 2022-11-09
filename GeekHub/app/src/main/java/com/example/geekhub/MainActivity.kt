@@ -61,8 +61,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     private var nextSpotInfo : NextSpotInfo? = null
     val bundle = Bundle()
     lateinit var userid: String
+    var focusStatus = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        focusStatus = 0
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -104,7 +106,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0);
         }
         gps = TMapGpsManager(this)
-        gps!!.minTime = 10000
+        gps!!.minTime = 5000
         gps!!.minDistance = 0F
         gps!!.provider = TMapGpsManager.GPS_PROVIDER
         gps!!.OpenGps()
@@ -156,6 +158,17 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             goNav()
         }
 
+        binding.focusButton.setOnClickListener {
+            if (focusStatus == 0){
+                binding.focusButton.setImageResource(R.drawable.focus_on)
+                focusStatus = 1
+            } else{
+                binding.focusButton.setImageResource(R.drawable.focus_off)
+                focusStatus = 0
+            }
+
+        }
+
         var intentFiltersArray = arrayOf(ndef)
         var techListsArray = arrayOf(arrayOf<String>(NfcF::class.java.name))
         nfcAdapter!!.enableForegroundDispatch(
@@ -190,7 +203,9 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             tMapPointStart = gps!!.location
 //            tMapView.setLocationPoint(tMapPointStart.longitude, tMapPointStart.latitude)
 //            tMapView.setIconVisibility(true)
-            tMapView.setCenterPoint(tMapPointStart.longitude, tMapPointStart.latitude)
+            if (focusStatus == 1){
+                tMapView.setCenterPoint(tMapPointStart.longitude, tMapPointStart.latitude)
+            }
 
             if (cnt == 0) {
                 findPath()
