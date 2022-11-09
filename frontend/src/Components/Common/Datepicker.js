@@ -26,7 +26,7 @@ const Datepicker = props => {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         className="date-picker"
-        label="Date"
+        label="날짜"
         value={selected.date}
         name="date"
         onChange={(newValue) => {
