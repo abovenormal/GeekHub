@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     private lateinit var tMapPointStart: TMapPoint
     private lateinit var tMapPointEnd: TMapPoint
     private lateinit var bitmap: Bitmap
+    private var cnt = 0
     private var gps : TMapGpsManager? = null
     private var nextSpotInfo : NextSpotInfo? = null
     val bundle = Bundle()
@@ -115,6 +116,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 location : Location? ->
             if (location != null) {
                 tMapPointStart = TMapPoint(location.latitude, location.longitude)
+                println("시작점 찍었다.")
                 tMapView.setCenterPoint(tMapPointStart.longitude, tMapPointStart.latitude)
             }
         }
@@ -135,7 +137,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     public override fun onResume() {
         super.onResume()
-
+        cnt = 0
         val intent: Intent = Intent(this, javaClass).apply {
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
@@ -176,10 +178,12 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         val linearLayoutTmap: LinearLayout =
             findViewById<LinearLayout>(R.id.linearLayoutTmap)
         linearLayoutTmap.addView(tMapView)
+        println("이니셜라이즈")
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onLocationChange(location: Location?) {
+        println("cnt 확인하기" + cnt)
         if (location != null) {
             sendLocation()
             addMarker()
@@ -187,8 +191,11 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 //            tMapView.setLocationPoint(tMapPointStart.longitude, tMapPointStart.latitude)
 //            tMapView.setIconVisibility(true)
             tMapView.setCenterPoint(tMapPointStart.longitude, tMapPointStart.latitude)
-            println(nextSpotInfo!!.spotName)
-            findPath()
+
+            if (cnt == 0) {
+                findPath()
+                cnt += 1
+            }
         }
     }
 
@@ -267,11 +274,12 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     fun findPath() {
         tMapPointEnd = TMapPoint(nextSpotInfo!!.lat, nextSpotInfo!!.lon)
+        println("길찾기")
         thread {
             try {
                 var tMapPolyLine: TMapPolyLine = TMapData().findPathDataWithType(
                     TMapData.TMapPathType.CAR_PATH,
-                    tMapPointStart,
+                    TMapPoint(gps!!.location.latitude, gps!!.location.longitude),
                     tMapPointEnd
                 )
                 tMapPolyLine.lineColor = Color.BLUE
@@ -375,6 +383,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             override fun onResponse(call: Call<NextSpotInfo>, response: Response<NextSpotInfo>) {
                 nextSpotInfo = response.body()
                 tMapPointEnd = TMapPoint(response.body()!!.lat, response.body()!!.lon)
+                println("END 담았다.")
             }
         })
     }
