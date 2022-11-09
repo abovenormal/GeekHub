@@ -61,14 +61,18 @@ class ReadyActivity : AppCompatActivity() {
                 println("됨")
                 val result = response.body()
                 println(response.code())
+
+                if (result!!.isFinished == true){
+                    dobby()
+                    return
+                }
+
+
                 if (result == null){
                     return
                 }
                 if (result!!.del.size + result!!.rec.size == 0){
-                    binding.deliveryDobby.setImageResource(R.drawable.dobby)
-                    binding.deliveryFree.visibility = View.VISIBLE
-                    binding.readyTitleView.visibility = View.INVISIBLE
-                    binding.deliveryStartButton.visibility = View.INVISIBLE
+                    dobby()
 
                     return
                 }
@@ -190,4 +194,16 @@ class ReadyActivity : AppCompatActivity() {
             val time = binding.readyDeliveryTime
 
         } }
+
+    override fun onRestart() {
+        super.onRestart()
+
+    }
+
+    fun dobby() {
+        binding.deliveryDobby.setImageResource(R.drawable.dobby)
+        binding.deliveryFree.visibility = View.VISIBLE
+        binding.readyTitleView.visibility = View.INVISIBLE
+        binding.deliveryStartButton.visibility = View.INVISIBLE
+    }
 }

@@ -117,8 +117,8 @@ class DeliveryFragment : Fragment() {
 
     fun getDeliveryList(number : Int){
         if (number == 0){
-            binding.receiveLine.visibility = View.VISIBLE
-            binding.deliveryLine.visibility = View.INVISIBLE
+            binding.receiveButton.setBackgroundResource(R.drawable.recycler_list)
+            binding.deliveryButton.setBackgroundResource(0)
             binding.deliveryRec.setTextColor(resources.getColor(R.color.black))
             binding.deliveryRecTitle.setTextColor(resources.getColor(R.color.black))
             binding.deliveryDel.setTextColor(resources.getColor(R.color.gray_500))
@@ -126,8 +126,8 @@ class DeliveryFragment : Fragment() {
 
         }
         else{
-            binding.receiveLine.visibility = View.INVISIBLE
-            binding.deliveryLine.visibility = View.VISIBLE
+            binding.deliveryButton.setBackgroundResource(R.drawable.recycler_list)
+            binding.receiveButton.setBackgroundResource(0)
             binding.deliveryRec.setTextColor(resources.getColor(R.color.gray_500))
             binding.deliveryRecTitle.setTextColor(resources.getColor(R.color.gray_500))
             binding.deliveryDel.setTextColor(resources.getColor(R.color.black))

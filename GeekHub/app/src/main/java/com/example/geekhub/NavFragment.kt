@@ -30,12 +30,12 @@ class NavFragment : Fragment() {
         var userid = pref.getString("id", "").toString()
         binding = FragmentNavBinding.inflate(inflater,container,false)
 
-//        binding.swifeNav.setOnTouchListener(object :OnSwipeTouchListener(requireContext()){
-//            override fun onSwipeTop() {
-//                super.onSwipeTop()
-//                (activity as MainActivity).changeFragment(1)
-//            }
-//        })
+        binding.swifeNav.setOnTouchListener(object :OnSwipeTouchListener(requireContext()){
+            override fun onSwipeTop() {
+                super.onSwipeTop()
+                (activity as MainActivity).changeFragment(1)
+            }
+        })
 
         binding.main.setOnClickListener {
             (activity as MainActivity).changeFragment(1)
@@ -71,7 +71,12 @@ class NavFragment : Fragment() {
             override fun onResponse(call: Call<NextSpotInfo>, response: Response<NextSpotInfo>) {
                 println("여기" + response.body()?.spotName)
                 spot = response.body()?.spotName
-                binding.spotNav.setText("다음 목적지는 ${spot.toString()}입니다")
+                try {
+                    binding.spotNav.setText("다음 목적지는 ${spot.toString()}입니다")
+
+                }catch (e:java.lang.Error){
+
+                }
 
 
             }

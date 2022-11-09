@@ -70,7 +70,11 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         val pref = getSharedPreferences("idKey", 0)
         var userid = pref.getString("id", "").toString()
-        next(userid)
+        try {
+            next(userid)
+        }catch (e:java.lang.Error){
+
+        }
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
@@ -267,17 +271,17 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        val pref = getSharedPreferences("idKey", 0)
+        var pref = getSharedPreferences("idKey", 0)
         var userid = pref.getString("id", "").toString()
-        val tagFromIntent: Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
+        var tagFromIntent: Tag? = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
         if (tagFromIntent != null) {
-            val data = Ndef.get(tagFromIntent)
+            var data = Ndef.get(tagFromIntent)
             data.connect()
-            val message = data.ndefMessage
-            val record = message.records
+            var message = data.ndefMessage
+            var record = message.records
             for (records in record) {
                 println(records.payload)
-                val convert = String(records.payload, StandardCharsets.UTF_8)
+                var convert = String(records.payload, StandardCharsets.UTF_8)
                 println("프린트값")
                 var spot = convert.substring(3)
                 sendUserId(spot,userid)
@@ -397,8 +401,14 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
             override fun onResponse(call: Call<NextSpotInfo>, response: Response<NextSpotInfo>) {
                 nextSpotInfo = response.body()
-                tMapPointEnd = TMapPoint(response.body()!!.lat, response.body()!!.lon)
-                println("END 담았다.")
+                try{
+                    tMapPointEnd = TMapPoint(response.body()!!.lat, response.body()!!.lon)
+                    println("END 담았다.")
+
+                }catch (e : java.lang.Error){
+
+                }
+
             }
         })
     }
