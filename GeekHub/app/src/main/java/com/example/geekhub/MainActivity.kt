@@ -221,6 +221,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                     add<CameraxFragment>(R.id.camera_view)
                 }
             }
+            7 -> {
+                clearBackStack()
+                moveFragment(NavFragment())
+            }
         }
     }
 
