@@ -46,13 +46,13 @@ const Dropdown = props => {
   return (
     <div>
       <FormControl variant="standard" sx={{ m: 1, minWidth: 100 }}>
-        <InputLabel id="demo-simple-select-standard-label">City</InputLabel>
+        <InputLabel id="demo-simple-select-standard-label">지역</InputLabel>
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
           value={selected.localCity}
           onChange={onChange}
-          label="City"
+          label="지역"
           name="localCity"
         >
           <MenuItem value={"서울"}>서울</MenuItem>
@@ -63,14 +63,14 @@ const Dropdown = props => {
       </FormControl>
       <FormControl variant="standard" sx={{ m: 1, minWidth: 170 }}>
         <InputLabel id="demo-simple-select-standard-label">
-          School
+          장소
         </InputLabel>
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
           value={selected.localSchool}
           onChange={onChange}
-          label="School"
+          label="장소"
           name="localSchool"
         >
           {schoolList.map((localSchool) => (
