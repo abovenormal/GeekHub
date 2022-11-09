@@ -17,8 +17,8 @@ import Swal from "sweetalert2";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import "./css/List.css";
 import { apiInstance } from "../../api/index";
+import { Looks } from "@material-ui/icons";
 const List = (props) => {
-
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = useState(false);
@@ -51,21 +51,27 @@ const List = (props) => {
       script.async = "async";
       document.head.appendChild(script);
     }, [open]);
-    async function GetLocation(id) {
+    async function GetLocation(userIdx) {
       // 열릴 때만 Get 요청 보내기 위해 분기 추가 했다가
       // 열린 채로 새로 고침 안 되서 잠시 삭제
       // 아래 if문 추가로 해결 완료
       try {
         const res = await API.get("/location/getLocation", {
-          params: { driver: id },
+          params: { driver: userIdx },
         });
         console.log(res.data);
         setLatitude(res.data.latitude);
         setLongitude(res.data.longitude);
         setTimestamp(res.data.timestamp); // timestamp
         setOpen(!open);
-      } catch (err) {
-        console.log(err);
+      } catch (error) {
+        if (error.response.status === 400) {
+          console.log(error.response.status);
+          setOpen(!open);
+          setLatitude(0);
+          setLongitude(0);
+          setTimestamp("");
+        }
       }
     }
     return (
@@ -90,8 +96,9 @@ const List = (props) => {
               aria-label="expand row"
               size="small"
               onClick={() => {
-                // GetLocation(row.id)
-                GetLocation(1);
+                console.log(row.userIdx);
+                GetLocation(row.userIdx);
+                // GetLocation(1);
               }}
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -101,8 +108,8 @@ const List = (props) => {
             component="th"
             scope="row"
             onClick={() => {
-              // GetLocation(row.id)
-              GetLocation(1);
+              GetLocation(row.userIdx);
+              // GetLocation(1);
             }}
             sx={{
               cursor: "pointer",
@@ -116,31 +123,64 @@ const List = (props) => {
             <Collapse in={open} timeout="auto" unmountOnExit>
               <div className="table">
                 <Box sx={{ width: "100%" }}>
-                  <Typography variant="h6" gutterBottom component="div">
-                    
-                  </Typography>
-
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                    component="div"
+                  ></Typography>
                   <Table size="small" aria-label="purchases">
                     <TableHead>
                       <TableRow>
-                        <TableCell><div className="list-header">픽업존</div></TableCell>
-                        <TableCell><div className="list-header">도착 예정</div></TableCell>
-                        <TableCell><div className="list-header">도착 시각</div></TableCell>
-                        <TableCell><div className="list-header">오차</div></TableCell>
-                        <TableCell><div className="list-header">픽업 사진</div></TableCell>
+                        <TableCell>
+                          <div className="list-header">픽업존</div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="list-header">도착 예정</div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="list-header">도착 시각</div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="list-header">오차</div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="list-header">픽업 사진</div>
+                        </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {row.spotResponseDtoList.map((taskRow) => (
                         <TableRow key={taskRow.spotName}>
                           <TableCell component="th" scope="row">
-                            <div className="list-body">{taskRow.spotName}</div>
+                            <div className="list-body">
+                              {taskRow.spotName}
+                            </div>
                           </TableCell>
-                          <TableCell><div className="list-body">{taskRow.expectedTime.slice(11,16)}</div></TableCell>
-                          <TableCell><div className="list-body">{(taskRow.arrivedTime !== null) ? taskRow.arrivedTime.slice(11,16) : ""}</div></TableCell>
-                          <TableCell><div className={`list-body + ${(taskRow.dif > 0) ? "dif" : ""}`}>{(taskRow.arrivedTime !== null) ? `${taskRow.dif}분` : ""}</div></TableCell>
+                          <TableCell>
+                            <div className="list-body">
+                              {taskRow.expectedTime.slice(11, 16)}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="list-body">
+                              {taskRow.arrivedTime !== null
+                                ? taskRow.arrivedTime.slice(11, 16)
+                                : ""}
+                            </div>
+                          </TableCell>
                           <TableCell>
                             <div
+                              className={`list-body + ${
+                                taskRow.dif > 0 ? "dif-red" : taskRow.dif < 0 ? "dif-blue" : ""
+                              }`}
+                            >
+                              {taskRow.arrivedTime !== null
+                                ? `${taskRow.dif}분`
+                                : ""}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {(taskRow.imageUrl) ? <div
                               className="pickupPic"
                               onClick={() => {
                                 const pickupPicture = taskRow.imageUrl;
@@ -155,7 +195,8 @@ const List = (props) => {
                               }}
                             >
                               보기
-                            </div>
+                            </div> : "" }
+                            
                           </TableCell>
                         </TableRow>
                       ))}
@@ -169,7 +210,7 @@ const List = (props) => {
                       className="now-icon"
                       // onClick={()=> {GetLocation(row.id)}}
                       onClick={() => {
-                        GetLocation(1);
+                        GetLocation(row.userIdx);
                       }}
                     >
                       <RefreshIcon
@@ -183,18 +224,23 @@ const List = (props) => {
                       />
                     </div>
                   </div>
-                  <div className="now-map" id="map_div"></div>
+                  {latitude === 0 && longitude === 0 ? (
+                    <h4>최근 위치가 없습니다.</h4>
+                  ) : (
+                    <div className="now-map" id="map_div"></div>
+                  )}
                 </div>
               </div>
             </Collapse>
           </TableCell>
         </TableRow>
+        
       </React.Fragment>
     );
   }
 
   const rows = props.listData;
-  console.log(rows)
+  console.log(rows);
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
