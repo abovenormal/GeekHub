@@ -42,8 +42,6 @@ class ReadyActivity : AppCompatActivity() {
         binding.deliveryStartButton.setOnClickListener{
             startActivity(Intent(this,MainActivity::class.java))
         }
-
-
     }
 
     fun getDeliveryList(number : Int){
