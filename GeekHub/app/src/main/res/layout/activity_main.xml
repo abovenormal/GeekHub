@@ -14,8 +14,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/focus_button"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_margin="5dp"
+        app:srcCompat="@drawable/focus_off"
+        app:layout_constraintStart_toEndOf="@id/nav_button"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:id="@+id/nav_button"
@@ -48,7 +56,9 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" >
+
+    </FrameLayout>
 
 
 
