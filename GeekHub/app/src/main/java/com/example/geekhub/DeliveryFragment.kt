@@ -2,6 +2,7 @@ package com.example.geekhub
 
 import OnSwipeTouchListener
 import android.app.Activity
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -34,15 +35,16 @@ import java.util.Objects
 class DeliveryFragment : Fragment() {
     lateinit var binding : FragmentDeliveryBinding
     var nowState = 0
-    lateinit var userid :String
     var spot : String? = null
+    lateinit var pref : SharedPreferences
+    lateinit var userid : String
     
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val pref = requireActivity().getSharedPreferences("idKey",0)
+        pref = requireActivity().getSharedPreferences("idKey",0)
         userid = pref.getString("id", "").toString()
         Log.d("체크입니다",userid)
         nextSpot(userid)
@@ -169,9 +171,13 @@ class DeliveryFragment : Fragment() {
 
                 println("데이터파싱")
                 println(recdatas)
+                try {
+                    binding.deliveryRec.text = "${recdatas.size}개"
+                    binding.deliveryDel.text = "${deldatas.size}개"
 
-                binding.deliveryRec.text = "${recdatas.size}개"
-                binding.deliveryDel.text = "${deldatas.size}개"
+                }catch (e : Error){
+
+                }
 
                 if (number == 0){
                     selectDeliveryList(recdatas)

@@ -17,14 +17,16 @@ class LoginActivity : AppCompatActivity() {
     lateinit var binding: ActivityLoginBinding
     private lateinit var sharedPreferences : SharedPreferences
     private lateinit var editor : SharedPreferences.Editor
+    lateinit var pref : SharedPreferences
+    lateinit var saveId : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val pref = getSharedPreferences("idKey", 0)
-        val saveId =pref.getString("id", "").toString()
+        pref = getSharedPreferences("idKey", 0)
+        saveId =pref.getString("id", "").toString()
         Log.d("태그", saveId)
         println(saveId)
 
@@ -111,8 +113,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun saveDate( id :String ){
-        val pref =getSharedPreferences("idKey", MODE_PRIVATE) //shared key 설정
-        val edit = pref.edit() // 수정모드
+        pref =getSharedPreferences("idKey", MODE_PRIVATE) //shared key 설정
+        var edit = pref.edit() // 수정모드
         edit.putString("id", id ) // 값 넣기
         edit.apply() // 적용하기
     }

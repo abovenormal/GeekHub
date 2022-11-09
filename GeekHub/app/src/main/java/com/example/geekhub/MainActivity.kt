@@ -344,7 +344,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         markerItem.tMapPoint = TMapPoint(gps!!.location.latitude, gps!!.location.longitude)
         markerItem.name = "현위치"
 //        markerItem.visible = TMapMarkerItem.VISIBLE
-        bitmap = BitmapFactory.decodeResource(this.resources, R.drawable.pin_r_m_1)
+        bitmap = BitmapFactory.decodeResource(this.resources, R.drawable.pin_r_rn_1)
         markerItem.icon = bitmap
         markerItem.setPosition(0F, 0F)
         tMapView.addMarkerItem("현위치", markerItem)

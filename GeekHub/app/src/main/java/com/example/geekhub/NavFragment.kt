@@ -1,6 +1,7 @@
 package com.example.geekhub
 
 import OnSwipeTouchListener
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
@@ -20,14 +21,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 class NavFragment : Fragment() {
     lateinit var binding : FragmentNavBinding
     var spot : String? = null
+    lateinit var pref : SharedPreferences
+    lateinit var userid : String
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val pref = requireActivity().getSharedPreferences("idKey", 0)
-        var userid = pref.getString("id", "").toString()
+        pref = requireActivity().getSharedPreferences("idKey", 0)
+        userid = pref.getString("id", "").toString()
         binding = FragmentNavBinding.inflate(inflater,container,false)
 
         binding.swifeNav.setOnTouchListener(object :OnSwipeTouchListener(requireContext()){
@@ -53,8 +56,8 @@ class NavFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val pref = requireActivity().getSharedPreferences("idKey", 0)
-        var userid = pref.getString("id", "").toString()
+        pref = requireActivity().getSharedPreferences("idKey", 0)
+        userid = pref.getString("id", "").toString()
         nextSpot(userid)
     }
 
