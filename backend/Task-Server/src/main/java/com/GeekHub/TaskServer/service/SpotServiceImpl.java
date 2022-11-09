@@ -97,7 +97,7 @@ public class SpotServiceImpl implements SpotService {
                     SpotImg spotImg = spotImgRepository.findSpotImgBySpotName(spot.getSpotName()).orElse(null);
                     int hour = spot.getExpectedTime().getHour();
                     int minute = spot.getExpectedTime().getMinute();
-                    time = hour + "시" + minute + "분";
+                    time = hour + "시 " + minute + "분";
                     WorkResponseDto workResponseDto = new WorkResponseDto();
                     workResponseDto.setSpotIndex(String.valueOf(spot.getSpotIdx()));
                     workResponseDto.setSpotName(spot.getSpotName());
