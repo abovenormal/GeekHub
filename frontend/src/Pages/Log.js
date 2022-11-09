@@ -5,10 +5,14 @@ import List from "../Components/Log/List";
 import "./css/Log.css";
 import { getDriverList } from "../api/GetDriverList";
 const Log = () => {
+  let today = new Date();   
+  let year = today.getFullYear(); // 년도
+  let month = today.getMonth() + 1;  // 월
+  let date = today.getDate();  // 날짜
   const [selected, setSelected] = useState({
     localCity: "",
     localSchool: "",
-    date: "",
+    date: `${year}-${month}-${date}`
   });
   const [driverData, setDriverData] = useState([]);
   useEffect(() => {

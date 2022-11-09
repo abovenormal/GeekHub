@@ -1,7 +1,7 @@
 import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 
-const MyResponsivePie = ( {data} ) => {
+const YesterdayPie = ( {data} ) => {
   return (
   <ResponsivePie
     data={data}
@@ -45,7 +45,31 @@ const MyResponsivePie = ( {data} ) => {
     ]}
     fill={[
     ]}
-
+    legends={[
+      {
+        anchor: "left",
+        direction: "column",
+        justify: false,
+        translateX: 120,
+        translateY: 0,
+        itemsSpacing: 10,
+        itemWidth: 100,
+        itemHeight: 18,
+        itemTextColor: "#000",
+        itemDirection: "left-to-right",
+        itemOpacity: 1,
+        symbolSize: 18,
+        symbolShape: "circle",
+        effects: [
+          {
+            on: "hover",
+            style: {
+              itemTextColor: "#10b981",
+            },
+          },
+        ],
+      },
+    ]}
   />
 )}
-export default MyResponsivePie;
+export default YesterdayPie;
