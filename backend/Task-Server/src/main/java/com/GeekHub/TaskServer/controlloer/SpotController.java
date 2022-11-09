@@ -74,6 +74,13 @@ public class SpotController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(list);
     }
+    @PostMapping("/current")
+    public ResponseEntity<List<SpotLogDto>> sendCurrent(@RequestBody LogRequestDto logRequestDto) throws Exception {
+        List<SpotLogDto> list = SpotService.current(logRequestDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(list);
+    }
+
 
     @GetMapping("/success")
     public ResponseEntity<List<SchoolSuccessDto>> getSuccess() throws Exception {

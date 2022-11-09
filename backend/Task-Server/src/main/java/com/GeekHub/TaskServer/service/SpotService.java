@@ -24,4 +24,6 @@ public interface SpotService {
     Optional<NextSpotDto> nextWork(Long driverIdx) throws Exception;
 
     void saveImg(ImgRequestDto imgRequestDto) throws Exception;
+
+    List<SpotLogDto> current(LogRequestDto logRequestDto) throws Exception;
 }

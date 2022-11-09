@@ -4,10 +4,7 @@ import com.GeekHub.TaskServer.dto.request.ImgRequestDto;
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
 import com.GeekHub.TaskServer.dto.response.*;
-import com.GeekHub.TaskServer.entity.Spot;
-import com.GeekHub.TaskServer.entity.SpotCategory;
-import com.GeekHub.TaskServer.entity.SpotImg;
-import com.GeekHub.TaskServer.entity.User;
+import com.GeekHub.TaskServer.entity.*;
 import com.GeekHub.TaskServer.repository.SpotImgRepository;
 import com.GeekHub.TaskServer.repository.SpotRepository;
 import com.GeekHub.TaskServer.repository.UserRepository;
@@ -278,8 +275,83 @@ public class SpotServiceImpl implements SpotService {
         }catch (Exception e) {
             throw new Exception();
         }
+    }
+    public List<SpotLogDto> current(LogRequestDto logRequestDto) throws Exception{
+        String localCity= logRequestDto.getLocalCity();
+        String localSchool= logRequestDto.getLocalSchool();
+        String date= logRequestDto.getDate();
+        List<User> users = userRepository.findUserByLocalCityAndLocalSchool(localCity, localSchool).orElse(null);
+        List<SpotLogDto> result= new ArrayList<>();
+        for(User user:users){
+            SpotLogDto spotLogDto = new SpotLogDto();
+            spotLogDto.setUserName(user.getUserName());
+            spotLogDto.setUserIdx(user.getUserIdx());
 
+            List<Spot> list = spotList(user.getUserIdx(), date);
+            List<SpotResponseDto> temp = new ArrayList<>();
+            int total=0;
+            int count=0;
+            for(Spot spot: list){
+                SpotResponseDto spotResponseDto= new SpotResponseDto();
+                spotResponseDto.setSpotIdx(spot.getSpotIdx());
+                spotResponseDto.setSpotCategory(spot.getSpotCategory());
+                spotResponseDto.setSpotName(spot.getSpotName());
+                spotResponseDto.setLat(spot.getLat());
+                spotResponseDto.setLon(spot.getLon());
+                spotResponseDto.setExpectedTime(spot.getExpectedTime());
+                spotResponseDto.setArrivedTime(spot.getArrivedTime());
+                spotResponseDto.setImageUrl(spot.getImageUrl());
+                spotResponseDto.setCount(spot.getCount());
+                spotResponseDto.setStatus(spot.getStatus());
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                if(spot.getArrivedTime()==null) {
+                }else {
+                    Date date1 = null;
+                    Date date2 = null;
+                    try {
+                        date1 = sdf.parse(String.valueOf(spot.getExpectedTime()).substring(11));
+                        date2 = sdf.parse(String.valueOf(spot.getArrivedTime()).substring(11));
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    spotResponseDto.setDif((date2.getTime()-date1.getTime())/60000);
+                }
+                temp.add(spotResponseDto);
+                LOGGER.info(String.valueOf(spot.getExpectedTime()));
+            }
 
+            spotLogDto.setSpotResponseDtoList(temp);
+            result.add(spotLogDto);
+        }
+
+        return result;
+    }
+    private List<Spot> spotList(long userIdx, String date) {
+        List<Spot> result = new ArrayList<>();
+        List<Spot> list = spotRepository.findSpotByUserIdx(userIdx).orElse(null);
+
+        StringTokenizer st = new StringTokenizer(date, "-");
+        String year = st.nextToken();
+        String month = st.nextToken();
+        String day = st.nextToken();
+        StringBuilder sb = new StringBuilder();
+        sb.append(year).append("-");
+        if (month.length()==1){
+            sb.append(0).append(month).append("-");
+        }else{
+            sb.append(month).append("-");
+        }
+        if(day.length()==1){
+            sb.append(0).append(day);
+        }else {
+            sb.append(day);
+        }
+        for (Spot spot : list) {
+            if (spot.getExpectedTime().toString().substring(0, 10).equals(sb.toString())){
+                result.add(spot);
+            }
+        }
+        return result;
     }
 }
 
