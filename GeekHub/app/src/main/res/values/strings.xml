@@ -24,6 +24,7 @@
     <string name="admin">관리자</string>
     <string name="detail_information">가게 정보가 맞다면\n사진찍기를 눌러주세요</string>
     <string name="rest_day">오늘은 쉬는날이에요!</string>
+    <string name="login">GeekHub 로그인</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

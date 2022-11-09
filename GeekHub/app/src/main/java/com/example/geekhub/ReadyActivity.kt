@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.geekhub.data.DeliveryList
 import com.example.geekhub.data.DeliveryResponse
 import com.example.geekhub.databinding.ActivityReadyBinding
@@ -164,8 +165,13 @@ class ReadyActivity : AppCompatActivity() {
                 println("짜잔도착")
             }else{
                 holder.time.text = number.expectedTime
-                holder.image.setImageResource(R.drawable.go_arrow)
-                holder.image.setColorFilter(R.color.gick_blue)
+                var ur1 = number.iconUrl
+                Glide.with(applicationContext)
+                    .load(ur1) // 불러올 이미지 url
+                    .placeholder(R.drawable.loading) // 이미지 로딩 시작하기 전 표시할 이미지
+                    .error(R.drawable.loading) // 로딩 에러 발생 시 표시할 이미지
+                    .fallback(R.drawable.loading) // 로드할 url 이 비어있을(null 등) 경우 표시할 이미지
+                    .into(holder.image) // 이미지를 넣을 뷰
             }
 
 

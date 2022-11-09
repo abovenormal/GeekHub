@@ -222,9 +222,9 @@ class DeliveryFragment : Fragment() {
 
             Glide.with(requireActivity())
                 .load(ur1) // 불러올 이미지 url
-                .placeholder(R.drawable.dobby) // 이미지 로딩 시작하기 전 표시할 이미지
-                .error(R.drawable.dobby) // 로딩 에러 발생 시 표시할 이미지
-                .fallback(R.drawable.dobby) // 로드할 url 이 비어있을(null 등) 경우 표시할 이미지
+                .placeholder(R.drawable.loading) // 이미지 로딩 시작하기 전 표시할 이미지
+                .error(R.drawable.loading) // 로딩 에러 발생 시 표시할 이미지
+                .fallback(R.drawable.loading) // 로드할 url 이 비어있을(null 등) 경우 표시할 이미지
                 .into(holder.image) // 이미지를 넣을 뷰
 
 
