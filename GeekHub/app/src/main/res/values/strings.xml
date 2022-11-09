@@ -2,7 +2,7 @@
     <string name="app_name">GeekHub</string>
     <string name="id_login">아이디를 입력해주세요</string>
     <string name="pw_login">비밀번호를 입력해주세요</string>
-    <string name="go_login">시작하기</string>
+    <string name="go_login">로그인하기</string>
     <string name="ready_title">배정된 작업</string>
     <string name="ready_time">저녁1</string>
     <string name="ready_spot">알촌-1동</string>
@@ -15,16 +15,13 @@
     <string name="tagging_button">NFC 태깅하기</string>
     <string name="dummy_camera">X개를 수령하셨나요?</string>
     <string name="backspace">뒤로가기</string>
-    <string name="nfc_scan">스캔 준비가 완료되었습니다.</string>
-    <string name="nfc_playing">기기를 NFC 스티거에 가까이 가져가 주세요</string>
     <string name="take_picture">재촬영</string>
     <string name="go_picture">사진찍기</string>
     <string name="send">전송하기</string>
     <string name="colleague">동료기사</string>
     <string name="admin">관리자</string>
-    <string name="detail_information">가게 정보가 맞다면\n사진찍기를 눌러주세요</string>
     <string name="rest_day">오늘은 쉬는날이에요!</string>
-    <string name="login">GeekHub 로그인</string>
+    <string name="login">로그인</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
