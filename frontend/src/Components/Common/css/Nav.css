@@ -29,7 +29,7 @@
   width: 50px;
 }
 .expanded {
-  width: 15rem;
+  min-width: 15rem;
 }
 .nav-menu {
   display: flex;

@@ -15,12 +15,23 @@
 .list-header {
   font-size: 1rem;
   font-weight: bold;
+  text-align: center;
+}
+.list-destination {
+  background-color: rgb(255, 255, 181);
+}
+
+.list-hub {
+  background-color: rgb(142, 255, 172);
 }
 
 .list-body {
   font-weight: bold;
+  text-align: center;
 }
-
+.pickupPic {
+  text-align: center;
+}
 .dif-red {
   color: red;
 }
