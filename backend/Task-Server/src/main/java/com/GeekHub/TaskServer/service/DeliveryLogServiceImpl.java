@@ -51,6 +51,7 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
             int total=0;
             int count=0;
             for(DeliveryLog deliveryLog: list){
+                if(deliveryLog.getStatus()==0) continue;
                 SpotResponseDto spotResponseDto= new SpotResponseDto();
                 spotResponseDto.setSpotIdx(deliveryLog.getSpotIdx());
                 log.info(String.valueOf(deliveryLog.getLogIdx()));
