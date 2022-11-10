@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="08e63309-9c38-4699-9b9a-3be4e32c0219" name="Changes" comment="refactor: checkpic api는 이후에 작업 요망" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/backend/user-service">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2H0zq6L2vWMEV95Pyz2949zEFnz" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/ssafy/lasetPJT/S3/S07P31C205/backend"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="08e63309-9c38-4699-9b9a-3be4e32c0219" name="Changes" comment="" />
+      <created>1667436976405</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1667436976405</updated>
+    </task>
+    <task id="LOCAL-00001" summary="refactor: 위치 column 변수명 재설정&#10;lati -&gt; lat&#10;longi -&gt; lon&#10;글자수와 가독성을 높이히기 위해 변수명 수정하였음.&#10;(알피님 요청으로 수정)">
+      <created>1667437846520</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1667437846520</updated>
+    </task>
+    <task id="LOCAL-00002" summary="refactor: 위치 column 변수명 재설정&#10;lati -&gt; lat&#10;longi -&gt; lon&#10;글자수와 가독성을 높이히기 위해 변수명 수정하였음.&#10;(알피님 요청으로 수정)">
+      <created>1667437926773</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1667437926773</updated>
+    </task>
+    <task id="LOCAL-00003" summary="refactor: order 테이블 삭제">
+      <created>1667456884862</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1667456884862</updated>
+    </task>
+    <task id="LOCAL-00004" summary="build: table 초기화 재설정">
+      <created>1667456917328</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1667456917328</updated>
+    </task>
+    <task id="LOCAL-00005" summary="refactor: order 테이블 삭제에 따른 repo도 함게 삭제수정">
+      <created>1667457027273</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1667457027273</updated>
+    </task>
+    <task id="LOCAL-00006" summary="refactor: checkpic api는 이후에 작업 요망">
+      <created>1667457148543</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1667457148543</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="refactor: 위치 column 변수명 재설정&#10;lati -&gt; lat&#10;longi -&gt; lon&#10;글자수와 가독성을 높이히기 위해 변수명 수정하였음.&#10;(알피님 요청으로 수정)" />
+    <MESSAGE value="refactor: order 테이블 삭제" />
+    <MESSAGE value="build: table 초기화 재설정" />
+    <MESSAGE value="refactor: order 테이블 삭제에 따른 repo도 함게 삭제수정" />
+    <MESSAGE value="refactor: checkpic api는 이후에 작업 요망" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: checkpic api는 이후에 작업 요망" />
+  </component>
+</project>
