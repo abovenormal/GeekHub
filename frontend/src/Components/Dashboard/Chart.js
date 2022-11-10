@@ -8,15 +8,14 @@ import { Info } from "@material-ui/icons";
 import { datePickerValueManager } from "@mui/x-date-pickers/DatePicker/shared";
 import YesterdayPie from "./YesterdayPie";
 import { Carousel } from "react-responsive-carousel";
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import ApexChart from "react-apexcharts";
+import logo from "../../asset/image/logo.png";
 
 const Chart = () => {
   const [data, setData] = useState([]);
   const [map, setMap] = useState([]);
   const [loading, setLoading] = useState(true);
-
-
 
   useEffect(() => {
     async function getData() {
@@ -32,97 +31,230 @@ const Chart = () => {
   }, []);
   useEffect(() => {
     let result = [];
-    let temp = []
-    for (let i = 0; i < data.length; i++) {
+    let temp = [];
+    for (let i = 3; i < data.length; i++) {
       let item = data[i];
       if (item.totalSpot == 0) {
-        temp.push(<ApexChart
-          className="carousel-container-chart"
-          type="donut" height={300}
-          series={[0]}
-          options={{
-            chart: {
-              type: 'donut',
-            },
-            legend: {
-              position: 'bottom'
-            },
-            responsive: [{
-              breakpoint: 480,
-            }],
-            plotOptions: {
-              pie: {
-                donut: {
-                  labels: {
-                    show: true,
-                    // total: {
-                    //   showAlways: true,
-                    //   show: true,
-                    //   label: 'ALARM',
-                    //   fontSize: '12px',
-                    //   color: 'red'
-                    // },
-                    value: {
-                      fontSize: '22px',
-                      show: true,
-                      color: 'blue',
+        temp.push(
+          <div>
+            <ApexChart
+              className="carousel-container-chart"
+              type="donut"
+              height={300}
+              series={[item.successSpot, data[i].totalSpot - item.successSpot]}
+              options={{
+                colors: ["#8dd3c7", "black"],
+                fill: { colors: ["#8dd3c7", "#ffffb3"] },
+                chart: {
+                  type: "donut",
+                  style: {
+                    colors: ["#f3f3f3"],
+                  },
+                },
+                legend: {
+                  position: "bottom",
+                },
+                responsive: [
+                  {
+                    breakpoint: 480,
+                  },
+                ],
+                plotOptions: {
+                  pie: {
+                    donut: {
+                      labels: {
+                        show: true,
+                        // total: {
+                        //   showAlways: true,
+                        //   show: true,
+                        //   label: 'ALARM',
+                        //   fontSize: '12px',
+                        //   color: 'red'
+                        // },
+                        value: {
+                          fontSize: "30px",
+                          show: true,
+                          color: "black",
+                        },
+                      },
                     },
                   },
-                }
-              }
-            }
-            , title: {
-              text: item.schoolName,
-              align: 'center'
-            }
-            , labels: ["주문", "실패"],
-          }}></ApexChart>)
+                },
+                labels: ["성공", "실패"],
+              }}
+            ></ApexChart>
+            <div className="schoolName">{item.schoolName}</div>
+          </div>
+        );
       } else {
-        temp.push(<ApexChart
-          className="carousel-container-chart"
-          type="donut" height={300}
-          series={[item.successSpot, data[i].totalSpot - item.successSpot]}
-          options={{
-            chart: {
-              type: 'donut',
-            },
-            legend: {
-              position: 'bottom'
-            },
-            responsive: [{
-              breakpoint: 480,
-            }],
-            plotOptions: {
-              pie: {
-                donut: {
-                  labels: {
-                    show: true,
-                    // total: {
-                    //   showAlways: true,
-                    //   show: true,
-                    //   label: 'ALARM',
-                    //   fontSize: '12px',
-                    //   color: 'red'
-                    // },
-                    value: {
-                      fontSize: '22px',
-                      show: true,
-                      color: 'blue',
+        temp.push(
+          <div>
+            <ApexChart
+              className="carousel-container-chart"
+              type="donut"
+              height={300}
+              series={[item.successSpot, data[i].totalSpot - item.successSpot]}
+              options={{
+                colors: ["#8dd3c7", "black"],
+                fill: { colors: ["#8dd3c7", "#ffffb3"] },
+                chart: {
+                  type: "donut",
+                  style: {
+                    colors: ["#f3f3f3"],
+                  },
+                },
+                legend: {
+                  position: "bottom",
+                },
+                responsive: [
+                  {
+                    breakpoint: 480,
+                  },
+                ],
+                plotOptions: {
+                  pie: {
+                    donut: {
+                      labels: {
+                        show: true,
+                        // total: {
+                        //   showAlways: true,
+                        //   show: true,
+                        //   label: 'ALARM',
+                        //   fontSize: '12px',
+                        //   color: 'red'
+                        // },
+                        value: {
+                          fontSize: "30px",
+                          show: true,
+                          color: "black",
+                        },
+                      },
                     },
                   },
-                }
-              }
-            }
-            , title: {
-              text: item.schoolName,
-              align: 'center'
-            }
-            , labels: ["성공", "실패"],
-          }}></ApexChart>)
+                },
+                labels: ["성공", "실패"],
+              }}
+            ></ApexChart>
+            <div className="schoolName">{item.schoolName}</div>
+          </div>
+        );
       }
 
       if (i % 3 == 2 || i == data.length - 1) {
-        result.push(<div className="carousel-container">{temp}</div>)
+        result.push(<div className="carousel-container">{temp}</div>);
+        temp = [];
+      }
+    }
+    for (let i = 0; i < data.length - 14; i++) {
+      let item = data[i];
+      if (item.totalSpot == 0) {
+        temp.push(
+          <div>
+            <ApexChart
+              className="carousel-container-chart"
+              type="donut"
+              height={300}
+              series={[item.successSpot, data[i].totalSpot - item.successSpot]}
+              options={{
+                colors: ["#8dd3c7", "black"],
+                fill: { colors: ["#8dd3c7", "#ffffb3"] },
+                chart: {
+                  type: "donut",
+                  style: {
+                    colors: ["#f3f3f3"],
+                  },
+                },
+                legend: {
+                  position: "bottom",
+                },
+                responsive: [
+                  {
+                    breakpoint: 480,
+                  },
+                ],
+                plotOptions: {
+                  pie: {
+                    donut: {
+                      labels: {
+                        show: true,
+                        // total: {
+                        //   showAlways: true,
+                        //   show: true,
+                        //   label: 'ALARM',
+                        //   fontSize: '12px',
+                        //   color: 'red'
+                        // },
+                        value: {
+                          fontSize: "30px",
+                          show: true,
+                          color: "black",
+                        },
+                      },
+                    },
+                  },
+                },
+                labels: ["성공", "실패"],
+              }}
+            ></ApexChart>
+            <div className="schoolName">{item.schoolName}</div>
+          </div>
+        );
+      } else {
+        temp.push(
+          <div>
+            <ApexChart
+              className="carousel-container-chart"
+              type="donut"
+              height={300}
+              series={[item.successSpot, data[i].totalSpot - item.successSpot]}
+              options={{
+                colors: ["#8dd3c7", "black"],
+                fill: { colors: ["#8dd3c7", "#ffffb3"] },
+                chart: {
+                  type: "donut",
+                  style: {
+                    colors: ["#f3f3f3"],
+                  },
+                },
+                legend: {
+                  position: "bottom",
+                },
+                responsive: [
+                  {
+                    breakpoint: 480,
+                  },
+                ],
+                plotOptions: {
+                  pie: {
+                    donut: {
+                      labels: {
+                        show: true,
+                        // total: {
+                        //   showAlways: true,
+                        //   show: true,
+                        //   label: 'ALARM',
+                        //   fontSize: '12px',
+                        //   color: 'red'
+                        // },
+                        value: {
+                          fontSize: "30px",
+                          show: true,
+                          color: "black",
+                        },
+                      },
+                    },
+                  },
+                },
+                labels: ["성공", "실패"],
+              }}
+            ></ApexChart>
+            <div className="schoolName">{item.schoolName}</div>
+          </div>
+        );
+      }
+
+      if (i % 3 == 2 || i == data.length - 1) {
+        result.push(<div className="carousel-container">{temp}</div>);
         temp = [];
       }
     }
@@ -176,7 +308,7 @@ const Chart = () => {
       color: "hsl(220, 70%, 50%)",
     },
   ];
-  // console.log(pie); 
+  // console.log(pie);
 
   // useEffect(() => {
   //   var temp = [];
@@ -204,20 +336,27 @@ const Chart = () => {
           </div>
         </div>
         <div className="pie-chart-container">
-          {loading ? <></> :
-            <Carousel
-              autoPlay
-              infiniteLoop
-              useKeyboardArrows
-              interval="2000"
-              showArrows="false"
-              showStatus="false"
-              showIndicators="false"
-              showThumbs="false"
-              swipeable="false">
-              {map}
-            </Carousel>}
+          {loading ? (
+            <></>
+          ) : (
+            <>
+              <div className="pie-chart-title">전국 배달 요약</div>
 
+              <Carousel
+                autoPlay
+                infiniteLoop
+                useKeyboardArrows
+                interval="2000"
+                showArrows="false"
+                showStatus="false"
+                showIndicators="false"
+                showThumbs="false"
+                swipeable="false"
+              >
+                {map}
+              </Carousel>
+            </>
+          )}
         </div>
       </div>
     </div>

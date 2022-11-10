@@ -1,3 +1,5 @@
+
+
 .chart-container {
   width: 100%;
   height: 100vh;
@@ -114,7 +116,8 @@
 }
 
 .carousel-container{
-  margin-top: 30px;
+  justify-content: space-evenly;
+  margin-top: 25px;
   text-align: center;
   display: flex;
     flex-direction: row;
@@ -122,8 +125,9 @@
 }
 
 .carousel-container-chart{
+
   display: inline-block;
-  width: 30%;
+  width: 70%;
   text-align: center;
     display: flex;
     flex-direction: row;
@@ -134,4 +138,26 @@
 }
 .carousel-status{
   display: none;
+}
+.apexcharts-legend-text{
+  display: none;
+}
+.apexcharts-legend-marker{
+  visibility:hidden;
+  display: none;
+}
+
+.schoolName{
+  margin-top: -18px;
+  font-size: 22px;
+  font-family: "BMHANNAPro";
+}
+.apexcharts-datalabels{
+  fill:black;
+}
+text{
+  font-size: 16px;
+  font-family: "BMHANNAPro";
+  font-weight: bold;
+  fill:rgb(65, 65, 65);
 }
