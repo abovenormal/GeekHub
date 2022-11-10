@@ -27,15 +27,16 @@
 
 .signup-id {
   display: flex;
-  align-items: start;
-  min-width: "80%";
+  justify-content: flex-start;
+  max-width: 81%;
+  width: 100%;
 }
 
 .signup-check {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 70px;
+  min-width: 70px;
   height: 40px;
   border-radius: 12px;
   /* padding: 0.5rem 0.5rem; */
@@ -43,7 +44,7 @@
   color: #fff;
   border: none;
   font-weight: bold;
-  background-color: #10b981;
+  background-color: #101836;
   cursor: pointer;
   margin: 1rem 0;
 }
@@ -51,7 +52,7 @@
 .signup-check-confirm {
   padding: 0.5rem;
   width: 2rem;
-  color: #10b981;
+  color: #101836;
   font-size: 2rem;
   text-align: center;
   line-height: 0;
@@ -66,7 +67,7 @@
   color: #fff;
   border: none;
   font-weight: bold;
-  background-color: #10b981;
+  background-color: #101836;
   cursor: pointer;
   margin: 1rem 0;
 }

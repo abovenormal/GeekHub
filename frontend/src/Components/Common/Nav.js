@@ -10,14 +10,13 @@ import SummarizeIcon from "@mui/icons-material/Summarize";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Logout from "@mui/icons-material/Logout";
+// import logo from "../../asset/image/logo.png"
 const Nav = () => {
   const [nowActive, setNowActive] = useState("overview");
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   return (
     // <nav className={`navigation ${expanded && "expanded"}`}>
-    <nav
-      className={`sidebar ${expanded && "expanded"}`}
-    >
+    <nav className={`sidebar ${expanded && "expanded"}`}>
       <div>
         <Link
           className={"nav-menu"}
@@ -26,9 +25,9 @@ const Nav = () => {
           }}
         >
           <MenuIcon className="nav-icon" />
-          <div
-            className={`description ${expanded && "show-description"}`}
-          >GeekHub</div>
+          <div className={`description ${expanded && "show-description"}`}>
+          GeekHub
+          </div>
         </Link>
         <Link
           className={"nav-link" + (nowActive === "overview" ? " active" : "")}
