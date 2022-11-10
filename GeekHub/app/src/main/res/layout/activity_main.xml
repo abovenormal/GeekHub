@@ -26,6 +26,15 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
+        android:id="@+id/root_button"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_margin="5dp"
+        app:srcCompat="@drawable/driving"
+        app:layout_constraintStart_toEndOf="@id/focus_button"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
         android:id="@+id/nav_button"
         android:layout_width="35dp"
         android:layout_height="35dp"
