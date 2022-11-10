@@ -24,8 +24,8 @@ public class MessageListener {
             groupId = KafkaConstants.GROUP_ID
     )
     public void listen(Message message) {
-        //log.info("sending via kafka listener..");
-        //System.out.println(message);
+        log.info("sending via kafka listener..");
+        System.out.println(message);
         repository.save(message);
         String roomId =  message.getRoomId();
         template.convertAndSend("/chat/test/", message);

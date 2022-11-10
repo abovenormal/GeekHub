@@ -2,6 +2,8 @@ package com.Geekhub.ChatServer.controller;
 
 import com.Geekhub.ChatServer.constant.KafkaConstants;
 import com.Geekhub.ChatServer.model.Message;
+import com.Geekhub.ChatServer.service.ChatService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -11,14 +13,18 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/chat")
+@RequiredArgsConstructor
 public class ChatController {
     @Autowired
     private KafkaTemplate<String, Message> kafkaTemplate;
+
+    private final ChatService chatService;
 
     @PostMapping(value = "/publish")
     public void sendMessage(@RequestBody Message message) {
@@ -35,6 +41,13 @@ public class ChatController {
     @SendTo("/chat/group")
     public Message broadcastGroupMessage(@Payload Message message) {
         return message;
+    }
+
+    @GetMapping("/findRoom")
+    public void FindRoom(@RequestParam String roomId){
+
+        log.info("here findroom");
+        List<Message>Senders = chatService.FindPeopleByRoomId(roomId);
     }
 
 }
