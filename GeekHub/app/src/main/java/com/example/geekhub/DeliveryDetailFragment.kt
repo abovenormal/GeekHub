@@ -16,6 +16,7 @@ class DeliveryDetailFragment : Fragment() {
     var idx:String? = "idx"
     lateinit var pref : SharedPreferences
     lateinit var userid : String
+    var url : String? = "url"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,12 +28,13 @@ class DeliveryDetailFragment : Fragment() {
         arguments?.let{6
             title = it.getString("title")
             idx = it.getString("idx")
+            url = it.getString("url")
             binding.detailTitle.text = title
         }
-        binding.delInfomation.setText("사진찍기를 눌러주세요")
-        Glide.with(requireContext())
-            .load(R.drawable.camera_animation) // 불러올 이미지 url
-            .into(binding.cameraImage) // 이미지를 넣을 뷰
+//        binding.delInfomation.setText("음식 사진을 찍어주세요")
+//        Glide.with(requireContext())
+//            .load(R.drawable.phone_camera_name) // 불러올 이미지 url
+//            .into(binding.cameraImage) // 이미지를 넣을 뷰
 
         binding.detailButton.setOnClickListener{
 

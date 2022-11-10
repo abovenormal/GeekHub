@@ -8,4 +8,13 @@
         <item name="colorAccent">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.GeekHub.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.GeekHub.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.GeekHub.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
