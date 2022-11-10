@@ -36,6 +36,9 @@
   height: 100%;
   min-height: 220px;
 }
+.carousel-root{
+  overflow: hidden;
+}
 .pie-chart {
   display: flex;
   flex-direction: column;
