@@ -23,6 +23,7 @@ class NfcFragment : Fragment() {
     lateinit var binding : FragmentNfcBinding
     var title:String? = "s"
     var state = 0
+    var url:String? = "url"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +31,13 @@ class NfcFragment : Fragment() {
     ): View? {
         binding = FragmentNfcBinding.inflate(inflater,container,false)
         // Inflate the layout for this fragment
+        arguments?.let{
+            println("체크")
+            title = it.getString("title")
+            url = it.getString("url")
+            println(title)
+            binding.nfcTitle.text = title
+        }
 
         binding.nfcInfomation1.setText("아래 버튼을 눌러 nfc를 켜주세요!\nnfc를 꼭 일반모드로 설정해주세요")
 
@@ -37,13 +45,10 @@ class NfcFragment : Fragment() {
             .load(R.drawable.nfc_animation) // 불러올 이미지 url
             .into(binding.nfcImage) // 이미지를 넣을 뷰
 
+        Glide.with(requireContext())
+            .load(url) // 불러올 이미지 url
+            .into(binding.logoIcon) // 이미지를 넣을 뷰
 
-        arguments?.let{
-            println("체크")
-            title = it.getString("title")
-            println(title)
-            binding.nfcTitle.text = title
-        }
 
 
         return binding.root

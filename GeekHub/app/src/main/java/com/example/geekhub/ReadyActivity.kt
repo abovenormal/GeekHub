@@ -37,7 +37,6 @@ class ReadyActivity : AppCompatActivity() {
         println(userid.toInt())
 
         binding.deliveryFree.visibility = View.INVISIBLE
-        binding.readyTitleView.visibility = View.VISIBLE
         binding.deliveryStartButton.visibility = View.VISIBLE
 
 
@@ -206,7 +205,6 @@ class ReadyActivity : AppCompatActivity() {
     fun dobby() {
         binding.deliveryDobby.setImageResource(R.drawable.dobby)
         binding.deliveryFree.visibility = View.VISIBLE
-        binding.readyTitleView.visibility = View.INVISIBLE
         binding.deliveryStartButton.visibility = View.INVISIBLE
     }
 }
