@@ -114,12 +114,12 @@ const Signup = () => {
   return (
     <div className="signup-container">
       <form className="signup-form" method="post" onSubmit={signupSubmit}>
-        <h2 className="signup-title">SIGN UP</h2>
+        <h2 className="signup-title">신규 기사님 등록</h2>
         <TextField
           required
           id="name"
           name="userName"
-          label="Name"
+          label="이름"
           variant="standard"
           value={info.userName}
           onChange={onChange}
@@ -137,7 +137,7 @@ const Signup = () => {
           required
           id="phoneNumber"
           name="phone"
-          label="Phone Number"
+          label="휴대폰 번호"
           variant="standard"
           value={info.phone}
           onChange={onChange}
@@ -145,13 +145,13 @@ const Signup = () => {
         />
         <div>
           <FormControl required variant="standard" sx={{ m: 1, minWidth: 100 }}>
-            <InputLabel id="demo-simple-select-standard-label">City</InputLabel>
+            <InputLabel id="demo-simple-select-standard-label">지역</InputLabel>
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
               value={info.localCity}
               onChange={onChange}
-              label="City"
+              label="지역"
               name="localCity"
             >
               <MenuItem value={"서울"}>서울</MenuItem>
@@ -162,14 +162,14 @@ const Signup = () => {
           </FormControl>
           <FormControl required variant="standard" sx={{ m: 1, minWidth: 280 }}>
             <InputLabel id="demo-simple-select-standard-label">
-              School
+              장소
             </InputLabel>
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
               value={info.localSchool}
               onChange={onChange}
-              label="School"
+              label="장소"
               name="localSchool"
             >
               {schoolList.map((school) => (
@@ -184,7 +184,7 @@ const Signup = () => {
           <TextField
             required
             id="standard-disabled"
-            label="ID"
+            label="아이디"
             name="userId"
             value={info.userId}
             variant="standard"
@@ -209,7 +209,7 @@ const Signup = () => {
         <TextField
           required
           id="password"
-          label="Password"
+          label="비밀번호"
           name="password"
           type="password"
           autoComplete="current-password"
@@ -221,7 +221,7 @@ const Signup = () => {
         <TextField
           required
           id="password"
-          label="Password Confirm"
+          label="비밀번호 확인"
           type="password"
           autoComplete="current-password"
           variant="standard"

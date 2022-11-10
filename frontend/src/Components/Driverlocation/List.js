@@ -96,9 +96,9 @@ const List = (props) => {
               aria-label="expand row"
               size="small"
               onClick={() => {
-                console.log(row.userIdx);
+                console.log(row);
                 GetLocation(row.userIdx);
-                // GetLocation(1);
+                
               }}
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -109,7 +109,7 @@ const List = (props) => {
             scope="row"
             onClick={() => {
               GetLocation(row.userIdx);
-              // GetLocation(1);
+
             }}
             sx={{
               cursor: "pointer",
@@ -149,8 +149,8 @@ const List = (props) => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {row.spotResponseDtoList.map((taskRow) => (
-                        <TableRow key={taskRow.spotName}>
+                      {row.spotResponseDtoList.map((taskRow, index) => (
+                        <TableRow key={index}>
                           <TableCell component="th" scope="row">
                             <div className="list-body">
                               {taskRow.spotName}
@@ -180,7 +180,7 @@ const List = (props) => {
                             </div>
                           </TableCell>
                           <TableCell>
-                            {(taskRow.imageUrl) ? <div
+                            {(!taskRow.imageUrl) ? "" : (taskRow.spotCategory === "STORE") ? <div
                               className="pickupPic"
                               onClick={() => {
                                 const pickupPicture = taskRow.imageUrl;
@@ -195,7 +195,22 @@ const List = (props) => {
                               }}
                             >
                               보기
-                            </div> : "" }
+                            </div> : <div
+                              className="pickupPic"
+                              onClick={() => {
+                                const pickupPicture = taskRow.imageUrl;
+                                Swal.fire({
+                                  // title: '픽업 사진',
+                                  text: "배달을 완료하였습니다.",
+                                  imageUrl: pickupPicture,
+                                  imageWidth: 300,
+                                  imageHeight: 300,
+                                  imageAlt: "Pickup image",
+                                });
+                              }}
+                            >
+                              보기
+                            </div> }
                             
                           </TableCell>
                         </TableRow>
@@ -225,7 +240,7 @@ const List = (props) => {
                     </div>
                   </div>
                   {latitude === 0 && longitude === 0 ? (
-                    <h4>최근 위치가 없습니다.</h4>
+                    <h4>조회된 데이터가 없습니다.</h4>
                   ) : (
                     <div className="now-map" id="map_div"></div>
                   )}
@@ -240,7 +255,28 @@ const List = (props) => {
   }
 
   const rows = props.listData;
-  console.log(rows);
+  // let allTask = 0;
+  // let completeTask = 0;
+  // for(let i=0;i<rows.length;i++){
+  //   let row=rows[i];
+  //   if (row.spotResponseDtoList.status === 2 || row.spotResponseDtoList.status === 1) {
+  //     allTask = allTask + 1
+  //     console.log("true~~~~~~~~~~~`")
+  //   } else if (row.spotResponseDtoList.status === 2) {
+  //     completeTask = completeTask + 1
+  //   }
+  //   console.log(allTask, completeTask)
+  // }
+  // {rows.map((row) => {
+  //   if (row.spotResponseDtoList.status === 2 || row.spotResponseDtoList.status === 1) {
+  //     allTask = allTask + 1
+  //     console.log("true~~~~~~~~~~~`")
+  //   } else if (row.spotResponseDtoList.status === 2) {
+  //     completeTask = completeTask + 1
+  //   }
+  //   console.log(allTask, completeTask)
+  // })}
+  // console.log(rows);
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -248,8 +284,8 @@ const List = (props) => {
           <TableRow></TableRow>
         </TableHead>
         <TableBody sx={{ width: 1000 }}>
-          {rows.map((row) => (
-            <Row key={row.userName} row={row}></Row>
+          {rows.map((row, index) => (
+            <Row key={index} row={row}></Row>
           ))}
         </TableBody>
       </Table>
