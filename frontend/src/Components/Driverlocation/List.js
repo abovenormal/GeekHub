@@ -205,7 +205,7 @@ const List = (props) => {
                                   imageUrl: pickupPicture,
                                   imageWidth: 300,
                                   imageHeight: 300,
-                                  imageAlt: "Pickup image",
+                                  imageAlt: "Drop image",
                                 });
                               }}
                             >
