@@ -16,33 +16,48 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Swal from "sweetalert2";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import "./css/List.css";
+import marker from "../../asset/image/marker.png"
 import { apiInstance } from "../../api/index";
 import { Looks } from "@material-ui/icons";
 const List = (props) => {
+  
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = useState(false);
-    const [nowOpen, setNowOpen] = useState(false);
     const API = apiInstance();
     const [longitude, setLongitude] = useState("0");
     const [latitude, setLatitude] = useState("0");
     const [timestamp, setTimestamp] = useState("0");
-
+    let allTask = 0;
+    let completeTask = 0;
+    
+    {row.spotResponseDtoList.map((c) => {
+      console.log(`c is ${c}`)
+      if (c.status === 2) {
+        allTask += 1
+        completeTask += 1
+      } else if (c.status === 1) {
+        allTask += 1
+      }
+    })}
+    const successRatio = parseInt((completeTask / allTask) * 100);
     useEffect(() => {
       const script = document.createElement("script");
-      console.log(longitude);
+      // console.log(longitude);
       script.innerHTML = `
           function initTmap() {
               var map = new Tmapv2.Map("map_div", {
                   center: new Tmapv2.LatLng(${latitude},${longitude}),
                   width: "100%",
                   height: "100%",
-                  zoom:16
+                  zoom:17
               });
           
               var marker = new Tmapv2.Marker({
                 position: new Tmapv2.LatLng(${latitude},${longitude}),
-                map: map
+                map: map,
+                icon: '${marker}',
+                iconSize : new Tmapv2.Size(30,44)
               });	
             }
           initTmap();
@@ -55,24 +70,26 @@ const List = (props) => {
       // 열릴 때만 Get 요청 보내기 위해 분기 추가 했다가
       // 열린 채로 새로 고침 안 되서 잠시 삭제
       // 아래 if문 추가로 해결 완료
+      if ( allTask > 0 ) {
       try {
         const res = await API.get("/location/getLocation", {
           params: { driver: userIdx },
         });
-        console.log(res.data);
+        // console.log(res.data);
         setLatitude(res.data.latitude);
         setLongitude(res.data.longitude);
         setTimestamp(res.data.timestamp); // timestamp
         setOpen(!open);
       } catch (error) {
         if (error.response.status === 400) {
-          console.log(error.response.status);
+          // console.log(error.response.status);
           setOpen(!open);
           setLatitude(0);
           setLongitude(0);
           setTimestamp("");
         }
       }
+    }
     }
     return (
       <React.Fragment>
@@ -96,7 +113,7 @@ const List = (props) => {
               aria-label="expand row"
               size="small"
               onClick={() => {
-                console.log(row);
+                // console.log(row);
                 GetLocation(row.userIdx);
                 
               }}
@@ -109,13 +126,14 @@ const List = (props) => {
             scope="row"
             onClick={() => {
               GetLocation(row.userIdx);
-
             }}
             sx={{
               cursor: "pointer",
             }}
           >
             <div className="list-username">{row.userName}</div>
+            
+            {(allTask === 0) ? <div>오늘 일 없음ㅋㅋ</div> : (allTask === completeTask) ? <div>100% 완료</div> : <div className="success-ratio">{successRatio}% 진행 중</div>}
           </TableCell>
         </TableRow>
         <TableRow>
@@ -132,7 +150,10 @@ const List = (props) => {
                     <TableHead>
                       <TableRow>
                         <TableCell>
-                          <div className="list-header">픽업존</div>
+                          <div className="list-header">분류</div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="list-header">장소</div>
                         </TableCell>
                         <TableCell>
                           <div className="list-header">도착 예정</div>
@@ -144,16 +165,21 @@ const List = (props) => {
                           <div className="list-header">오차</div>
                         </TableCell>
                         <TableCell>
-                          <div className="list-header">픽업 사진</div>
+                          <div className="list-header">사진</div>
                         </TableCell>
                       </TableRow>
                     </TableHead>
-                    <TableBody>
+                    <TableBody >
                       {row.spotResponseDtoList.map((taskRow, index) => (
-                        <TableRow key={index}>
-                          <TableCell component="th" scope="row">
+                        <TableRow key={index} className={(taskRow.spotCategory === "DESTINATION") ? "list-destination" : (taskRow.spotCategory==="HUB") ? "list-hub" : ""}>
+                          <TableCell component="th" scope="row" sx={{width:"10%"}}>
                             <div className="list-body">
-                              {taskRow.spotName}
+                              {(taskRow.spotCategory==="STORE") ? "[픽업] " : (taskRow.spotCategory==="DESTINATION") ? "[배달] " : "[허브] "}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="list-body">
+                            {taskRow.spotName}
                             </div>
                           </TableCell>
                           <TableCell>
@@ -255,28 +281,7 @@ const List = (props) => {
   }
 
   const rows = props.listData;
-  // let allTask = 0;
-  // let completeTask = 0;
-  // for(let i=0;i<rows.length;i++){
-  //   let row=rows[i];
-  //   if (row.spotResponseDtoList.status === 2 || row.spotResponseDtoList.status === 1) {
-  //     allTask = allTask + 1
-  //     console.log("true~~~~~~~~~~~`")
-  //   } else if (row.spotResponseDtoList.status === 2) {
-  //     completeTask = completeTask + 1
-  //   }
-  //   console.log(allTask, completeTask)
-  // }
-  // {rows.map((row) => {
-  //   if (row.spotResponseDtoList.status === 2 || row.spotResponseDtoList.status === 1) {
-  //     allTask = allTask + 1
-  //     console.log("true~~~~~~~~~~~`")
-  //   } else if (row.spotResponseDtoList.status === 2) {
-  //     completeTask = completeTask + 1
-  //   }
-  //   console.log(allTask, completeTask)
-  // })}
-  // console.log(rows);
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">

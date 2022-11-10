@@ -65,7 +65,7 @@ const Nav = () => {
         >
           <LocalShippingIcon className="nav-icon"></LocalShippingIcon>
           <p className={`description ${expanded && "show-description"}`}>
-            배달 현황 관리
+            실시간 모니터링
           </p>
         </Link>
         <Link
