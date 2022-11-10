@@ -305,6 +305,13 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                     e.printStackTrace()
                 }
             }
+            var markerItem2 = TMapMarkerItem()
+            markerItem2.tMapPoint = TMapPoint(nextSpotInfo!!.lat, nextSpotInfo!!.lon)
+            markerItem2.name = "도착지"
+            bitmap = BitmapFactory.decodeResource(this.resources, R.drawable.arrive)
+            markerItem2.icon = bitmap
+            markerItem2.setPosition(0.5F, 0.5F)
+            tMapView.addMarkerItem("도착지", markerItem2)
         }
     }
 
