@@ -106,7 +106,7 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
             long successSpot=0;
             List<User> users= userRepository.findUserByLocalSchool(school).orElse(null);
             for(User user:users){
-                List<DeliveryLog> deliveryLogList = spotList(user.getUserIdx(), "2022-11-02");;
+                List<DeliveryLog> deliveryLogList = spotList(user.getUserIdx(), "2022-11-09");;
                 for(DeliveryLog deliveryLog:deliveryLogList){
                     if(deliveryLog.getStatus()==2){
                         if(deliveryLog.getArrivedTime()==null){
