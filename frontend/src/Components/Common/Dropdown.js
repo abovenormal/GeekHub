@@ -61,7 +61,7 @@ const Dropdown = props => {
           <MenuItem value={"수원"}>수원</MenuItem>
         </Select>
       </FormControl>
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 170 }}>
+      <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
         <InputLabel id="demo-simple-select-standard-label">
           장소
         </InputLabel>

@@ -1,12 +1,11 @@
 .login-div {
   width: 100%;
-
 }
 .login-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* width: 100%; */
+  width: 100%;
   height: 100%;
 }
 .login-container-mobile {
@@ -19,9 +18,10 @@
 .login-left {
   width: 100%;
   height: 100%;
-  background-color: #0b0f19;
-  /* background-color: #fff; */
+  /* background-color: #0b0f19; */
+  background-color: #fff;
 }
+
 
 .logo {
   display: flex;
@@ -30,8 +30,7 @@
   align-items: center; */
 }
 .logo-img {
-  max-width: 70px;
-  max-height: 70px;
+  max-width: 170px;
   width: auto;
   height: auto;
   margin: 0 10px;
@@ -46,22 +45,47 @@
 }
 
 .logo-name {
-  color: white;
+  color: #000;
 }
 
+.vc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.video-container {
+  width: 100%;
+  opacity: 1;
+}
+.login-video {
+  width: 100%;
+  height: 100%;
+}
+
+.center {
+  position: absolute;
+  top: 0;
+  max-width: 1050px;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
 .login-form {
   /* position: absolute; */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
   width: 100%;
-  max-width: 360px;
   height: 100%;
-  min-height: 100vh;
   /* color: #d1d5db; */
-  color: white;
-  background-color: #111827;
-  padding: 0 3rem;
+  color: #000;
+  /* background-color: #111827; */
+  background-color: #fff;
+  
+}
+
+.text-field {
+  width: 100%
 }
 .login-form-mobile {
   display: flex;
@@ -74,7 +98,32 @@
   color: white;
   /* background-color: #111827; */
 }
+.login-delivery {
+  width: 60%;
+  z-index: 0;
+}
+.login-analysis {
+  display: absolute;
+  width: 80%;
+  z-index: 200;
+  padding-top: 100px;
+}
 
+.login-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: 0 3rem;
+  max-width: 360px;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+}
+
+.login-title {
+  color: rgb(47, 47, 47);
+}
 .login-button {
   width: 100%;
   padding: 0.5rem 2rem;
