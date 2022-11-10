@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
         println(saveId)
 
         if (saveId != "") {
-            val intent = Intent(applicationContext, ReadyActivity::class.java)
+            val intent = Intent(applicationContext, StartActivity::class.java)
             startActivity(intent)
             finish()
 
@@ -86,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
                         saveDate(data.toString())
 
                         Toast.makeText(applicationContext,"로그인성공",Toast.LENGTH_SHORT).show()
-                        intent = Intent(this@LoginActivity, ReadyActivity::class.java)
+                        intent = Intent(this@LoginActivity, StartActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
                         startActivity(intent)

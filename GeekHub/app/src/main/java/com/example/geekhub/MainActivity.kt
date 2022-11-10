@@ -74,6 +74,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         pref = getSharedPreferences("idKey", 0)
         userid = pref.getString("id", "").toString()
 
+        binding.liveFocusButton.setOnClickListener{
+            tMapView.setCenterPoint(gps!!.location.longitude, gps!!.location.latitude)
+        }
+
         next(userid)
 
         if (savedInstanceState == null) {
@@ -209,10 +213,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 tMapView.setCenterPoint(gps!!.location.longitude, gps!!.location.latitude)
             }
 
-//            if (cnt == 0) {
-//                findPath()
-//                cnt = 1
-//            }
+            if (cnt == 0) {
+                findPath()
+                cnt = 1
+            }
         }
     }
 
@@ -298,8 +302,9 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                         TMapPoint(gps!!.location.latitude, gps!!.location.longitude),
                         TMapPoint(nextSpotInfo!!.lat, nextSpotInfo!!.lon)
                     )
-                    tMapPolyLine.lineColor = Color.BLUE
-                    tMapPolyLine.setLineWidth(2F)
+                    tMapPolyLine.lineColor = Color.rgb(6,166,108)
+
+                    tMapPolyLine.setLineWidth(33F)
                     tMapView.addTMapPolyLine("Line1", tMapPolyLine)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -329,9 +334,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     }
 
 
-    fun sendData(fragment: Fragment, title: String,idx: String) {
+    fun sendData(fragment: Fragment, title: String,idx: String,url:String) {
         bundle.putString("title", title)
         bundle.putString("idx",idx)
+        bundle.putString("url",url)
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_container_view, fragment)

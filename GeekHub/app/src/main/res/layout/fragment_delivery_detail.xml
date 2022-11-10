@@ -23,7 +23,6 @@
         android:layout_height="0dp"
         app:layout_constraintHeight_percent="0.1"
         android:layout_marginTop="10dp"
-        android:background="@drawable/recycler_list"
         android:gravity="center"
         android:singleLine="true"
         android:text="@string/dummy_title"
@@ -34,65 +33,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
+
+    <ImageView
+        android:id="@+id/camera_image"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:padding="25dp"
+        android:layout_marginVertical="50dp"
+        android:src="@drawable/camera"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.73"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_title">
-
-        <ImageView
-            android:id="@+id/camera_image"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_marginVertical="50dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/phone_camera"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.516"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/del_infomation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingTop="20dp"
-            android:text=""
-            android:textSize="28sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/nfc_image" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-        <LinearLayout
-            android:id="@+id/linearLayout6"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.15">
-
-            <Button
-                android:id="@+id/detail_button"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="25dp"
-                android:background="@drawable/normal_button"
-                android:text="@string/go_picture"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+    <Button
+        android:id="@+id/detail_button"
+        android:layout_width="360dp"
+        android:layout_height="48dp"
+        android:background="@drawable/normal_button"
+        android:layout_marginTop="20dp"
+        android:text="@string/go_picture"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/camera_image" />
 
 
-        </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

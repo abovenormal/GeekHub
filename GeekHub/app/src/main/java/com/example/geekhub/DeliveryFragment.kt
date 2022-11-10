@@ -224,10 +224,10 @@ class DeliveryFragment : Fragment() {
                 holder.time.setTextColor(resources.getColor(R.color.gick_blue))
                 holder.main.setOnClickListener{
                     if (nowState == 0){
-                        (activity as MainActivity).sendData(NfcFragment(),number.spotName,number.spotIndex)
+                        (activity as MainActivity).sendData(NfcFragment(),number.spotName,number.spotIndex,number.iconUrl)
                     }
                     else{
-                        (activity as MainActivity).sendData(DeliveryDetailFragment(),number.spotName,number.spotIndex)
+                        (activity as MainActivity).sendData(DeliveryDetailFragment(),number.spotName,number.spotIndex,number.iconUrl)
                     }
                 }
 
@@ -250,13 +250,13 @@ class DeliveryFragment : Fragment() {
             holder.title.text = number.spotName
             holder.count.text =  "수량 : ${number.count}개"
             holder.time.text = number.expectedTime
-            var ur1 = number.iconUrl
+            var url = number.iconUrl
 //            val url ="https://geekhub.s3.ap-northeast-2.amazonaws.com/logo/burgerkingLogo.png"
 
 //            var requestOption :Option = Option.cir
 
             Glide.with(requireActivity())
-                .load(ur1) // 불러올 이미지 url
+                .load(url) // 불러올 이미지 url
                 .placeholder(R.drawable.loading) // 이미지 로딩 시작하기 전 표시할 이미지
                 .error(R.drawable.loading) // 로딩 에러 발생 시 표시할 이미지
                 .fallback(R.drawable.loading) // 로드할 url 이 비어있을(null 등) 경우 표시할 이미지
