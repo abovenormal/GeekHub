@@ -17,7 +17,7 @@ public class ChatService {
     public List<Message> FindPeopleByRoomId(String roomId){
 
         log.info("service hi");
-        List<Message> members = messageRepository.findall(roomId).orElse(null);
+        List<Message> members = messageRepository.findMessageByRoomId(roomId).orElse(null);
         System.out.println(roomId);
         System.out.println(members.size());
         for(Message s: members){
