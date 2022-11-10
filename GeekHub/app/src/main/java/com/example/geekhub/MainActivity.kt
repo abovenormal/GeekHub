@@ -171,6 +171,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         }
 
+        binding.rootButton.setOnClickListener {
+            findPath()
+        }
+
         var intentFiltersArray = arrayOf(ndef)
         var techListsArray = arrayOf(arrayOf<String>(NfcF::class.java.name))
         nfcAdapter!!.enableForegroundDispatch(
@@ -205,10 +209,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 tMapView.setCenterPoint(gps!!.location.longitude, gps!!.location.latitude)
             }
 
-            if (cnt == 0) {
-                findPath()
-                cnt = 1
-            }
+//            if (cnt == 0) {
+//                findPath()
+//                cnt = 1
+//            }
         }
     }
 
@@ -411,7 +415,6 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     }
     fun cntClear() {
         cnt = 0
-        println("cnt확인하기2")
     }
 }
 
