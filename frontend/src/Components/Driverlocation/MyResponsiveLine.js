@@ -9,8 +9,8 @@ const MyResponsiveLine = ( {data_line} ) => {
     xScale={{ type: 'point' }}
     yScale={{
         type: 'linear',
-        min: -5,
-        max: 5,
+        min: 'auto',
+        max: 'auto',
         stacked: true,
         reverse: false
     }}

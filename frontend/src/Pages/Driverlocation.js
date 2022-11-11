@@ -22,29 +22,29 @@ const Driverlocation = () => {
   const [listData, setListData] = useState([]);
   const API = apiInstance();
     
-    useEffect(() => {
-      if (selected.localCity && selected.localSchool && selected.date) {
-        if (`${year}-${month}-${date}` === selected.date) {
-          // console.log("선택한 날짜는 오늘")
+  useEffect(() => {
+    if (selected.localCity && selected.localSchool && selected.date) {
+      if (`${year}-${month}-${date}` === selected.date) {
+        // console.log("선택한 날짜는 오늘")
+        async function getData() {
+          const res = await apiInstance().post('spot/current', selected);
+          setListData(res.data)
+          // console.log(res.data);
+        }
+        getData();}
+      else {
+        // console.log("선택한 날짜는 오늘이 아님")
           async function getData() {
-            const res = await apiInstance().post('spot/current', selected);
+            const res = await apiInstance().post('spot/log', selected);
             setListData(res.data)
             // console.log(res.data);
           }
-          getData();}
-        else {
-          // console.log("선택한 날짜는 오늘이 아님")
-            async function getData() {
-              const res = await apiInstance().post('spot/log', selected);
-              setListData(res.data)
-              // console.log(res.data);
-            }
-            getData();
-          }
-      }
-      
-      console.log(selected)
-    }, [selected])
+          getData();
+        }
+    }
+    
+    console.log(selected)
+  }, [selected])
     
   return (
     <div className="driver-location-container">

@@ -86,7 +86,7 @@ const List = (props) => {
           const res = await API.get("/location/getLocation", {
             params: { driver: userIdx },
           });
-          // console.log(res.data);
+          console.log(res.data);
           setLatitude(res.data.latitude);
           setLongitude(res.data.longitude);
           setTimestamp(res.data.timestamp); // timestamp
