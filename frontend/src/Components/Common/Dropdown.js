@@ -3,6 +3,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import "./css/Dropdown.css"
 const Dropdown = props => {
   const selected = props.selected
   const setSelected = props.setSelected
@@ -44,7 +45,7 @@ const Dropdown = props => {
 
   const schoolGwangju = ["광주과학기술원", "전남대학교", "SSAFY"];
   return (
-    <div>
+    <div className="dropdown">
       <FormControl variant="standard" sx={{ m: 1, minWidth: 100 }}>
         <InputLabel id="demo-simple-select-standard-label">지역</InputLabel>
         <Select
@@ -61,7 +62,7 @@ const Dropdown = props => {
           <MenuItem value={"수원"}>수원</MenuItem>
         </Select>
       </FormControl>
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+      <FormControl variant="standard" sx={{ m: 1, minWidth: 250 }}>
         <InputLabel id="demo-simple-select-standard-label">
           장소
         </InputLabel>

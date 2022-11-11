@@ -15,7 +15,7 @@
   flex-direction: column;
   overflow: auto;
   /* overflow: scroll; */
-  max-width: 880px;
+  max-width: 840px;
   width: 100%;
   min-width: 300px;
   height: 320px;
@@ -152,7 +152,7 @@
 
 .schoolName{
   margin-top: -18px;
-  font-size: 22px;
+  font-size: 1rem;
   font-family: "BMHANNAPro";
 }
 .apexcharts-datalabels{

@@ -5,6 +5,7 @@ import List from "../Components/Driverlocation/List";
 import "./css/Driverlocation.css";
 import { apiInstance } from "../api/index";
 import getDriverList from "../api/GetDriverList";
+import MyResponsiveLine from "../Components/Driverlocation/MyResponsiveLine";
 
 const Driverlocation = () => {
 
@@ -44,7 +45,7 @@ const Driverlocation = () => {
       
       console.log(selected)
     }, [selected])
-  
+    
   return (
     <div className="driver-location-container">
       <h1>실시간 모니터링</h1>
@@ -52,7 +53,7 @@ const Driverlocation = () => {
         <Dropdown selected={selected} setSelected={setSelected} />
         <Datepicker selected={selected} setSelected={setSelected} />
       </div>
-      <List listData={listData} />
+      <List className="driverlocation-list" listData={listData} />
     </div>
   );
 };

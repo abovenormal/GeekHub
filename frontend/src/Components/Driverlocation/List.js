@@ -16,11 +16,12 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Swal from "sweetalert2";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import "./css/List.css";
-import marker from "../../asset/image/marker.png"
+import marker from "../../asset/image/marker.png";
 import { apiInstance } from "../../api/index";
-import { Looks } from "@material-ui/icons";
+import MyResponsiveLine from "./MyResponsiveLine";
+import Toast from "../../utils/Toast";
+
 const List = (props) => {
-  
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = useState(false);
@@ -31,15 +32,25 @@ const List = (props) => {
     let allTask = 0;
     let completeTask = 0;
     
-    {row.spotResponseDtoList.map((c) => {
-      console.log(`c is ${c}`)
-      if (c.status === 2) {
-        allTask += 1
-        completeTask += 1
-      } else if (c.status === 1) {
-        allTask += 1
-      }
-    })}
+    const data_line = [
+      {
+        id: "japan",
+        color: "hsl(3, 70%, 50%)",
+        data: [],
+      },
+    ];
+    {
+      row.spotResponseDtoList.map((c) => {
+        console.log(`c is ${c}`);
+        data_line[0].data.push({x: c.spotName, y: c.dif})
+        if (c.status === 2) {
+          allTask += 1;
+          completeTask += 1;
+        } else if (c.status === 1) {
+          allTask += 1;
+        }
+      });
+    }
     const successRatio = parseInt((completeTask / allTask) * 100);
     useEffect(() => {
       const script = document.createElement("script");
@@ -70,27 +81,35 @@ const List = (props) => {
       // 열릴 때만 Get 요청 보내기 위해 분기 추가 했다가
       // 열린 채로 새로 고침 안 되서 잠시 삭제
       // 아래 if문 추가로 해결 완료
-      if ( allTask > 0 ) {
-      try {
-        const res = await API.get("/location/getLocation", {
-          params: { driver: userIdx },
-        });
-        // console.log(res.data);
-        setLatitude(res.data.latitude);
-        setLongitude(res.data.longitude);
-        setTimestamp(res.data.timestamp); // timestamp
-        setOpen(!open);
-      } catch (error) {
-        if (error.response.status === 400) {
-          // console.log(error.response.status);
+      if (allTask > 0) {
+        try {
+          const res = await API.get("/location/getLocation", {
+            params: { driver: userIdx },
+          });
+          // console.log(res.data);
+          setLatitude(res.data.latitude);
+          setLongitude(res.data.longitude);
+          setTimestamp(res.data.timestamp); // timestamp
           setOpen(!open);
-          setLatitude(0);
-          setLongitude(0);
-          setTimestamp("");
+        } catch (error) {
+          if (error.response.status === 400) {
+            // console.log(error.response.status);
+            setOpen(!open);
+            setLatitude(0);
+            setLongitude(0);
+            setTimestamp("");
+          }
         }
+      } else {
+        Toast.fire({
+          icon: "info",
+          title: "조회된 데이터가 없습니다.",
+          timer: 1000,
+          position: "center",
+        });
       }
     }
-    }
+
     return (
       <React.Fragment>
         <TableRow
@@ -115,7 +134,6 @@ const List = (props) => {
               onClick={() => {
                 // console.log(row);
                 GetLocation(row.userIdx);
-                
               }}
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -132,8 +150,14 @@ const List = (props) => {
             }}
           >
             <div className="list-username">{row.userName}</div>
-            
-            {(allTask === 0) ? <div>오늘 일 없음ㅋㅋ</div> : (allTask === completeTask) ? <div>100% 완료</div> : <div className="success-ratio">{successRatio}% 진행 중</div>}
+
+            {allTask === 0 ? (
+              <div>오늘 일 없음ㅋㅋ</div>
+            ) : allTask === completeTask ? (
+              <div>100% 완료</div>
+            ) : (
+              <div className="success-ratio">{successRatio}% 진행 중</div>
+            )}
           </TableCell>
         </TableRow>
         <TableRow>
@@ -169,18 +193,33 @@ const List = (props) => {
                         </TableCell>
                       </TableRow>
                     </TableHead>
-                    <TableBody >
+                    <TableBody>
                       {row.spotResponseDtoList.map((taskRow, index) => (
-                        <TableRow key={index} className={(taskRow.spotCategory === "DESTINATION") ? "list-destination" : (taskRow.spotCategory==="HUB") ? "list-hub" : ""}>
-                          <TableCell component="th" scope="row" sx={{width:"10%"}}>
+                        <TableRow
+                          key={index}
+                          className={
+                            taskRow.spotCategory === "DESTINATION"
+                              ? "list-destination"
+                              : taskRow.spotCategory === "HUB"
+                              ? "list-hub"
+                              : ""
+                          }
+                        >
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ width: "10%" }}
+                          >
                             <div className="list-body">
-                              {(taskRow.spotCategory==="STORE") ? "[픽업] " : (taskRow.spotCategory==="DESTINATION") ? "[배달] " : "[허브] "}
+                              {taskRow.spotCategory === "STORE"
+                                ? "[픽업] "
+                                : taskRow.spotCategory === "DESTINATION"
+                                ? "[배달] "
+                                : "[허브] "}
                             </div>
                           </TableCell>
                           <TableCell>
-                            <div className="list-body">
-                            {taskRow.spotName}
-                            </div>
+                            <div className="list-body">{taskRow.spotName}</div>
                           </TableCell>
                           <TableCell>
                             <div className="list-body">
@@ -197,7 +236,11 @@ const List = (props) => {
                           <TableCell>
                             <div
                               className={`list-body + ${
-                                taskRow.dif > 0 ? "dif-red" : taskRow.dif < 0 ? "dif-blue" : ""
+                                taskRow.dif > 0
+                                  ? "dif-red"
+                                  : taskRow.dif < 0
+                                  ? "dif-blue"
+                                  : ""
                               }`}
                             >
                               {taskRow.arrivedTime !== null
@@ -206,43 +249,58 @@ const List = (props) => {
                             </div>
                           </TableCell>
                           <TableCell>
-                            {(!taskRow.imageUrl) ? "" : (taskRow.spotCategory === "STORE") ? <div
-                              className="pickupPic"
-                              onClick={() => {
-                                const pickupPicture = taskRow.imageUrl;
-                                Swal.fire({
-                                  // title: '픽업 사진',
-                                  text: "픽업을 완료하였습니다.",
-                                  imageUrl: pickupPicture,
-                                  imageWidth: 300,
-                                  imageHeight: 300,
-                                  imageAlt: "Pickup image",
-                                });
-                              }}
-                            >
-                              보기
-                            </div> : <div
-                              className="pickupPic"
-                              onClick={() => {
-                                const pickupPicture = taskRow.imageUrl;
-                                Swal.fire({
-                                  // title: '픽업 사진',
-                                  text: "배달을 완료하였습니다.",
-                                  imageUrl: pickupPicture,
-                                  imageWidth: 300,
-                                  imageHeight: 300,
-                                  imageAlt: "Drop image",
-                                });
-                              }}
-                            >
-                              보기
-                            </div> }
-                            
+                            {!taskRow.imageUrl ? (
+                              ""
+                            ) : taskRow.spotCategory === "STORE" ? (
+                              <div
+                                className="pickupPic"
+                                onClick={() => {
+                                  const pickupPicture = taskRow.imageUrl;
+                                  Swal.fire({
+                                    // title: '픽업 사진',
+                                    text: "픽업을 완료하였습니다.",
+                                    imageUrl: pickupPicture,
+                                    imageWidth: 300,
+                                    imageHeight: 300,
+                                    imageAlt: "Pickup image",
+                                  });
+                                }}
+                              >
+                                보기
+                              </div>
+                            ) : (
+                              <div
+                                className="pickupPic"
+                                onClick={() => {
+                                  const pickupPicture = taskRow.imageUrl;
+                                  Swal.fire({
+                                    // title: '픽업 사진',
+                                    text: "배달을 완료하였습니다.",
+                                    imageUrl: pickupPicture,
+                                    imageWidth: 300,
+                                    imageHeight: 300,
+                                    imageAlt: "Drop image",
+                                  });
+                                }}
+                              >
+                                보기
+                              </div>
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
                   </Table>
+                  <Table sx={{ maxWidth: "900px", width: "100%", height: "250px" }} colSpan={12}>
+                      <TableRow>
+                        <h2>상점별 도착 시각 오차 그래프</h2>
+                      </TableRow>
+                      <TableRow >
+                            <div className="height200">
+                              <MyResponsiveLine data_line={data_line} />
+                            </div>
+                        </TableRow>
+                    </Table>
                 </Box>
                 <div className="now-location">
                   <div className="now-title">
@@ -266,16 +324,19 @@ const List = (props) => {
                     </div>
                   </div>
                   {latitude === 0 && longitude === 0 ? (
-                    <h4>조회된 데이터가 없습니다.</h4>
+                    <div>
+                      <h4>조회된 데이터가 없습니다.</h4>
+                    </div>
                   ) : (
-                    <div className="now-map" id="map_div"></div>
+                    <div className="now-map">
+                      <div id="map_div"></div>
+                    </div>
                   )}
                 </div>
               </div>
             </Collapse>
           </TableCell>
         </TableRow>
-        
       </React.Fragment>
     );
   }
