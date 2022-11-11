@@ -5,7 +5,7 @@ const MyResponsiveLine = ( {data_line} ) => {
   return (
     <ResponsiveLine
     data={data_line}
-    margin={{ top: 20, right: 10, bottom: 100, left: 160 }}
+    margin={{ top: 20, right: 10, bottom: 100, left: 200 }}
     xScale={{ type: 'point' }}
     yScale={{
         type: 'linear',

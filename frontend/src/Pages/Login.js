@@ -126,10 +126,10 @@ const Login = () => {
           <div className="login-header">
             <div className="login-title">
             <img src={loginAnalysis} className="login-analysis"></img>
-              <h3>
+              <h2>
                 안녕하세요! 👋🏻<br />
                 GeekHub 관리자 페이지입니다!
-              </h3>
+              </h2>
             </div>
             <form className="login-form" method="post" onSubmit={loginSubmit}>
               {/* <img src={loginDelivery} className="login-delivery"></img> */}
