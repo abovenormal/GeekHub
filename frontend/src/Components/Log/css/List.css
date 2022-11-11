@@ -10,6 +10,14 @@
   margin: 0;
 }
 
+.all-show {
+  /* text-align: end; */
+  margin-left: 1rem;
+  font-size: 1rem;
+  color: rgb(26, 30, 155);
+  text-decoration: underline;
+  cursor: pointer;
+}
 
 .img-container {
   display: flex;
@@ -18,14 +26,10 @@
   padding: 20px;
   overflow: scroll;
   color: #112031;
-  background: rgba(0, 0, 0, 0.05);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;  border-radius: 12px;
   border: 1px solid #fff;
   overflow: auto;
   white-space: nowrap;
-}
-
-.img-container:hover {
-  background: rgba(0, 0, 0, 0.08);
 }
 
 .img-box {
@@ -35,8 +39,9 @@
   margin: 0 1rem;
 }
 .img {
-  width: 70px;
-  height: 70px;
+  width: 150px;
+  height: 150px;
+  border-radius: 8px;
   cursor: pointer;
 }
 

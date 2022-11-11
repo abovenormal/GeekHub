@@ -5,6 +5,7 @@ import List from "../Components/Driverlocation/List";
 import "./css/Driverlocation.css";
 import { apiInstance } from "../api/index";
 import getDriverList from "../api/GetDriverList";
+import MyResponsiveLine from "../Components/Driverlocation/MyResponsiveLine";
 
 const Driverlocation = () => {
 
@@ -21,30 +22,30 @@ const Driverlocation = () => {
   const [listData, setListData] = useState([]);
   const API = apiInstance();
     
-    useEffect(() => {
-      if (selected.localCity && selected.localSchool && selected.date) {
-        if (`${year}-${month}-${date}` === selected.date) {
-          // console.log("선택한 날짜는 오늘")
+  useEffect(() => {
+    if (selected.localCity && selected.localSchool && selected.date) {
+      if (`${year}-${month}-${date}` === selected.date) {
+        // console.log("선택한 날짜는 오늘")
+        async function getData() {
+          const res = await apiInstance().post('spot/current', selected);
+          setListData(res.data)
+          // console.log(res.data);
+        }
+        getData();}
+      else {
+        // console.log("선택한 날짜는 오늘이 아님")
           async function getData() {
-            const res = await apiInstance().post('spot/current', selected);
+            const res = await apiInstance().post('spot/log', selected);
             setListData(res.data)
             // console.log(res.data);
           }
-          getData();}
-        else {
-          // console.log("선택한 날짜는 오늘이 아님")
-            async function getData() {
-              const res = await apiInstance().post('spot/log', selected);
-              setListData(res.data)
-              // console.log(res.data);
-            }
-            getData();
-          }
-      }
-      
-      console.log(selected)
-    }, [selected])
-  
+          getData();
+        }
+    }
+    
+    console.log(selected)
+  }, [selected])
+    
   return (
     <div className="driver-location-container">
       <h1>실시간 모니터링</h1>
@@ -52,7 +53,7 @@ const Driverlocation = () => {
         <Dropdown selected={selected} setSelected={setSelected} />
         <Datepicker selected={selected} setSelected={setSelected} />
       </div>
-      <List listData={listData} />
+      <List className="driverlocation-list" listData={listData} />
     </div>
   );
 };

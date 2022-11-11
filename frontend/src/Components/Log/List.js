@@ -14,27 +14,58 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import TablePagination from '@mui/material/TablePagination';
 import Swal from "sweetalert2";
-import {apiInstance} from "../../api/index"
+import Toast from "../../utils/Toast"
+import { apiInstance } from "../../api/index";
+import logoDotBlack from "../../asset/image/logo-dot-black.png";
+import logoDotWhite from "../../asset/image/logo-dot-white.png";
 const List = (props) => {
-  const driverData = props.driverData;
+  const listData = props.listData;
+  const selected = props.selected;
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const [logData, setLogData] = useState([]);
 
     const API = apiInstance();
-    async function getLog(id) {
+    async function getLog50(id) {
+      console.log(id)
+      console.log(selected.date)
       // 열릴 때만 Get 요청 보내기 위해 분기 추가 했다가
       // 열린 채로 새로 고침 안 되서 잠시 삭제
-     try {
-       const res = await API.post('/location/sendLog', {params : {driver:id}})
-       console.log(res.data)
-     }
-     catch (err) {
-       console.log(err)
-     }
-   }
+      try {
+        const res = await API.get("/location/getLog50", {
+          params: { 
+            driver: id,
+            date: selected.date
+          },
+        });
+        console.log(res.data);
+        setLogData(res.data);
+        setOpen(!open);
+      }
+      catch (err) {
+        console.log(err);
+      }
+    }
+
+    async function getLog(id) {
+      try {
+        const res = await API.get("/location/getLog", {
+          params: { 
+            driver: id,
+            date: selected.date
+          },
+        });
+        console.log(res.data);
+        setLogData(res.data);
+        setOpen(!open);
+      }
+      catch (err) {
+        console.log(err);
+      }
+    }
     return (
       <React.Fragment>
         <TableRow
@@ -47,7 +78,6 @@ const List = (props) => {
               backgroundColor: "rgba( 0, 0, 0, 0.08 )",
             },
           }}
-          
         >
           <TableCell
             sx={{
@@ -58,21 +88,7 @@ const List = (props) => {
               aria-label="expand row"
               size="small"
               onClick={() => {
-                setOpen(!open);
-                setLogData([
-                  {
-                    driverId: "221343",
-                    longitude: "38.12312",
-                    latitude: "23.123123",
-                    timeStamp: "2022.11.08.11:11",
-                  },
-                  {
-                    driverId: "221343",
-                    longitude: "39.9212",
-                    latitude: "24.999123",
-                    timeStamp: "2022.11.08.11:14",
-                  },
-                ]);
+                getLog50(row.userIdx);
               }}
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -82,29 +98,14 @@ const List = (props) => {
             component="th"
             scope="row"
             onClick={() => {
-              setOpen(!open);
-              // 여기에 로그 불러오는 함수(get(id))
-              getLog(row.id)
-              setLogData([
-                {
-                  driverId: "221343",
-                  longitude: "38.12312",
-                  latitude: "23.123123",
-                  timeStamp: "2022.11.08.11:11",
-                },
-                {
-                  driverId: "221343",
-                  longitude: "39.9212",
-                  latitude: "24.999123",
-                  timeStamp: "2022.11.08.11:14",
-                },
-              ]);
+              // 여기에 로그 불러오는 함수(get(userIdx))
+              getLog50(row.userIdx);
             }}
             sx={{
               cursor: "pointer",
             }}
           >
-            {row.name}
+            <div className="list-username">{row.userName}</div>
           </TableCell>
         </TableRow>
         <TableRow>
@@ -115,9 +116,9 @@ const List = (props) => {
           >
             <Collapse in={open} timeout="auto" unmountOnExit>
               <Box sx={{ margin: 1 }}>
-                <div >
+                <div>
                   <Typography
-                    variant="h6"
+                    variant="h5"
                     gutterBottom
                     component="div"
                     sx={{ margin: "0.5rem" }}
@@ -125,38 +126,45 @@ const List = (props) => {
                     사진
                   </Typography>
                   <div className="img-container">
-                    {row.task.map((taskRow) => (
+                    {row.spotResponseDtoList.map((taskRow) => (
                       <div className="img-box">
+                        {(taskRow.imageUrl) ? 
+                        <>
                         <img
-                        className="img"
-                        src={taskRow.pickupPicture}
-                        onClick={() => {
-                          const pickupZone = taskRow.pickupZone;
-                          const pickupPicture = taskRow.pickupPicture;
-                          const arrivalTime = taskRow.arrivalTime;
-                          Swal.fire({
-                            title: pickupZone,
-                            text: `도착 시각 : ${arrivalTime}`,
-                            imageUrl: pickupPicture,
-                            imageWidth: 300,
-                            imageHeight: 300,
-                            imageAlt: "Pickup image",
-                          });
-                        }}
+                          className="img"
+                          src={taskRow.imageUrl}
+                          onClick={() => {
+                            const spotName = taskRow.spotName;
+                            const imageUrl = taskRow.imageUrl;
+                            const arrivedTime = taskRow.arrivedTime;
+                            Swal.fire({
+                              title: spotName,
+                              text: `도착 시각 : ${arrivedTime}`,
+                              imageUrl: imageUrl,
+                              imageWidth: 300,
+                              imageHeight: 300,
+                              imageAlt: "Pickup image",
+                            });
+                          }}
                         />
-                        <p>{taskRow.pickupZone}</p>
+                        <h3>{taskRow.spotName}</h3></> : <img src={logoDotBlack}></img>}
+                        
                       </div>
                     ))}
                   </div>
+                  
 
                   <Typography
-                    variant="h6"
+                    variant="h5"
                     gutterBottom
                     component="div"
                     sx={{ margin: "0.5rem" }}
                   >
-                    GPS
+                    GPS          
                   </Typography>
+                  <span className="all-show" onClick={()=>{
+                    getLog(row.userIdx)
+                  }}>로그 기록 전체 보기</span>
                   <Table
                     size="small"
                     aria-label="purchases"
@@ -171,17 +179,12 @@ const List = (props) => {
                     </TableHead>
                     <TableBody>
                       {logData.map((log) => (
-                        <TableRow key={log.timeStamp}>
+                        <TableRow key={log.timestamp}>
                           <TableCell component="th" scope="row">
-                            {JSON.stringify(log.timeStamp)}
+                            {JSON.stringify(log.timestamp)}
                           </TableCell>
                           <TableCell>{JSON.stringify(log.latitude)}</TableCell>
                           <TableCell>{JSON.stringify(log.longitude)}</TableCell>
-                          {/* <TableCell component="th" scope="row">
-                            {log.info.timeStamp}
-                          </TableCell>
-                          <TableCell>{log.info.latitude}</TableCell>
-                          <TableCell>{log.info.longitude}</TableCell> */}
                         </TableRow>
                       ))}
                     </TableBody>
@@ -195,13 +198,13 @@ const List = (props) => {
     );
   }
 
-  const rows = driverData;
+  const rows = listData;
   return (
     <TableContainer component={Paper} className="table-container">
       <Table aria-label="collapsible table">
         <TableBody>
           {rows.map((row) => (
-            <Row key={row.name} row={row}/>
+            <Row key={row.name} row={row} />
           ))}
         </TableBody>
       </Table>

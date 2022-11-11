@@ -4,6 +4,7 @@ import Datepicker from "../Components/Common/Datepicker";
 import List from "../Components/Log/List";
 import "./css/Log.css";
 import { getDriverList } from "../api/GetDriverList";
+import { apiInstance } from "../api/index"
 const Log = () => {
   let today = new Date();   
   let year = today.getFullYear(); // 년도
@@ -14,125 +15,30 @@ const Log = () => {
     localSchool: "",
     date: `${year}-${month}-${date}`
   });
-  const [driverData, setDriverData] = useState([]);
+  const [listData, setListData] = useState([]);
   useEffect(() => {
     if (selected.localCity && selected.localSchool && selected.date) {
-      // const driver = getDriverList(selected);
-      // setDriverData(driver);
-      //-------아래는 임시 prop 확인용 -> Api 완성시 위에 두 줄 사용
-      setDriverData([
-        {
-          name: "형준",
-          id: 221343,
-          task: [
-            {
-              pickupZone: "알촌",
-              arrivalScheduled: "a",
-              arrivalTime: "12:11",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "생돈가스",
-              arrivalScheduled: "a",
-              arrivalTime: "12:11",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "생돈가스",
-              arrivalScheduled: "a",
-              arrivalTime: "c12:11",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "생돈가스",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "생돈가스",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "생돈가스",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "생돈가스",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "생돈가스",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "생돈가스",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "생돈가스",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "생돈가스",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-
-          ],
-        },
-        {
-          name: "세환",
-          id: 221343,
-          task: [
-            {
-              pickupZone: "알촌",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-            {
-              pickupZone: "생돈가스",
-              arrivalScheduled: "a",
-              arrivalTime: "c",
-              pickupPicture:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png",
-            },
-          ],
-        },
-      ]);
+      if (`${year}-${month}-${date}` === selected.date) {
+        // console.log("선택한 날짜는 오늘")
+        async function getData() {
+          const res = await apiInstance().post('spot/current', selected);
+          setListData(res.data)
+          // console.log(res.data);
+        }
+        getData();}
+      else {
+        // console.log("선택한 날짜는 오늘이 아님")
+          async function getData() {
+            const res = await apiInstance().post('spot/log', selected);
+            setListData(res.data)
+            // console.log(res.data);
+          }
+          getData();
+        }
     }
-    // 1. 해당 지역, 학교의 기사 리스트 가져오기 (getDriverList)
-    // 1번의 데이터를 state에 저장하고 List에 prop
-    // 2. Driver의 id를 통해 로그 데이터 가져오기 (getLogData, {params: {id: id}})
-    // 2번은 그러면 List에서 목록 헤더 부분에 작성해야함
-    console.log(selected);
-  }, [selected]);
+    
+    console.log(selected)
+  }, [selected])
   return (
     <div className="log-container">
       <h1>로그 기록 조회</h1>
@@ -140,7 +46,7 @@ const Log = () => {
         <Dropdown selected={selected} setSelected={setSelected} />
         <Datepicker selected={selected} setSelected={setSelected} />
       </div>
-      <List driverData={driverData} />
+      <List selected={selected} listData={listData} />
     </div>
   );
 };
