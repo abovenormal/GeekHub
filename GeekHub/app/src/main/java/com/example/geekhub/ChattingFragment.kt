@@ -12,15 +12,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.geekhub.databinding.FragmentChattingBinding
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import kotlin.reflect.typeOf
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+
 
 class ChattingFragment : Fragment() {
 
     lateinit var binding : FragmentChattingBinding
     lateinit var listener : RecognitionListener
-    lateinit var client : OkHttpClient
+//    lateinit var stompConnection: Disposable
+//    lateinit var topic: Disposable
+    //    "http:k7c205.p.ssafy.io:8088/chat/test"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,15 +43,19 @@ class ChattingFragment : Fragment() {
             mRecognizer.setRecognitionListener(listener)
             mRecognizer.startListening((intent))
         }
-        client = OkHttpClient()
 
-        val request : Request = Request.Builder()
-            .url("http:k7c205.p.ssafy.io:8088/chat/test")
-            .build()
-        val listener: WebSocketListener = WebSocketListener()
 
-        client.newWebSocket(request, listener)
-        client.dispatcher().executorService().shutdown()
+        val mSocket = IO.socket("http:k7c205.p.ssafy.io:8088/chat/test")
+        mSocket.connect()
+        val onConnect = Emitter.Listener {
+            mSocket.emit("emitReceive","연결됨")
+        }
+
+        binding.sendButton.setOnClickListener{
+            var myChat = binding.editChatting.text.toString()
+            println(myChat)
+        }
+
 
         return binding.root
 

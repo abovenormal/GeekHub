@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     var nextSpotInfo : NextSpotInfo? = null
     var isNext = 0
     var cnt = 0
-    var focusStatus = 0
+    var focusStatus = 1
     val bundle = Bundle()
     lateinit var userid: String
     lateinit var pref : SharedPreferences
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        focusStatus = 0
+        focusStatus = 1
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         }
 
         next(userid)
+
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
@@ -130,6 +131,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             }
         }
 
+        binding.liveFocusButton.setOnClickListener{
+            tMapView.setCenterPoint(gps!!.location.longitude, gps!!.location.latitude)
+        }
+
         binding.goChatting.setOnClickListener {
             moveFragment(ChattingFragment())
         }
@@ -166,18 +171,18 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         binding.focusButton.setOnClickListener {
             if (focusStatus == 0){
-                binding.focusButton.setImageResource(R.drawable.focus_on)
+                binding.focusButton.setImageResource(R.drawable.auto_on)
                 focusStatus = 1
             } else{
-                binding.focusButton.setImageResource(R.drawable.focus_off)
+                binding.focusButton.setImageResource(R.drawable.auto)
                 focusStatus = 0
             }
 
         }
 
-        binding.rootButton.setOnClickListener {
-            findPath()
-        }
+//        binding.rootButton.setOnClickListener {
+//            findPath()
+//        }
 
         var intentFiltersArray = arrayOf(ndef)
         var techListsArray = arrayOf(arrayOf<String>(NfcF::class.java.name))
@@ -209,7 +214,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             sendLocation()
             addMarker()
 //            tMapPointStart = gps!!.location
-            if (focusStatus == 1){
+            if (focusStatus == 0){
                 tMapView.setCenterPoint(gps!!.location.longitude, gps!!.location.latitude)
             }
 
@@ -302,10 +307,13 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                         TMapPoint(gps!!.location.latitude, gps!!.location.longitude),
                         TMapPoint(nextSpotInfo!!.lat, nextSpotInfo!!.lon)
                     )
-                    tMapPolyLine.lineColor = Color.rgb(6,166,108)
+                    tMapPolyLine.lineColor = Color.rgb(235,198,42)
+                    tMapPolyLine.outLineColor = Color.rgb(235,198,42)
+                    tMapPolyLine.outLineWidth = 20F
 
-                    tMapPolyLine.setLineWidth(33F)
+                    tMapPolyLine.setLineWidth(0F)
                     tMapView.addTMapPolyLine("Line1", tMapPolyLine)
+
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
