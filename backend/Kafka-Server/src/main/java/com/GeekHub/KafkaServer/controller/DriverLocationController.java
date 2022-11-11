@@ -37,5 +37,16 @@ public class DriverLocationController {
 
 
     }
+    @GetMapping("/getLog50")
+    public ResponseEntity<List<Message>> getDriverLog50(@RequestParam String driver, String date){
+        try{
+            List<Message> messages = messageService.getLogs50(driver,date);
+            return new ResponseEntity<>(messages, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
+
+
+    }
 
 }
