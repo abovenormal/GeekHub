@@ -16,11 +16,10 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Swal from "sweetalert2";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import "./css/List.css";
-import marker from "../../asset/image/marker.png"
+import marker from "../../asset/image/marker.png";
 import { apiInstance } from "../../api/index";
 import { Looks } from "@material-ui/icons";
 const List = (props) => {
-  
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = useState(false);
@@ -30,16 +29,18 @@ const List = (props) => {
     const [timestamp, setTimestamp] = useState("0");
     let allTask = 0;
     let completeTask = 0;
-    
-    {row.spotResponseDtoList.map((c) => {
-      console.log(`c is ${c}`)
-      if (c.status === 2) {
-        allTask += 1
-        completeTask += 1
-      } else if (c.status === 1) {
-        allTask += 1
-      }
-    })}
+
+    {
+      row.spotResponseDtoList.map((c) => {
+        console.log(`c is ${c}`);
+        if (c.status === 2) {
+          allTask += 1;
+          completeTask += 1;
+        } else if (c.status === 1) {
+          allTask += 1;
+        }
+      });
+    }
     const successRatio = parseInt((completeTask / allTask) * 100);
     useEffect(() => {
       const script = document.createElement("script");
@@ -52,7 +53,11 @@ const List = (props) => {
                   height: "100%",
                   zoom:17
               });
-          
+              var content ="<div style=' position: relative; border-bottom: 1px solid #dcdcdc; line-height: 18px; padding: 0 35px 2px 0;'>"+
+				    "<div style='font-size: 12px; line-height: 15px;'>"+
+				        "<span style='display: inline-block; width: 14px; height: 14px; background-image: url(/resources/images/common/icon_blet.png); vertical-align: middle; margin-right: 5px;'></span>드래그해주세요"+
+				    "</div>"+
+				 "</div>"
               var marker = new Tmapv2.Marker({
                 position: new Tmapv2.LatLng(${latitude},${longitude}),
                 map: map,
@@ -70,26 +75,26 @@ const List = (props) => {
       // 열릴 때만 Get 요청 보내기 위해 분기 추가 했다가
       // 열린 채로 새로 고침 안 되서 잠시 삭제
       // 아래 if문 추가로 해결 완료
-      if ( allTask > 0 ) {
-      try {
-        const res = await API.get("/location/getLocation", {
-          params: { driver: userIdx },
-        });
-        // console.log(res.data);
-        setLatitude(res.data.latitude);
-        setLongitude(res.data.longitude);
-        setTimestamp(res.data.timestamp); // timestamp
-        setOpen(!open);
-      } catch (error) {
-        if (error.response.status === 400) {
-          // console.log(error.response.status);
+      if (allTask > 0) {
+        try {
+          const res = await API.get("/location/getLocation", {
+            params: { driver: userIdx },
+          });
+          // console.log(res.data);
+          setLatitude(res.data.latitude);
+          setLongitude(res.data.longitude);
+          setTimestamp(res.data.timestamp); // timestamp
           setOpen(!open);
-          setLatitude(0);
-          setLongitude(0);
-          setTimestamp("");
+        } catch (error) {
+          if (error.response.status === 400) {
+            // console.log(error.response.status);
+            setOpen(!open);
+            setLatitude(0);
+            setLongitude(0);
+            setTimestamp("");
+          }
         }
       }
-    }
     }
     return (
       <React.Fragment>
@@ -115,7 +120,6 @@ const List = (props) => {
               onClick={() => {
                 // console.log(row);
                 GetLocation(row.userIdx);
-                
               }}
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -132,8 +136,14 @@ const List = (props) => {
             }}
           >
             <div className="list-username">{row.userName}</div>
-            
-            {(allTask === 0) ? <div>오늘 일 없음ㅋㅋ</div> : (allTask === completeTask) ? <div>100% 완료</div> : <div className="success-ratio">{successRatio}% 진행 중</div>}
+
+            {allTask === 0 ? (
+              <div>오늘 일 없음ㅋㅋ</div>
+            ) : allTask === completeTask ? (
+              <div>100% 완료</div>
+            ) : (
+              <div className="success-ratio">{successRatio}% 진행 중</div>
+            )}
           </TableCell>
         </TableRow>
         <TableRow>
@@ -169,18 +179,33 @@ const List = (props) => {
                         </TableCell>
                       </TableRow>
                     </TableHead>
-                    <TableBody >
+                    <TableBody>
                       {row.spotResponseDtoList.map((taskRow, index) => (
-                        <TableRow key={index} className={(taskRow.spotCategory === "DESTINATION") ? "list-destination" : (taskRow.spotCategory==="HUB") ? "list-hub" : ""}>
-                          <TableCell component="th" scope="row" sx={{width:"10%"}}>
+                        <TableRow
+                          key={index}
+                          className={
+                            taskRow.spotCategory === "DESTINATION"
+                              ? "list-destination"
+                              : taskRow.spotCategory === "HUB"
+                              ? "list-hub"
+                              : ""
+                          }
+                        >
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ width: "10%" }}
+                          >
                             <div className="list-body">
-                              {(taskRow.spotCategory==="STORE") ? "[픽업] " : (taskRow.spotCategory==="DESTINATION") ? "[배달] " : "[허브] "}
+                              {taskRow.spotCategory === "STORE"
+                                ? "[픽업] "
+                                : taskRow.spotCategory === "DESTINATION"
+                                ? "[배달] "
+                                : "[허브] "}
                             </div>
                           </TableCell>
                           <TableCell>
-                            <div className="list-body">
-                            {taskRow.spotName}
-                            </div>
+                            <div className="list-body">{taskRow.spotName}</div>
                           </TableCell>
                           <TableCell>
                             <div className="list-body">
@@ -197,7 +222,11 @@ const List = (props) => {
                           <TableCell>
                             <div
                               className={`list-body + ${
-                                taskRow.dif > 0 ? "dif-red" : taskRow.dif < 0 ? "dif-blue" : ""
+                                taskRow.dif > 0
+                                  ? "dif-red"
+                                  : taskRow.dif < 0
+                                  ? "dif-blue"
+                                  : ""
                               }`}
                             >
                               {taskRow.arrivedTime !== null
@@ -206,38 +235,43 @@ const List = (props) => {
                             </div>
                           </TableCell>
                           <TableCell>
-                            {(!taskRow.imageUrl) ? "" : (taskRow.spotCategory === "STORE") ? <div
-                              className="pickupPic"
-                              onClick={() => {
-                                const pickupPicture = taskRow.imageUrl;
-                                Swal.fire({
-                                  // title: '픽업 사진',
-                                  text: "픽업을 완료하였습니다.",
-                                  imageUrl: pickupPicture,
-                                  imageWidth: 300,
-                                  imageHeight: 300,
-                                  imageAlt: "Pickup image",
-                                });
-                              }}
-                            >
-                              보기
-                            </div> : <div
-                              className="pickupPic"
-                              onClick={() => {
-                                const pickupPicture = taskRow.imageUrl;
-                                Swal.fire({
-                                  // title: '픽업 사진',
-                                  text: "배달을 완료하였습니다.",
-                                  imageUrl: pickupPicture,
-                                  imageWidth: 300,
-                                  imageHeight: 300,
-                                  imageAlt: "Drop image",
-                                });
-                              }}
-                            >
-                              보기
-                            </div> }
-                            
+                            {!taskRow.imageUrl ? (
+                              ""
+                            ) : taskRow.spotCategory === "STORE" ? (
+                              <div
+                                className="pickupPic"
+                                onClick={() => {
+                                  const pickupPicture = taskRow.imageUrl;
+                                  Swal.fire({
+                                    // title: '픽업 사진',
+                                    text: "픽업을 완료하였습니다.",
+                                    imageUrl: pickupPicture,
+                                    imageWidth: 300,
+                                    imageHeight: 300,
+                                    imageAlt: "Pickup image",
+                                  });
+                                }}
+                              >
+                                보기
+                              </div>
+                            ) : (
+                              <div
+                                className="pickupPic"
+                                onClick={() => {
+                                  const pickupPicture = taskRow.imageUrl;
+                                  Swal.fire({
+                                    // title: '픽업 사진',
+                                    text: "배달을 완료하였습니다.",
+                                    imageUrl: pickupPicture,
+                                    imageWidth: 300,
+                                    imageHeight: 300,
+                                    imageAlt: "Drop image",
+                                  });
+                                }}
+                              >
+                                보기
+                              </div>
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -275,7 +309,6 @@ const List = (props) => {
             </Collapse>
           </TableCell>
         </TableRow>
-        
       </React.Fragment>
     );
   }
