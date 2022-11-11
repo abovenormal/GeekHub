@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import MyResponsivePie from "./MyResponsivePie";
-import MyResponsiveLine from "./MyResponsiveLine";
 import GetSuccess from "../../api/GetSuccess";
 import { apiInstance } from "../../api";
 import "./css/Chart.css";
@@ -308,21 +306,6 @@ const Chart = () => {
       color: "hsl(220, 70%, 50%)",
     },
   ];
-  // console.log(pie);
-
-  // useEffect(() => {
-  //   var temp = [];
-  //   temp.push(
-  //     <div key={1}>
-  //       <div className="pie-chart2">
-  //         <YesterdayPie data={pieTotal} />
-  //         <div>전국</div>
-  //       </div>
-  //     </div>
-
-  //   );
-  //   setMap(temp);
-  // }, [data]);
   return (
     <div className="chart-container">
       <div className="pie-container">
