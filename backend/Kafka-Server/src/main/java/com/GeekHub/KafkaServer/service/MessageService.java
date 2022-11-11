@@ -18,4 +18,17 @@ public class MessageService {
         message = messages.get(0);
         return message;
     }
+    public List<Message> getLogs(String driver,String date){
+        String[] cont = date.split("-");
+        for (int i=1;i<3;i++){
+            System.out.println(cont[i]);
+            if(Integer.parseInt(cont[i])<10){
+                cont[i] = "0"+cont[i];
+            }
+        }
+        date = cont[0]+"."+cont[1]+"."+cont[2];
+
+        List<Message> messages = repository.getLogs(driver,date);
+        return messages;
+    }
 }

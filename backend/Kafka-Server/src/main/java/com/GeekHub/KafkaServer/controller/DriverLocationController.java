@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/location")
 public class DriverLocationController {
@@ -22,6 +24,17 @@ public class DriverLocationController {
         }catch(Exception e){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+
+    }
+    @GetMapping("/getLog")
+    public ResponseEntity<List<Message>> getDriverLog(@RequestParam String driver, String date){
+        try{
+            List<Message> messages = messageService.getLogs(driver,date);
+            return new ResponseEntity<>(messages, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
+
 
     }
 

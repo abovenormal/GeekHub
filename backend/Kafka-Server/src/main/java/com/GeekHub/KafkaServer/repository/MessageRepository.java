@@ -10,6 +10,8 @@ public interface MessageRepository extends MongoRepository<Message, String> {
     //@Query(value = "find({'driver':?0},{$top:{sortBy:{'timestamp':-1},output['driver','longitude,'latitude'']}})")
     @Query(value = "{'driver':?0}",sort = "{'timestamp':-1}")
     List<Message> getMessage(String driver);
+    @Query(value = "{'driver':?0,'timestamp':/?1/}",sort = "{'timestamp':-1}")
+    List<Message> getLogs(String driver,String date);
 
 
 }
