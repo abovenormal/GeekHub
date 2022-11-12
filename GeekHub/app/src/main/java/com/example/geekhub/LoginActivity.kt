@@ -31,23 +31,13 @@ class LoginActivity : AppCompatActivity() {
         println(saveId)
 
         if (saveId != "") {
-            val intent = Intent(applicationContext, StartActivity::class.java)
+            val intent = Intent(applicationContext, ReadyActivity::class.java)
             startActivity(intent)
             finish()
 
         }
 
 
-
-//        if(pref.equals("")){
-//            println("태그체크")
-//
-//        }else{
-////            val intent = Intent(applicationContext, ReadyActivity::class.java)
-////            startActivity(intent)
-////            Toast.makeText(this, "로그인 하였습니다", Toast.LENGTH_SHORT).show()
-////            finish()
-//        }
 
 
         sharedPreferences = getSharedPreferences("loginInfo", MODE_PRIVATE)
