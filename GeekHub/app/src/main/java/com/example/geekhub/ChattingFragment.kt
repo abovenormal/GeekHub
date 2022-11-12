@@ -1,6 +1,7 @@
 package com.example.geekhub
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
@@ -12,20 +13,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.geekhub.databinding.FragmentChattingBinding
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import kotlin.reflect.typeOf
+import com.example.geekhub.retrofit.NetWorkClient.gson
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+import org.json.JSONObject
+
 
 class ChattingFragment : Fragment() {
 
     lateinit var binding : FragmentChattingBinding
     lateinit var listener : RecognitionListener
-    lateinit var client : OkHttpClient
+    lateinit var pref : SharedPreferences
+    lateinit var userid : String
+    lateinit var mSocket :Socket
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        pref = requireActivity().getSharedPreferences("idKey",0)
+        userid = pref.getString("id", "").toString()
+
+
         binding = FragmentChattingBinding.inflate(inflater,container,false)
         binding.adminChatting.visibility = View.VISIBLE
 
@@ -40,15 +51,23 @@ class ChattingFragment : Fragment() {
             mRecognizer.setRecognitionListener(listener)
             mRecognizer.startListening((intent))
         }
-        client = OkHttpClient()
 
-        val request : Request = Request.Builder()
-            .url("http:k7c205.p.ssafy.io:8088/chat/test")
-            .build()
-        val listener: WebSocketListener = WebSocketListener()
 
-        client.newWebSocket(request, listener)
-        client.dispatcher().executorService().shutdown()
+        mSocket = IO.socket("http://k7c205.p.ssafy.io:8089?room=a")
+        mSocket.connect()
+
+
+        binding.sendButton.setOnClickListener{
+            var myChat = binding.editChatting.text.toString()
+            println(myChat)
+            var data = JSONObject()
+            data.put("room", "a")
+            data.put("type", "CLIENT")
+            data.put("message", myChat)
+            mSocket.emit("send_message", data)
+            println("슝")
+            println(data)
+        }
 
         return binding.root
 
@@ -132,6 +151,12 @@ class ChattingFragment : Fragment() {
     private fun openColleague () {
         binding.colleagueChatting.visibility = View.VISIBLE
         binding.adminChatting.visibility = View.INVISIBLE
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mSocket.disconnect()
+        println("접속해제")
     }
 
 
