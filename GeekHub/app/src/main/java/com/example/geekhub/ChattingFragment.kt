@@ -14,10 +14,11 @@ import android.view.ViewGroup
 import android.widget.*
 import com.example.geekhub.databinding.FragmentChattingBinding
 import com.example.geekhub.retrofit.NetWorkClient.gson
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
+//import io.socket.client.IO;
+//import io.socket.client.Socket;
+//import io.socket.emitter.Emitter;
 import org.json.JSONObject
+import java.net.Socket
 
 
 class ChattingFragment : Fragment() {
@@ -26,7 +27,7 @@ class ChattingFragment : Fragment() {
     lateinit var listener : RecognitionListener
     lateinit var pref : SharedPreferences
     lateinit var userid : String
-    lateinit var mSocket :Socket
+    lateinit var mSocket : Socket
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,8 +54,8 @@ class ChattingFragment : Fragment() {
         }
 
 
-        mSocket = IO.socket("http://k7c205.p.ssafy.io:8089?room=a")
-        mSocket.connect()
+//        mSocket = IO.socket("http://k7c205.p.ssafy.io:8089?room=a")
+//        mSocket.connect()
 
 
         binding.sendButton.setOnClickListener{
@@ -64,7 +65,7 @@ class ChattingFragment : Fragment() {
             data.put("room", "a")
             data.put("type", "CLIENT")
             data.put("message", myChat)
-            mSocket.emit("send_message", data)
+//            mSocket.emit("send_message", data)
             println("슝")
             println(data)
         }
@@ -155,8 +156,8 @@ class ChattingFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        mSocket.disconnect()
-        println("접속해제")
+//        mSocket.disconnect()
+//        println("접속해제")
     }
 
 
