@@ -85,12 +85,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <FrameLayout
-            android:id="@+id/camera_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </FrameLayout>
     </LinearLayout>
 
 
@@ -104,6 +98,7 @@
         android:src="@drawable/focus_location"
         app:layout_constraintBottom_toTopOf="@+id/main_container_view"
         app:layout_constraintStart_toStartOf="parent" />
+
     <FrameLayout
         android:id="@+id/main_container_view"
         android:layout_width="match_parent"
@@ -111,6 +106,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+    <FrameLayout
+        android:id="@+id/camera_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

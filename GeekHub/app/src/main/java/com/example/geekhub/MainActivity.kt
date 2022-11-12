@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        cnt = 0
         focusStatus = 1
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -214,7 +215,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             sendLocation()
             addMarker()
 //            tMapPointStart = gps!!.location
-            if (focusStatus == 0){
+            if (focusStatus == 1){
                 tMapView.setCenterPoint(gps!!.location.longitude, gps!!.location.latitude)
             }
 
@@ -396,7 +397,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         val call = callData.sendLocationLog(locationBody)
         call.enqueue(object : Callback<String?>{
             override fun onFailure(call: Call<String?>, t: Throwable) {
-                Log.e("에러났다", t.toString())
+//                Log.e("에러났다", t.toString())
             }
 
             override fun onResponse(call: Call<String?>, response: Response<String?>) {
