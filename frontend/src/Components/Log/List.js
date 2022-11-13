@@ -167,7 +167,7 @@ const List = (props) => {
                             const arrivedTime = taskRow.arrivedTime;
                             Swal.fire({
                               title: spotName,
-                              text: `도착 시각 : ${arrivedTime}`,
+                              text: `도착 시각 : ${arrivedTime.slice(11, 16)}`,
                               imageUrl: imageUrl,
                               imageWidth: 300,
                               imageHeight: 300,
