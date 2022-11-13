@@ -29,7 +29,7 @@ const Driverlocation = () => {
         async function getData() {
           const res = await apiInstance().post('spot/current', selected);
           setListData(res.data)
-          // console.log(res.data);
+          console.log(res.data);
         }
         getData();}
       else {
