@@ -138,4 +138,14 @@ public class SpotController {
         }
 
     }
+
+    @GetMapping("/workingDriver")
+    public ResponseEntity<List<DriverLocationDto>> workingDriver() {
+        try {
+            List<DriverLocationDto> list = deliveryLogService.workingDriver();
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
 }

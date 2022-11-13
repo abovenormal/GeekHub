@@ -12,4 +12,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     User findUserByUserIdx(long userIdx);
     Optional<List<User>> findUserByLocalCityAndLocalSchool(String localCity, String localSchool);
     Optional<List<User>> findUserByLocalSchool(String localSchool);
+    List<User> findAll();
 }

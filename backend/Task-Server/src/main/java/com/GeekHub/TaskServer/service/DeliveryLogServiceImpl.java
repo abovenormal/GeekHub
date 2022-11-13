@@ -1,6 +1,7 @@
 package com.GeekHub.TaskServer.service;
 
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
+import com.GeekHub.TaskServer.dto.response.DriverLocationDto;
 import com.GeekHub.TaskServer.dto.response.SchoolSuccessDto;
 import com.GeekHub.TaskServer.dto.response.SpotLogDto;
 import com.GeekHub.TaskServer.dto.response.SpotResponseDto;
@@ -135,7 +136,7 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
         return result;
     }
 
-    private List<DeliveryLog> spotList(long userIdx, String date) {
+    public List<DeliveryLog> spotList(long userIdx, String date) {
         List<DeliveryLog> result = new ArrayList<>();
         List<DeliveryLog> list = deliveryLogRepository.findDeliveryLogByUserIdx(userIdx).orElse(null);
 
@@ -159,6 +160,21 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
             if (deliveryLog.getExpectedTime().toString().substring(0, 10).equals(sb.toString())){
                 result.add(deliveryLog);
             }
+        }
+        return result;
+    }
+    public List<DriverLocationDto> workingDriver() throws Exception {
+        List<User> users= userRepository.findAll();
+        List<DriverLocationDto> result = new ArrayList<>();
+
+        for(User user:users){
+            if(user.getUserStatus().toString()!="WORKING"||user.getLocation().getLat()==0) continue;
+            DriverLocationDto driverLocationDto = new DriverLocationDto();
+            driverLocationDto.setUserIdx(user.getUserIdx());
+            driverLocationDto.setUserName(user.getUserName());
+            driverLocationDto.setLat(user.getLocation().getLat());
+            driverLocationDto.setLon(user.getLocation().getLon());
+            result.add(driverLocationDto);
         }
         return result;
     }
