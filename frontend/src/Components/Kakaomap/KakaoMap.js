@@ -30,7 +30,7 @@ function KakaoMap() {
       console.log(err);
     }
   }
-  setTimeout(() => {
+  setInterval(() => {
     getData();
     console.log(new Date());
   }, 30000);

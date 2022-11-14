@@ -9,6 +9,7 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import LogoutIcon from "@mui/icons-material/Logout";
+import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import Logout from "@mui/icons-material/Logout";
 // import logo from "../../asset/image/logo.png"
 const Nav = () => {
@@ -26,7 +27,7 @@ const Nav = () => {
         >
           <MenuIcon className="nav-icon" />
           <div className={`description ${expanded && "show-description"}`}>
-          GeekHub
+            GeekHub
           </div>
         </Link>
         <Link
@@ -65,7 +66,19 @@ const Nav = () => {
         >
           <LocalShippingIcon className="nav-icon"></LocalShippingIcon>
           <p className={`description ${expanded && "show-description"}`}>
-            실시간 모니터링
+            배달 현황 관리
+          </p>
+        </Link>
+        <Link
+          className={"nav-link" + (nowActive === "drivermap" ? " active" : "")}
+          onClick={() => {
+            setNowActive("drivermap");
+          }}
+          to="drivermap"
+        >
+          <FmdGoodIcon className="nav-icon"></FmdGoodIcon>
+          <p className={`description ${expanded && "show-description"}`}>
+            배달기사 현재위치
           </p>
         </Link>
         <Link

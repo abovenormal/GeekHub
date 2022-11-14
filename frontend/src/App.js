@@ -13,10 +13,23 @@ import User from "./Pages/User";
 import Signup from "./Pages/Signup";
 import Drivermap from "./Pages/Drivermap";
 import "./App.css";
+import { apiInstance } from "./api/index";
 
 function App() {
   const token = localStorage.getItem("accesstoken");
   const isLogin = !!token;
+  async function getData() {
+    try {
+      const res = await apiInstance().get("spot/test");
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  setInterval(() => {
+    getData();
+    console.log(new Date());
+  }, 30000);
   // const isLogin = true
   return (
     <div className="App-container">
