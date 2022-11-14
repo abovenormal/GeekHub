@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         }
 
         binding.goChatting.setOnClickListener {
-            moveFragment(ChattingFragment())
+            activeChat()
         }
         // 채팅버튼
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
@@ -461,6 +461,19 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         startActivity(Intent(this@MainActivity,ReadyActivity::class.java))
         finish()
 
+    }
+
+    fun lockedChat() {
+        binding.goChatting.setOnClickListener{
+            Toast.makeText(applicationContext,"이미 채팅방이 켜져있습니다",Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    fun activeChat() {
+        binding.goChatting.setOnClickListener{
+            moveFragment(ChattingFragment())
+        }
     }
 }
 

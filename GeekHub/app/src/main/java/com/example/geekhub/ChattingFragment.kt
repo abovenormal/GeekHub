@@ -33,22 +33,31 @@ class ChattingFragment : Fragment() {
 
         pref = requireActivity().getSharedPreferences("idKey",0)
         userid = pref.getString("id", "").toString()
+        // 저장되어있는 id값 가져오기
         binding = FragmentChattingBinding.inflate(inflater,container,false)
+        (activity as MainActivity).lockedChat()
+        // 채팅 중복파일 막기
+
+
 
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "com.example.geekhub")
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"ko-KR")
         setListener() // 음성인식 가져오기
         
-//        binding.mic.setOnClickListener{
-//            val mRecognizer = SpeechRecognizer.createSpeechRecognizer(requireActivity())
-//            mRecognizer.setRecognitionListener(listener)
-//            mRecognizer.startListening((intent))
-//        } // 음성인식 시작
+        binding.mic.setOnClickListener{
+            val mRecognizer = SpeechRecognizer.createSpeechRecognizer(requireActivity())
+            mRecognizer.setRecognitionListener(listener)
+            mRecognizer.startListening((intent))
+        } // 음성인식 시작
 
 
 
 
+        
+        
+        
+        
         binding.sendButton.setOnClickListener{
         }
 
@@ -97,5 +106,10 @@ class ChattingFragment : Fragment() {
             }
         }
     } // 음성듣기
+
+    override fun onStop() {
+        super.onStop()
+        (activity as MainActivity).activeChat() // 다시 채팅아이콘 활성화
+    }
 
 }
