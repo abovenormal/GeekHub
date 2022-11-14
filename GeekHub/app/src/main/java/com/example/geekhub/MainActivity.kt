@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -63,6 +64,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     val bundle = Bundle()
     lateinit var userid: String
     lateinit var pref : SharedPreferences
+    var backKeyPressedTime:Long= 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +79,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         binding.liveFocusButton.setOnClickListener{
             tMapView.setCenterPoint(gps!!.location.longitude, gps!!.location.latitude)
+        }
+
+        binding.goMainLogo.setOnClickListener{
+            changeFragment(7)
         }
 
         next(userid)
@@ -292,7 +298,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 var convert = String(records.payload, StandardCharsets.UTF_8)
                 println("프린트값")
                 var spot = convert.substring(3)
-                sendUserId(spot,userid)
+                sendUserId(spot,userid,"널")
             }
 
         }
@@ -348,21 +354,22 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         bundle.putString("idx",idx)
         bundle.putString("url",url)
         fragment.arguments = bundle
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container_view, fragment)
-            .addToBackStack(null)
-            .commit()
+        println(fragment)
+            println("나 카메라아니다")
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_container_view, fragment)
+                .addToBackStack(null)
+                .commit()
     }
 
-    fun sendUserId(spot: String,userid:String) {
+
+    fun sendUserId(spot: String,userid:String,title: String) {
         val fragment = CameraxFragment()
-        Log.d("스트링",spot)
         bundle.putString("spot", spot)
         bundle.putString("userid",userid)
-        println("유저아이디체크")
-        println(userid)
+        bundle.putString("title",title)
         fragment.arguments = bundle
-        supportFragmentManager.beginTransaction().add(R.id.camera_view,fragment).commit()
+        supportFragmentManager.beginTransaction().add(R.id.camera_view,fragment).addToBackStack(null).commit()
     }
 
     private fun addMarker() {
@@ -428,15 +435,32 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 nextSpotInfo = response.body()
 
 
-                if (nextSpotInfo!!.isFinished == true) {
-                    isNext = 0
-                }else{isNext = 1}
-
             }
         })
     }
     fun cntClear() {
         cnt = 0
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount == 0) {
+
+            if (System.currentTimeMillis() > backKeyPressedTime + 2500) {
+                backKeyPressedTime = System.currentTimeMillis();
+                Toast.makeText(this,"뒤로가기를 한번 더 누르시면 종료됩니다.",Toast.LENGTH_SHORT).show()
+                return;
+            } else{
+                super.onBackPressed()
+            }
+        }
+        super.onBackPressed()
+
+    }
+
+    fun finished() {
+        startActivity(Intent(this@MainActivity,ReadyActivity::class.java))
+        finish()
+
     }
 }
 
