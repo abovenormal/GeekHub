@@ -63,7 +63,11 @@ const List = (props) => {
                   height: "100%",
                   zoom:17
               });
-          
+              var content ="<div style=' position: relative; border-bottom: 1px solid #dcdcdc; line-height: 18px; padding: 0 35px 2px 0;'>"+
+				    "<div style='font-size: 12px; line-height: 15px;'>"+
+				        "<span style='display: inline-block; width: 14px; height: 14px; background-image: url(/resources/images/common/icon_blet.png); vertical-align: middle; margin-right: 5px;'></span>드래그해주세요"+
+				    "</div>"+
+				 "</div>"
               var marker = new Tmapv2.Marker({
                 position: new Tmapv2.LatLng(${latitude},${longitude}),
                 map: map,

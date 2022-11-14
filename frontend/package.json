@@ -27,6 +27,7 @@
     "react-apexcharts": "^1.4.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.6.0",
+    "react-kakao-maps-sdk": "^1.1.5",
     "react-responsive": "^9.0.0",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.4.2",
