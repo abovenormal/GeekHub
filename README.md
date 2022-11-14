@@ -52,47 +52,67 @@
 
 - ## 상세기능
 
-  - ##### 관리자 페이지
+  - #### 1. 관리자 페이지
 
-    - #### 회원가입 페이지
+    - #### 1.1 로그인 페이지
 
-      - ##### 저희 서비스만의 로그인을 제공합니다.
-      - ##### 로그인 유저는 메인 페이지에 다른 유저의 자물쇠 현황을 확인하고, 열람해볼 수 있으며 직접 자물쇠를 만들어 알록달록의 서비스를 이용할 수 있습니다.
-      - ##### 비 회원 사용자는 타 유저의 자물쇠의 현황만 확인할 수 있습니다.
+      - ##### 배달긱 홍보영상을 상시 재생하고 있습니다.
+      - ##### 관리자로 임명된(ROLE) 아이디만 서비스에 접속할 수 있습니다.
 
-    - #### 마이 페이지
+    - #### 1.2 Overview(배달 요약) 페이지
 
-      - #### 내 정보와 지갑정보를 확인할 수 있습니다.
-      - #### 비밀번호를 수정할 수 있습니다.
+      - ##### 배달현황을 간략하게 볼 수 있는 페이지입니다.
+      - ##### 전국 지역과, 각 지역의 배달 성공 / 실패를 원 그래프로 확인할 수 있습니다.
 
-    - #### 메인 페이지
+    - #### 1.3 실시간 모니터링 페이지
 
-      - #### 전국 5개의 지역(서울,대전,광주,구미,부울경)페이지의 자물쇠 현황을 파악할 수 있습니다.
-      - #### 자물쇠 등록, 모아보기 버튼을 통해 다른 페이지로 이동합니다.
+      - #### 지역, 장소, 시간 테이블, 날짜를 통해 현재 어떻게 배달이 진행되고 있는지 파악합니다.
+      - #### 해당 지역의 기사의 현재 위치를 실시간으로 지도에 표시합니다.
+      - #### 장소, 도착 예정 시각, 실제 도착 시각, 오차, 사진을 확인합니다.
+      - #### 예정 시각과 도착 시각의 오차를 그래프를 통해 확인합니다.
+      - #### 오차 시간이 5분이 넘어서 도착할 경우 관리자에게 알람이 울립니다.
+      - #### 해당 날짜에 기록이 없을 시 '조회된 데이터가 없습니다'로 표시 됩니다.
 
-    - #### 자물쇠 모아보기 페이지
+    - #### 1.4 로그 확인 페이지
 
-      - #### 유저가 등록한 자물쇠들을 전체 확인할 수 있습니다.
-      - #### 유저가 자물쇠의 개인키를 이용하여 유저 리스트에 추가합니다.
-      - #### 지역에 따라 자물쇠를 분류하여 확인해 볼 수 있습니다.
-      - #### 리스트에 등록된 자물쇠의 제목과 내용을 확인할 수 있습니다.
+      - #### 배달 완료된 사진 기록을 확인 할 수 있습니다.
+      - #### 기록된 GPS를 확인 할 수 있습니다.(전체 보기를 통해 그 날 기록된 기록을 확인 가능합니다.)
 
-    - #### 자물쇠 등록,걸기 페이지
+    - #### 1.5 신규 기사 생성 페이지
 
-      - #### 제목과 내용 그리고 사진도 등록이 가능합니다.
-      - #### 입력이 완성 되었으면 원하는 지역을 선택하여 등록합니다.
+      - #### 배달기사의 신상정보(배달 지역, 시간)를 통해 아이디를 생성합니다.
+      - #### 아이디 중복확인을 제공합니다.
 
-  - ##### GeekHub 앱
+  - ### 2. GeekHub 앱
 
-    - #### 로그인 페이지
+    - #### 2.1 로그인 화면
 
-      - ####
+      - #### 관리자가 생성한 아이디로 앱에 로그인합니다.
+      - #### 앱을 이용하기에 앞서 사용자에게 앱 사용 중 위치 공유 권환을 제공 받습니다.
+
+    - #### 2.2 실시간 모니터링 페이지
+
+      - #### 지역, 장소, 시간 테이블, 날짜를 통해 현재 어떻게 배달이 진행되고 있는지 파악합니다.
+      - #### 해당 지역의 기사의 현재 위치를 실시간으로 지도에 표시합니다.
+      - #### 장소, 도착 예정 시각, 실제 도착 시각, 오차, 사진을 확인합니다.
+      - #### 예정 시각과 도착 시각의 오차를 그래프를 통해 확인합니다.
+      - #### 오차 시간이 5분이 넘어서 도착할 경우 관리자에게 알람이 울립니다.
+      - #### 해당 날짜에 기록이 없을 시 '조회된 데이터가 없습니다'로 표시 됩니다.
+
+    - #### 1.3 실시간 모니터링 페이지
+
+      - #### 지역, 장소, 시간 테이블, 날짜를 통해 현재 어떻게 배달이 진행되고 있는지 파악합니다.
+      - #### 해당 지역의 기사의 현재 위치를 실시간으로 지도에 표시합니다.
+      - #### 장소, 도착 예정 시각, 실제 도착 시각, 오차, 사진을 확인합니다.
+      - #### 예정 시각과 도착 시각의 오차를 그래프를 통해 확인합니다.
+      - #### 오차 시간이 5분이 넘어서 도착할 경우 관리자에게 알람이 울립니다.
+      - #### 해당 날짜에 기록이 없을 시 '조회된 데이터가 없습니다'로 표시 됩니다.
 
 ## :wrench: 기술스택
 
 ### Frontend
 
-<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logoColor=white"/>
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
 
 <br />
 
@@ -100,12 +120,13 @@
 
 <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logoColor=white"/>
 <img src="https://img.shields.io/badge/AndroidStudio-3DDC84?style=for-the-badge&logoColor=white"/>
+<img src="https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=Android&logoColor=white"/>
 
 <br />
 
 ### Backend
 
-<img src="https://img.shields.io/badge/Java-1E8CBE?style=flat-square&logo=OpenJDK&logoColor=white">
+<img src="https://img.shields.io/badge/Java-1E8CBE?style=for-the-badge&logo=OpenJDK&logoColor=white"> 
 <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white">
 <img src="https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white">
 <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white">
@@ -116,7 +137,7 @@
 ### DataBase
 
 <img alt="MySQL" src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/> 
-<img src="https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=MongoDB&logoColor=white"><br />
+<img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=MongoDB&logoColor=white"> <br />
 
 ### Server
 
