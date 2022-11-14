@@ -2,6 +2,8 @@ package com.example.geekhub
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -38,17 +40,39 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
-
-
         sharedPreferences = getSharedPreferences("loginInfo", MODE_PRIVATE)
         editor = sharedPreferences.edit()
+        binding.loginButton.isEnabled = false
+
+        binding.editId.addTextChangedListener(object :TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                checkIdActive()
+
+            }
+        })
+        binding.editPw.addTextChangedListener(object :TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                checkIdActive()
+
+            }
+
+        })
+
+
 
         binding.loginButton.setOnClickListener{
             var id = binding.editId.text.toString()
             var pw = binding.editPw.text.toString()
-            println(id)
-            println(pw)
-
             val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:9002/")
                 .addConverterFactory(
                 GsonConverterFactory.create()).build()
@@ -107,5 +131,19 @@ class LoginActivity : AppCompatActivity() {
         var edit = pref.edit() // 수정모드
         edit.putString("id", id ) // 값 넣기
         edit.apply() // 적용하기
+    }
+
+    fun checkIdActive(){
+        var id = binding.editId.text.toString()
+        var pw = binding.editPw.text.toString()
+        if (id.isNotEmpty()&&pw.isNotEmpty()){
+            binding.loginButton.isEnabled = true
+            binding.loginButton.setBackgroundResource(R.drawable.login_button)
+        }else{
+            binding.loginButton.isEnabled = false
+            binding.loginButton.setBackgroundResource(R.color.gray_500)
+        }
+
+
     }
 }

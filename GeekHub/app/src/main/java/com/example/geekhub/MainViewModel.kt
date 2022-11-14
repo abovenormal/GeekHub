@@ -8,7 +8,6 @@ import ua.naiksoftware.stomp.dto.LifecycleEvent
 
 class MainViewModel : ViewModel() {
 
-    // val url = "http://example.com:8080/"
     val url = "ws://k7c205.p.ssafy.io:8088/endpoint/websocket" // 소켓에 연결하는 엔드포인트가 /socket일때 다음과 같음
     val stompClient =  Stomp.over(Stomp.ConnectionProvider.OKHTTP, url)
 
