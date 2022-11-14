@@ -59,6 +59,7 @@ class CameraxFragment : Fragment() {
     lateinit var imageFile:File
     var userid :String? = null
     private var spot :String? = "안바뀌었습니다"
+    var title :String? = null
 
 
     private val REQUEST_CODE_PERMISSIONS = 10
@@ -81,11 +82,17 @@ class CameraxFragment : Fragment() {
     ): View? {
         binding = FragmentCameraxBinding.inflate(inflater,container,false)
 
-        spot = arguments?.getString("spot").toString()
-        userid = arguments?.getString("userid").toString()
-        println("체크")
+        arguments?.let{
+            title = it.getString("title")
+            spot = it.getString("spot")
+            userid = it.getString("userid")
+        }
+        binding.cameraTitle.setText("배달지는 ${title}입니다")
+        println("쳌쳌")
+        println(title)
         println(spot)
         println(userid)
+
 
         requestPermission()
 
@@ -326,6 +333,7 @@ class CameraxFragment : Fragment() {
         }
 
     }
+
 
 
 

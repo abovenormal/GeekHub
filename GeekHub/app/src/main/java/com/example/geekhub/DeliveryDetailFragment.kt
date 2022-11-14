@@ -25,7 +25,7 @@ class DeliveryDetailFragment : Fragment() {
         binding = FragmentDeliveryDetailBinding.inflate(inflater,container,false)
         pref = requireActivity().getSharedPreferences("idKey", 0)
         userid = pref.getString("id", "").toString()
-        arguments?.let{6
+        arguments?.let{
             title = it.getString("title")
             idx = it.getString("idx")
             url = it.getString("url")
@@ -36,9 +36,14 @@ class DeliveryDetailFragment : Fragment() {
 //            .load(R.drawable.phone_camera_name) // 불러올 이미지 url
 //            .into(binding.cameraImage) // 이미지를 넣을 뷰
 
+
+        Glide.with(requireContext())
+            .load(url) // 불러올 이미지 url
+            .into(binding.detailLogoIcon) // 이미지를 넣을 뷰
+
         binding.detailButton.setOnClickListener{
 
-            (activity as MainActivity).sendUserId(idx!!,userid)
+//            (activity as MainActivity).sendUserId(idx!!,userid)
         }
 
         return binding.root

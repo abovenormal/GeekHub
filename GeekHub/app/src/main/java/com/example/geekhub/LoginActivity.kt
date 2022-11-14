@@ -76,7 +76,7 @@ class LoginActivity : AppCompatActivity() {
                         saveDate(data.toString())
 
                         Toast.makeText(applicationContext,"로그인성공",Toast.LENGTH_SHORT).show()
-                        intent = Intent(this@LoginActivity, StartActivity::class.java)
+                        intent = Intent(this@LoginActivity, ReadyActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
                         startActivity(intent)
