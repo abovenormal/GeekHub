@@ -132,7 +132,7 @@ const List = (props) => {
               aria-label="expand row"
               size="small"
               onClick={() => {
-                // console.log(row);
+                console.log(row);
                 GetLocation(row.userIdx);
               }}
             >
@@ -149,14 +149,23 @@ const List = (props) => {
               cursor: "pointer",
             }}
           >
-            <div className="list-username">{row.userName}</div>
+            
 
             {allTask === 0 ? (
-              <div>오늘 일 없음ㅋㅋ</div>
+              <div className="name-container">
+                <div className="list-username">{row.userName}</div>
+                <div className="no-list">조회된 데이터가 없습니다.</div>
+              </div>
             ) : allTask === completeTask ? (
-              <div>100% 완료</div>
+              <div className="name-container">
+                <div className="list-username">{row.userName}</div>
+                <div>100% 완료 ({allTask}건 중 {completeTask}건 완료)</div>
+              </div>
             ) : (
-              <div className="success-ratio">{successRatio}% 진행 중</div>
+              <div className="name-container">
+                <div className="list-username">{row.userName}</div>
+                <div className="success-ratio">{successRatio}% 진행 중 ({allTask}건 중 {completeTask}건 완료)</div>
+              </div>
             )}
           </TableCell>
         </TableRow>
