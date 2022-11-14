@@ -4,6 +4,7 @@ import com.GeekHub.TaskServer.dto.request.ImgRequestDto;
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
 import com.GeekHub.TaskServer.dto.response.*;
+import com.GeekHub.TaskServer.entity.Spot;
 import com.GeekHub.TaskServer.entity.SpotCategory;
 
 import java.util.List;
@@ -26,4 +27,6 @@ public interface SpotService {
     void saveImg(ImgRequestDto imgRequestDto) throws Exception;
 
     List<SpotLogDto> current(LogRequestDto logRequestDto) throws Exception;
+    List<Spot> spotList(long userIdx, String date)  throws Exception;
+    String[] delayUser() throws Exception;
 }

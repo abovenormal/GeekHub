@@ -276,6 +276,8 @@ public class SpotServiceImpl implements SpotService {
             throw new Exception();
         }
     }
+    @Override
+    @Transactional
     public List<SpotLogDto> current(LogRequestDto logRequestDto) throws Exception{
         String localCity= logRequestDto.getLocalCity();
         String localSchool= logRequestDto.getLocalSchool();
@@ -327,7 +329,9 @@ public class SpotServiceImpl implements SpotService {
 
         return result;
     }
-    private List<Spot> spotList(long userIdx, String date) {
+    @Override
+    @Transactional
+    public List<Spot> spotList(long userIdx, String date) {
         List<Spot> result = new ArrayList<>();
         List<Spot> list = spotRepository.findSpotByUserIdxOrderByExpectedTime(userIdx).orElse(null);
 
@@ -353,6 +357,31 @@ public class SpotServiceImpl implements SpotService {
             }
         }
         return result;
+    }
+    public String[] delayUser() throws Exception{
+        List<User> users = userRepository.findAll();
+        String[] arr = new String[4];
+        for(User user:users){
+            List<Spot> spots = spotRepository.findSpotByUserIdxOrderByExpectedTime(user.getUserIdx()).orElse(null);
+
+            for(Spot spot:spots){
+                if(spot.getStatus()==2){continue;}
+                String ex = String.valueOf(spots.get(0).getExpectedTime());
+                String str = ex.replace("T"," ");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+                LocalDateTime now = LocalDateTime.now().minusMinutes(5);
+
+                if(now.compareTo(dateTime)>0){
+                    arr[0]=user.getUserName();
+                    arr[1]=user.getLocalCity();
+                    arr[2]=user.getLocalSchool();
+                    arr[3]=spot.getSpotName();
+                    return arr;
+                }
+            }
+        }
+        return null;
     }
 }
 

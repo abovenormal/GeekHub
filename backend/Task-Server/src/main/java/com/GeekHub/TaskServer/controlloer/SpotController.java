@@ -12,9 +12,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +37,29 @@ public class SpotController {
     @GetMapping("/test")
     public String test(){
         return "test";
+    }
+
+    @GetMapping("/send")
+    public void send() throws Exception {
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String,Object> request = new HashMap<String,Object>();
+        String[] result;
+        try {
+            result = SpotService.delayUser();
+        }catch (Exception e){
+            throw new Exception();
+        }
+        if(result==null){
+            return ;
+        }
+        request.put("username", "긱허브봇");
+        request.put("text", "*"+result[0]+"("+result[1]+","+result[2]+")님의 "+result[3]+" 배달이 지연되고 있습니다.*\n" +
+                ":round_pushpin:<http://k7c205.p.ssafy.io/drivermap|"+result[0]+" 기사님의 현재 위치 조회> :white_check_mark::white_check_mark:\n" +
+                ":car:<http://k7c205.p.ssafy.io/driverlocation|"+result[0]+" 기사님의 배달 현황 조회> :fire::fire:");
+        HttpEntity<Map<String,Object>> entity = new HttpEntity<Map<String,Object>>(request);
+        // Webhook URL
+        String url = "https://hooks.slack.com/services/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";
+        restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
     }
 
     @GetMapping
