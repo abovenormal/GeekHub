@@ -41,6 +41,12 @@ public class ChatController {
     @SendTo("/chat/group")
     public Message broadcastGroupMessage(@Payload Message message) {
         log.info("연결 테스트" + message.toString());
+        message.setTimestamp(LocalDateTime.now().toString());
+        try {
+            kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, message).get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return message;
     }
 
