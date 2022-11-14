@@ -27,13 +27,25 @@ const List = (props) => {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const [logData, setLogData] = useState([]);
-
     const API = apiInstance();
+    let allTask = 0;
+    let completeTask = 0;
+    {
+      row.spotResponseDtoList.map((c) => {
+        if (c.status === 2) {
+          allTask += 1;
+          completeTask += 1;
+        } else if (c.status === 1) {
+          allTask += 1;
+        }
+      });
+    }
     async function getLog50(id) {
       console.log(id)
       console.log(selected.date)
       // 열릴 때만 Get 요청 보내기 위해 분기 추가 했다가
       // 열린 채로 새로 고침 안 되서 잠시 삭제
+    if (allTask > 0) {
       try {
         const res = await API.get("/location/getLog50", {
           params: { 
@@ -48,8 +60,16 @@ const List = (props) => {
       catch (err) {
         console.log(err);
       }
+    } else {
+      Toast.fire({
+        icon: "info",
+        title: "조회된 데이터가 없습니다.",
+        timer: 1000,
+        position: "center",
+      });
     }
-
+  }
+    
     async function getLog(id) {
       try {
         const res = await API.get("/location/getLog", {
@@ -105,7 +125,15 @@ const List = (props) => {
               cursor: "pointer",
             }}
           >
+            {allTask === 0 ? (
+              <div className="name-container">
+                <div className="list-username">{row.userName}</div>
+                <div className="no-list">조회된 데이터가 없습니다.</div>
+              </div>
+            ) : <div className="name-container">
             <div className="list-username">{row.userName}</div>
+            <div className="no-list">총 {completeTask}건의 기록이 있습니다.</div>
+          </div> }
           </TableCell>
         </TableRow>
         <TableRow>
@@ -139,7 +167,7 @@ const List = (props) => {
                             const arrivedTime = taskRow.arrivedTime;
                             Swal.fire({
                               title: spotName,
-                              text: `도착 시각 : ${arrivedTime}`,
+                              text: `도착 시각 : ${arrivedTime.slice(11, 16)}`,
                               imageUrl: imageUrl,
                               imageWidth: 300,
                               imageHeight: 300,
@@ -152,6 +180,7 @@ const List = (props) => {
                       </div>
                     ))}
                   </div>
+                  
                   
 
                   <Typography
