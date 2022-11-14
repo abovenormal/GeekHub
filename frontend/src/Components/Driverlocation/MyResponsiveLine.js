@@ -5,12 +5,12 @@ const MyResponsiveLine = ( {data_line} ) => {
   return (
     <ResponsiveLine
     data={data_line}
-    margin={{ top: 10, right: 50, bottom: 50, left: 60 }}
+    margin={{ top: 20, right: 10, bottom: 100, left: 200 }}
     xScale={{ type: 'point' }}
     yScale={{
         type: 'linear',
-        min: -5,
-        max: 5,
+        min: 'auto',
+        max: 'auto',
         stacked: true,
         reverse: false
     }}
@@ -21,9 +21,9 @@ const MyResponsiveLine = ( {data_line} ) => {
         orient: 'bottom',
         tickSize: 5,
         tickPadding: 5,
-        tickRotation: 0,
-        legend: '픽업존',
-        legendOffset: 36,
+        tickRotation: -30,
+        legend: '장소',
+        legendOffset: 46,
         legendPosition: 'middle'
     }}
     axisLeft={{
@@ -43,7 +43,7 @@ const MyResponsiveLine = ( {data_line} ) => {
     pointBorderColor={{ from: 'color', modifiers: [] }}
     pointLabelYOffset={-12}
     isInteractive={true}
-    enableCrosshair={false}
+    enableCrosshair={true}
     useMesh={true}
     motionConfig="stiff"
 />

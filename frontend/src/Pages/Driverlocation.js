@@ -5,6 +5,7 @@ import List from "../Components/Driverlocation/List";
 import "./css/Driverlocation.css";
 import { apiInstance } from "../api/index";
 import getDriverList from "../api/GetDriverList";
+import MyResponsiveLine from "../Components/Driverlocation/MyResponsiveLine";
 
 const Driverlocation = () => {
   let today = new Date();
@@ -19,7 +20,7 @@ const Driverlocation = () => {
   });
   const [listData, setListData] = useState([]);
   const API = apiInstance();
-
+    
   useEffect(() => {
     if (selected.localCity && selected.localSchool && selected.date) {
       if (`${year}-${month}-${date}` === selected.date) {
@@ -51,7 +52,7 @@ const Driverlocation = () => {
         <Dropdown selected={selected} setSelected={setSelected} />
         <Datepicker selected={selected} setSelected={setSelected} />
       </div>
-      <List listData={listData} />
+      <List className="driverlocation-list" listData={listData} />
     </div>
   );
 };

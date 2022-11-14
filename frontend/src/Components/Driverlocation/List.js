@@ -18,7 +18,9 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import "./css/List.css";
 import marker from "../../asset/image/marker.png";
 import { apiInstance } from "../../api/index";
-import { Looks } from "@material-ui/icons";
+import MyResponsiveLine from "./MyResponsiveLine";
+import Toast from "../../utils/Toast";
+
 const List = (props) => {
   function Row(props) {
     const { row } = props;
@@ -29,10 +31,18 @@ const List = (props) => {
     const [timestamp, setTimestamp] = useState("0");
     let allTask = 0;
     let completeTask = 0;
-
+    
+    const data_line = [
+      {
+        id: "japan",
+        color: "hsl(3, 70%, 50%)",
+        data: [],
+      },
+    ];
     {
       row.spotResponseDtoList.map((c) => {
         console.log(`c is ${c}`);
+        data_line[0].data.push({x: c.spotName, y: c.dif})
         if (c.status === 2) {
           allTask += 1;
           completeTask += 1;
@@ -80,7 +90,7 @@ const List = (props) => {
           const res = await API.get("/location/getLocation", {
             params: { driver: userIdx },
           });
-          // console.log(res.data);
+          console.log(res.data);
           setLatitude(res.data.latitude);
           setLongitude(res.data.longitude);
           setTimestamp(res.data.timestamp); // timestamp
@@ -94,8 +104,16 @@ const List = (props) => {
             setTimestamp("");
           }
         }
+      } else {
+        Toast.fire({
+          icon: "info",
+          title: "조회된 데이터가 없습니다.",
+          timer: 1000,
+          position: "center",
+        });
       }
     }
+
     return (
       <React.Fragment>
         <TableRow
@@ -118,7 +136,7 @@ const List = (props) => {
               aria-label="expand row"
               size="small"
               onClick={() => {
-                // console.log(row);
+                console.log(row);
                 GetLocation(row.userIdx);
               }}
             >
@@ -135,14 +153,23 @@ const List = (props) => {
               cursor: "pointer",
             }}
           >
-            <div className="list-username">{row.userName}</div>
+            
 
             {allTask === 0 ? (
-              <div>오늘 일 없음ㅋㅋ</div>
+              <div className="name-container">
+                <div className="list-username">{row.userName}</div>
+                <div className="no-list">조회된 데이터가 없습니다.</div>
+              </div>
             ) : allTask === completeTask ? (
-              <div>100% 완료</div>
+              <div className="name-container">
+                <div className="list-username">{row.userName}</div>
+                <div>100% 완료 ({allTask}건 중 {completeTask}건 완료)</div>
+              </div>
             ) : (
-              <div className="success-ratio">{successRatio}% 진행 중</div>
+              <div className="name-container">
+                <div className="list-username">{row.userName}</div>
+                <div className="success-ratio">{successRatio}% 진행 중 ({allTask}건 중 {completeTask}건 완료)</div>
+              </div>
             )}
           </TableCell>
         </TableRow>
@@ -277,6 +304,16 @@ const List = (props) => {
                       ))}
                     </TableBody>
                   </Table>
+                  <Table sx={{ maxWidth: "900px", width: "100%", height: "250px" }} colSpan={12}>
+                      <TableRow>
+                        <h2>상점별 도착 시각 오차 그래프</h2>
+                      </TableRow>
+                      <TableRow >
+                            <div className="height200">
+                              <MyResponsiveLine data_line={data_line} />
+                            </div>
+                        </TableRow>
+                    </Table>
                 </Box>
                 <div className="now-location">
                   <div className="now-title">
@@ -300,9 +337,13 @@ const List = (props) => {
                     </div>
                   </div>
                   {latitude === 0 && longitude === 0 ? (
-                    <h4>조회된 데이터가 없습니다.</h4>
+                    <div>
+                      <h4>조회된 데이터가 없습니다.</h4>
+                    </div>
                   ) : (
-                    <div className="now-map" id="map_div"></div>
+                    <div className="now-map">
+                      <div id="map_div"></div>
+                    </div>
                   )}
                 </div>
               </div>
