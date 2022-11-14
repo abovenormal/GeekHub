@@ -8,11 +8,10 @@ import getDriverList from "../api/GetDriverList";
 import MyResponsiveLine from "../Components/Driverlocation/MyResponsiveLine";
 
 const Driverlocation = () => {
-
-  let today = new Date();   
+  let today = new Date();
   let year = today.getFullYear(); // 년도
-  let month = today.getMonth() + 1;  // 월
-  let date = today.getDate();  // 날짜
+  let month = today.getMonth() + 1; // 월
+  let date = today.getDate(); // 날짜
 
   const [selected, setSelected] = useState({
     localCity: "",
@@ -27,25 +26,25 @@ const Driverlocation = () => {
       if (`${year}-${month}-${date}` === selected.date) {
         // console.log("선택한 날짜는 오늘")
         async function getData() {
-          const res = await apiInstance().post('spot/current', selected);
-          setListData(res.data)
-          console.log(res.data);
+          const res = await apiInstance().post("spot/current", selected);
+          setListData(res.data);
+          // console.log(res.data);
         }
-        getData();}
-      else {
+        getData();
+      } else {
         // console.log("선택한 날짜는 오늘이 아님")
-          async function getData() {
-            const res = await apiInstance().post('spot/log', selected);
-            setListData(res.data)
-            // console.log(res.data);
-          }
-          getData();
+        async function getData() {
+          const res = await apiInstance().post("spot/log", selected);
+          setListData(res.data);
+          // console.log(res.data);
         }
+        getData();
+      }
     }
-    
-    console.log(selected)
-  }, [selected])
-    
+
+    console.log(selected);
+  }, [selected]);
+
   return (
     <div className="driver-location-container">
       <h1>실시간 모니터링</h1>
