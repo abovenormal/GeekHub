@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.camera.camera2.interop.CaptureRequestOptions
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +23,9 @@ import com.example.geekhub.databinding.FragmentDeliveryBinding
 import com.example.geekhub.databinding.RecyclerDeliveryListBinding
 import com.example.geekhub.retrofit.NetWorkInterface
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.fragment_delivery.*
+import kotlinx.android.synthetic.main.fragment_nav.view.*
+import kotlinx.coroutines.processNextEventInCurrentThread
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -148,9 +152,14 @@ class DeliveryFragment : Fragment() {
             }
 
             override fun onResponse(call: Call<DeliveryList>, response: Response<DeliveryList>) {
-                println("됨")
                 val result = response.body()
-                println(result)
+
+                if(result?.isFinished == true
+                ){
+                    Toast.makeText(requireContext(),"업무가 끝났습니다 수고하셨습니다",Toast.LENGTH_SHORT).show()
+                    (activity as MainActivity).finished()
+                }
+
 
                 val deldatas : ArrayList<DeliveryResponse> = ArrayList()
                 var recdatas : ArrayList<DeliveryResponse> = ArrayList()
@@ -189,13 +198,19 @@ class DeliveryFragment : Fragment() {
     }
 
     fun selectDeliveryList(datas: ArrayList<DeliveryResponse>){
-        val deliveryListAddapter = DeliveryListAddapter(datas)
+        val deliveryListAddapter = DeliveryListAddapter(datas,nowState)
         binding.deliveryListRecycler.adapter = deliveryListAddapter
         binding.deliveryListRecycler.layoutManager =  LinearLayoutManager(requireContext())
     }
 
 
-    inner class DeliveryListAddapter(private var datas : ArrayList<DeliveryResponse>) :
+
+
+
+
+
+
+    inner class DeliveryListAddapter(private var datas : ArrayList<DeliveryResponse>,nowState:Int) :
         RecyclerView.Adapter<DeliveryListAddapter.ViewHolder>(){
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -216,18 +231,26 @@ class DeliveryFragment : Fragment() {
             // status 0 : 내용없음  1 : 배달해야함    2 : 완료
             val number = datas[position]
 
+            if(nowState == 0){
+                holder.icon.visibility = View.INVISIBLE
+
+            }
+
 
             if(number.status == 1){
                 visibleList(number,holder)
                 holder.title.setTextColor(resources.getColor(R.color.gick_blue))
                 holder.count.setTextColor(resources.getColor(R.color.gick_blue))
                 holder.time.setTextColor(resources.getColor(R.color.gick_blue))
+//                holder.icon.visibility = View.INVISIBLE
                 holder.main.setOnClickListener{
                     if (nowState == 0){
                         (activity as MainActivity).sendData(NfcFragment(),number.spotName,number.spotIndex,number.iconUrl)
                     }
                     else{
-                        (activity as MainActivity).sendData(DeliveryDetailFragment(),number.spotName,number.spotIndex,number.iconUrl)
+
+                        (activity as MainActivity).sendUserId(number.spotIndex,userid,number.spotName)
+
                     }
                 }
 
@@ -236,6 +259,7 @@ class DeliveryFragment : Fragment() {
                 holder.title.setTextColor(resources.getColor(R.color.gray_500))
                 holder.count.setTextColor(resources.getColor(R.color.gray_500))
                 holder.time.setTextColor(resources.getColor(R.color.gray_500))
+                holder.icon.visibility = View.VISIBLE
             }
 
             if(number.spotName == spot){
@@ -246,10 +270,15 @@ class DeliveryFragment : Fragment() {
 
 
         }
+
+
+
+        //배달쪽 recyclerview
         fun visibleList(number: DeliveryResponse,holder:ViewHolder){
             holder.title.text = number.spotName
             holder.count.text =  "수량 : ${number.count}개"
             holder.time.text = number.expectedTime
+
             var url = number.iconUrl
 //            val url ="https://geekhub.s3.ap-northeast-2.amazonaws.com/logo/burgerkingLogo.png"
 
@@ -283,8 +312,10 @@ class DeliveryFragment : Fragment() {
             val time = binding.deliveryListTime
             val main = binding.deliveryRecyclerView
             val image = binding.logoImage
+            val icon = binding.cameraIcon
 
         } }
+
 
     fun nextSpot(userid: String) {
         val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8000/")
