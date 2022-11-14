@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
-@CrossOrigin
+@CrossOrigin(origins = "*", allowCredentials = "false")
 @RestController
 @RequestMapping(value = "/chat")
 @RequiredArgsConstructor
