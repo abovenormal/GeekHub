@@ -38,8 +38,6 @@ class ChattingFragment : Fragment() {
         (activity as MainActivity).lockedChat()
         // 채팅 중복파일 막기
 
-
-
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "com.example.geekhub")
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"ko-KR")
@@ -52,13 +50,10 @@ class ChattingFragment : Fragment() {
         } // 음성인식 시작
 
 
-
-
-        
-        
-        
+        mainViewModel.runStomp()
         
         binding.sendButton.setOnClickListener{
+            mainViewModel.sendMessage()
         }
 
 
