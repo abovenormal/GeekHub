@@ -40,6 +40,7 @@ public class ChatController {
     @MessageMapping("/sendMessage")
     @SendTo("/chat/group")
     public Message broadcastGroupMessage(@Payload Message message) {
+        log.info("연결 테스트" + message.toString());
         return message;
     }
 
