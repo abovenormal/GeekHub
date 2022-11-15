@@ -31,7 +31,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatController {
 
-    private final KafkaTemplate<String, MessageDto> kafkaTemplate;
+    private final KafkaTemplate<String, Message> kafkaTemplate;
 //    private final SimpMessagingTemplate simpMessagingTemplate;
     private final RoomService roomService;
     private final ChatService chatService;
@@ -52,13 +52,8 @@ public class ChatController {
 //    @SendTo("/chat/{}")
     public Message broadcastGroupMessage(@Payload Message message) {
         log.info("연결 테스트" + message.toString());
-        MessageDto messageDto = new MessageDto();
-        messageDto.setTimestamp(LocalDateTime.now().toString());
-        messageDto.setRoomId(messageDto.getRoomId());
-        messageDto.setContent(messageDto.getContent());
-        messageDto.setSender(messageDto.getSender());
         try {
-            kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, messageDto).get();
+            kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, message).get();
 //            simpMessagingTemplate.convertAndSend("/chat" + roomIdx, message);
         } catch (Exception e) {
             throw new RuntimeException(e);
