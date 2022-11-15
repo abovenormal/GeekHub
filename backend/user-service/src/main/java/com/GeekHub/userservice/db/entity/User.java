@@ -14,12 +14,13 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "User")
 public class User {
 
     @Column
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userIdx;
+    private long userIdx;
 
     @Column
     private String userName;
