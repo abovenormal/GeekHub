@@ -25,6 +25,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view">
 
         <ImageView
+            android:id="@+id/chatting_back_button"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center"
@@ -112,51 +113,67 @@
             android:background="@drawable/login_box"
             app:layout_constraintHeight_percent="0.05" />
 
-        <FrameLayout
-            android:id="@+id/send_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/no_radius_button" />
+            <FrameLayout
+                android:id="@+id/send_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="12dp"
-                android:src="@drawable/send" />
+                <View
+                    android:id="@+id/send_background_button"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/red"
+                    />
 
-        </FrameLayout>
+                <ImageView
+                    android:id="@+id/send_bird_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="12dp"
+                    android:src="@drawable/mic"
+                    />
 
+            </FrameLayout>
+        </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <FrameLayout-->
+<!--                android:id="@+id/mic"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:layout_weight="6"-->
+
+<!--                app:layout_constraintBottom_toTopOf="@+id/linearLayout5"-->
+<!--                app:layout_constraintEnd_toEndOf="parent">-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="50dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:src="@drawable/circle" />-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:src="@drawable/mic" />-->
+
+<!--            </FrameLayout>-->
+<!--        </LinearLayout>-->
 
     </LinearLayout>
 
 
-    <FrameLayout
-        android:id="@+id/mic"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_weight="6"
-        android:layout_margin="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-        app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:src="@drawable/circle" />
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:src="@drawable/mic" />
-
-    </FrameLayout>
 
 
 

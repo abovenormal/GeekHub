@@ -42,6 +42,7 @@ class DeliveryFragment : Fragment() {
     var spot : String? = null
     lateinit var pref : SharedPreferences
     lateinit var userid : String
+    var nowFocus = 0
     
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -94,6 +95,7 @@ class DeliveryFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        nowFocus = 0
         binding.receiveButton.setOnClickListener{
 //            openReceive()
             getDeliveryList(0)
@@ -236,8 +238,16 @@ class DeliveryFragment : Fragment() {
 
             }
 
+            binding.deliveryListRecycler.smoothScrollToPosition(position)
+
 
             if(number.status == 1){
+
+                if(nowFocus == 0){
+                    binding.deliveryListRecycler.smoothScrollToPosition(position)
+                    //focusingcode
+                    nowFocus +=1
+                }
                 visibleList(number,holder)
                 holder.title.setTextColor(resources.getColor(R.color.gick_blue))
                 holder.count.setTextColor(resources.getColor(R.color.gick_blue))
@@ -259,7 +269,7 @@ class DeliveryFragment : Fragment() {
                 holder.title.setTextColor(resources.getColor(R.color.gray_500))
                 holder.count.setTextColor(resources.getColor(R.color.gray_500))
                 holder.time.setTextColor(resources.getColor(R.color.gray_500))
-                holder.icon.visibility = View.VISIBLE
+//                holder.icon.visibility = View.VISIBLE
             }
 
             if(number.spotName == spot){
