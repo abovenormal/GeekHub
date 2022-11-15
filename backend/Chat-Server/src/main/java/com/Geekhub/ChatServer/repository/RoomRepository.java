@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface RoomRepository extends MongoRepository<Room, String> {
 
-    Optional<Room> findRoomByDowAndLocalSchoolAndPartTime(String Dow, String localSchool, String partTime);
+    Optional<Room> findRoomByLocalSchool(String localSchool);
 }

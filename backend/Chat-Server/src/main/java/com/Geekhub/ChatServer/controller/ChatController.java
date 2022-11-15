@@ -2,7 +2,6 @@ package com.Geekhub.ChatServer.controller;
 
 import com.Geekhub.ChatServer.client.AdminClient;
 import com.Geekhub.ChatServer.constant.KafkaConstants;
-import com.Geekhub.ChatServer.dto.GetRoomDto;
 import com.Geekhub.ChatServer.dto.RoomDto;
 import com.Geekhub.ChatServer.dto.UserInfoDto;
 import com.Geekhub.ChatServer.model.Message;
@@ -59,15 +58,10 @@ public class ChatController {
     }
 
     @GetMapping("/room")
-    public ResponseEntity<?> FindRoom(@RequestParam String userIdx, @RequestParam String dow, @RequestParam String partTime){
-        GetRoomDto getRoomDto = new GetRoomDto();
+    public ResponseEntity<?> FindRoom(@RequestParam String userIdx){
         UserInfoDto userInfoDto = adminClient.userInfo(userIdx);
-        getRoomDto.setDow(dow);
-        getRoomDto.setLocalSchool(userInfoDto.getLocalSchool());
-        getRoomDto.setPartTime(partTime);
-        log.info(getRoomDto.toString());
         try {
-            Room room = roomService.findRoom(getRoomDto);
+            Room room = roomService.findRoom(userInfoDto.getLocalSchool());
             return ResponseEntity.status(HttpStatus.OK).body(room);
         } catch (Exception e) {
             throw  new RuntimeException(e);

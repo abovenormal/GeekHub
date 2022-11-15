@@ -1,6 +1,5 @@
 package com.Geekhub.ChatServer.service;
 
-import com.Geekhub.ChatServer.dto.GetRoomDto;
 import com.Geekhub.ChatServer.dto.RoomDto;
 import com.Geekhub.ChatServer.model.Room;
 import com.Geekhub.ChatServer.repository.RoomRepository;
@@ -18,15 +17,13 @@ public class RoomService {
     @Transactional
     public void makeRoom(RoomDto roomDto) {
         Room room = Room.builder()
-                .dow(roomDto.getDow())
-                .partTime(roomDto.getPartTime())
                 .localSchool(roomDto.getLocalSchool())
                 .build();
         roomRepository.save(room);
     }
 
-    public Room findRoom(GetRoomDto getRoomDto) {
-        Room room = roomRepository.findRoomByDowAndLocalSchoolAndPartTime(getRoomDto.getDow(), getRoomDto.getLocalSchool(), getRoomDto.getPartTime()).orElse(null);
+    public Room findRoom(String localSchool) {
+        Room room = roomRepository.findRoomByLocalSchool(localSchool).orElse(null);
         return room;
     }
 }
