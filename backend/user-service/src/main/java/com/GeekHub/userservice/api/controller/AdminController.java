@@ -1,6 +1,7 @@
 package com.GeekHub.userservice.api.controller;
 
 import com.GeekHub.userservice.api.request.LoginPostReq;
+import com.GeekHub.userservice.api.response.ChatUserInfoDto;
 import com.GeekHub.userservice.api.response.UserInfoDto;
 import com.GeekHub.userservice.api.service.AdminService;
 import com.GeekHub.userservice.db.entity.User;
@@ -9,6 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -93,6 +97,17 @@ public class AdminController {
             e.printStackTrace();
         }
         return userInfoDto;
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<?> getUsers(@RequestParam String localSchool) {
+        List<ChatUserInfoDto> result = new ArrayList<>();
+        try {
+            result = adminService.getUsers(localSchool);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 }

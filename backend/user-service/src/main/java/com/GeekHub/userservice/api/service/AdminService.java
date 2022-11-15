@@ -1,7 +1,10 @@
 package com.GeekHub.userservice.api.service;
 
 import com.GeekHub.userservice.api.request.LoginPostReq;
+import com.GeekHub.userservice.api.response.ChatUserInfoDto;
 import com.GeekHub.userservice.db.entity.User;
+
+import java.util.List;
 
 public interface AdminService {
 
@@ -24,5 +27,7 @@ public interface AdminService {
     boolean validUserId(String userId);
 
     User userInfo(long userIdx);
+
+    List<ChatUserInfoDto> getUsers(String localSchool) throws Exception;
 
 }
