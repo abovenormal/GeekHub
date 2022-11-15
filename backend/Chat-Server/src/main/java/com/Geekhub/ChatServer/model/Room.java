@@ -13,7 +13,5 @@ import java.io.Serializable;
 public class Room implements Serializable {
     @Id
     String _id;
-    String dow;
-    String partTime;
     String localSchool;
 }
