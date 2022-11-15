@@ -1,6 +1,7 @@
 package com.GeekHub.userservice.api.service;
 
 import com.GeekHub.userservice.api.request.LoginPostReq;
+import com.GeekHub.userservice.api.response.ChatUserInfoDto;
 import com.GeekHub.userservice.common.enums.UserStatus;
 import com.GeekHub.userservice.db.entity.User;
 import com.GeekHub.userservice.db.repository.DriverRepository;
@@ -10,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service("UserService")
@@ -75,5 +78,20 @@ public class AdminServiceImpl implements AdminService {
         User user = driverRepository.findUserByUserIdx(userIdx).orElse(null);
         return user;
     }
-
+    @Override
+    public List<ChatUserInfoDto> getUsers(String localSchool) throws Exception{
+        List<ChatUserInfoDto> result = new ArrayList<>();
+        List<User> users = driverRepository.findAllByLocalSchool(localSchool);
+        try {
+            for (User u : users) {
+                ChatUserInfoDto chatUserInfoDto = new ChatUserInfoDto();
+                chatUserInfoDto.setUserIdx(u.getUserIdx());
+                chatUserInfoDto.setUserName(u.getUserName());
+                result.add(chatUserInfoDto);
+            }
+        }catch (Exception e) {
+            throw new Exception(e);
+        }
+        return result;
+    }
 }
