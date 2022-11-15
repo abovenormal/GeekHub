@@ -71,4 +71,9 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
+    public User userInfo(long userIdx) {
+        User user = driverRepository.findUserByUserIdx(userIdx).orElse(null);
+        return user;
+    }
+
 }
