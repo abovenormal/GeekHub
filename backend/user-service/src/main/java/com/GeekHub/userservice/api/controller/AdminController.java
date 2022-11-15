@@ -1,7 +1,9 @@
 package com.GeekHub.userservice.api.controller;
 
 import com.GeekHub.userservice.api.request.LoginPostReq;
+import com.GeekHub.userservice.api.response.UserInfoDto;
 import com.GeekHub.userservice.api.service.AdminService;
+import com.GeekHub.userservice.db.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -78,6 +80,19 @@ public class AdminController {
         }
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/user/{userId}")
+    public UserInfoDto userInfo(@PathVariable String userId) {
+        UserInfoDto userInfoDto = new UserInfoDto();
+        try {
+            User user = adminService.userInfo(Long.parseLong(userId));
+            userInfoDto.setLocalCity(user.getLocalCity());
+            userInfoDto.setLocalSchool(user.getLocalSchool());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userInfoDto;
     }
 
 }

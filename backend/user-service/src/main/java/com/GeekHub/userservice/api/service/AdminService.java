@@ -1,6 +1,7 @@
 package com.GeekHub.userservice.api.service;
 
 import com.GeekHub.userservice.api.request.LoginPostReq;
+import com.GeekHub.userservice.db.entity.User;
 
 public interface AdminService {
 
@@ -21,5 +22,7 @@ public interface AdminService {
      * @param userId
      */
     boolean validUserId(String userId);
+
+    User userInfo(long userIdx);
 
 }
