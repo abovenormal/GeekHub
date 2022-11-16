@@ -7,4 +7,6 @@ public class UserInfoDto {
     private String localCity;
 
     private String localSchool;
+
+    private String name;
 }

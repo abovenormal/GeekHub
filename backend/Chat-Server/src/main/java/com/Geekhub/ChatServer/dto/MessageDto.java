@@ -6,17 +6,9 @@ import lombok.Data;
 
 @Data
 public class MessageDto {
-    private String sender;
-    private String roomId;
+    private String userId;
+    private String name;
     private String content;
-    private String timestamp;
+    private String created_at;
 
-//    public Message toEntity(){
-//        Message message = new Message();
-//        message.setRoomId(roomId);
-//        message.setRoomId(sender);
-//        message.setContent(content);
-//        message.setTimestamp(timestamp);
-//        return message;
-//    }
 }

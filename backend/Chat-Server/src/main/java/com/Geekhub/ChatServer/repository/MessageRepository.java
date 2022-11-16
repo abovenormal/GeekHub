@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public interface MessageRepository extends MongoRepository<Message, String> {
-    Optional<List<Message>> findMessageByRoomId(String roomId);
+    Optional<List<Message>> findMessagesByRoomIdOrderByTimestamp(String roomId);
 }
