@@ -7,6 +7,6 @@ RUN npm run build
 FROM nginx:stable-alpine as production-stage
 
 COPY --from=build-stage /var/jenkins_home/workspace/front/frontend/build /usr/share/nginx/html
-COPY --from=build-stage /var/jenkins_home/workspace/front/frontend/deploy_conf/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build-stage /var/jenkins_home/workspace/front/frontend/deploy_conf/nginx.conf /etc/nginx/conf.d/nginx.conf
 EXPOSE 3000
 CMD ["nginx", "-g","daemon off;"]
