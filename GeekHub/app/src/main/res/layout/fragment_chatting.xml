@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:paddingTop="60dp"
+    android:background="@drawable/fragment_form"
     tools:context=".ChattingFragment">
 
     <View
@@ -48,7 +47,9 @@
         android:id="@+id/chatting_recycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:padding="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout8" />
 
 
