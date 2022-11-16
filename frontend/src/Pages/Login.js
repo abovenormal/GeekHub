@@ -110,14 +110,11 @@ const Login = () => {
               <div className="video-container">
                 <video
                   className="login-video"
-                  controls
                   loop
                   muted
                   autoPlay
-                  data-inline-media=""
-                  preload="none"
                 >
-                  <source src={loginVideo} />
+                  <source src={loginVideo} type="video/mp4"/>
                 </video>
                 {/* <div className="center"></div> */}
               </div>
