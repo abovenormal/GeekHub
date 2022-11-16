@@ -66,7 +66,7 @@ class ChattingFragment : Fragment() {
         binding = FragmentChattingBinding.inflate(inflater, container, false)
         (activity as MainActivity).lockedChat()
         // 채팅 중복파일 막기
-
+//
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "com.example.geekhub")
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR")
