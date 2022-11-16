@@ -80,7 +80,7 @@ function KakaoMap() {
   }, [selected]);
 
   return (
-    <div>
+    <div className="map-container">
       <div className="map-label">근무중인 배달기사</div>
       <Dropdown selected={selected} setSelected={setSelected} />
       <Map
