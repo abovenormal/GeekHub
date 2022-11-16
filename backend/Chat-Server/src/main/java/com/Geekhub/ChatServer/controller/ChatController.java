@@ -23,6 +23,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -52,6 +53,7 @@ public class ChatController {
 //    @SendTo("/chat/{}")
     public Message broadcastGroupMessage(@Payload Message message) {
         log.info("연결 테스트" + message.toString());
+        message.setTimestamp(LocalDateTime.now().toString());
         try {
             kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, message).get();
 //            simpMessagingTemplate.convertAndSend("/chat" + roomIdx, message);
@@ -76,6 +78,17 @@ public class ChatController {
     public ResponseEntity<?> makeRoom(@RequestBody RoomDto roomDto) {
         roomService.makeRoom(roomDto);
         return ResponseEntity.status(HttpStatus.OK).body("채팅방 생성");
+    }
+
+    @GetMapping("/message")
+    public ResponseEntity<?> getMessage(@RequestParam String roomIdx) {
+        List<MessageDto> result = new ArrayList<>();
+        try {
+            result = chatService.FindPeopleByRoomId(roomIdx);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 }
