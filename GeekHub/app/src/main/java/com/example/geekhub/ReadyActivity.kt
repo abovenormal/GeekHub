@@ -47,7 +47,7 @@ class ReadyActivity : AppCompatActivity() {
     }
 
     fun getDeliveryList(number : Int){
-        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io:9013/")
+        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
         val call = callData.getlist(number)

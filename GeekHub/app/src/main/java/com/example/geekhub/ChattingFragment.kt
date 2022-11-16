@@ -51,7 +51,7 @@ class ChattingFragment : Fragment() {
     lateinit var userid: String
     var ChattingRoomId: String? = null
     var LocalSchool: String? = null
-    val url = "ws://k7c205.p.ssafy.io:8088/endpoint/websocket" // 소켓에 연결하는 엔드포인트가 /socket일때 다음과 같음
+    val url = "ws://k7c205.p.ssafy.io/8088/endpoint/websocket" // 소켓에 연결하는 엔드포인트가 /socket일때 다음과 같음
     val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url)
     lateinit var datas: ArrayList<messageData>
 
@@ -60,7 +60,6 @@ class ChattingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         pref = requireActivity().getSharedPreferences("idKey", 0)
         userid = pref.getString("id", "").toString()
         // 저장되어있는 id값 가져오기
@@ -273,6 +272,7 @@ class ChattingFragment : Fragment() {
             data.put("content", content)
             data.put("roomId", ChattingRoomId)
             stompClient.send("/app/sendMessage", data.toString()).subscribe()
+
 
         } catch (e: java.lang.Error) {
             Log.d("에러", e.toString())

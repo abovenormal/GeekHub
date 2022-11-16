@@ -59,31 +59,27 @@
         android:id="@+id/camera_buttons"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:weightSum="3"
+        android:orientation="vertical"
+        android:layout_marginBottom="30dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.15">
 
         <ImageView
             android:id="@+id/re_take_picture"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="15dp"
-            android:layout_weight="1"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
             android:src="@drawable/photo"
             android:background="@drawable/stroke_button"
-
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
         <Button
             android:id="@+id/send_picture"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="25dp"
-            android:layout_weight="2"
+            android:layout_marginHorizontal="20dp"
             android:background="@drawable/normal_button"
             android:text="@string/send"
             android:textColor="@color/white"
