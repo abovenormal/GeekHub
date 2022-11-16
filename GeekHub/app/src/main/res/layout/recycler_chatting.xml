@@ -8,8 +8,8 @@
         android:id="@+id/other_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="7dp"
-        android:text="나는 이름이야"
+        android:padding="2dp"
+        android:text=""
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,18 +55,18 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/my_nickname_content"
+            android:id="@+id/my_nickname_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
             android:text="오후 10:12"
             android:visibility="invisible"
             app:layout_constraintStart_toEndOf="@+id/textView2" />
 
 
         <TextView
-            android:id="@+id/my_nickname_time"
+            android:id="@+id/my_nickname_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/speach_bubble"
