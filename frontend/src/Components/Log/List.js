@@ -175,7 +175,7 @@ const List = (props) => {
                             });
                           }}
                         />
-                        <h3>{taskRow.spotName}</h3></> : <img src={logoDotBlack}></img>}
+                        <h3>{taskRow.spotName}</h3></> : <img className="img" src={logoDotBlack}></img>}
                         
                       </div>
                     ))}
