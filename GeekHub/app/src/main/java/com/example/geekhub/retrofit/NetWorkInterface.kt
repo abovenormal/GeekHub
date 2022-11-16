@@ -10,7 +10,7 @@ import retrofit2.http.*
 
 interface NetWorkInterface {
     @Multipart
-    @POST("s3/upload")
+    @POST("api/s3/upload")
     fun sendimage(
         @Part image : MultipartBody.Part,
         @Part("userId") userId : RequestBody,
@@ -18,12 +18,12 @@ interface NetWorkInterface {
         @Part("deliveryTime") deliveryTime : RequestBody
     ):Call<String>
 
-    @GET("spot/work/{driverIdx}")
+    @GET("api/spot/work/{driverIdx}")
     fun getlist(
         @Path("driverIdx") driverIdx : Int
     ):Call<DeliveryList>
 
-    @PUT("spot/update")
+    @PUT("api/spot/update")
     fun changestate(
         @Body spotId : SpotBody
     ):Call<String>
