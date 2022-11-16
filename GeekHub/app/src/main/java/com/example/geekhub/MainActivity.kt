@@ -36,6 +36,7 @@ import com.example.geekhub.data.LocationInfo
 import com.example.geekhub.data.NextSpotInfo
 import com.example.geekhub.databinding.ActivityMainBinding
 import com.example.geekhub.retrofit.NetWorkInterface
+import com.example.todayfilm.LoadingDialog
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.skt.Tmap.*
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     lateinit var userid: String
     lateinit var pref : SharedPreferences
     var backKeyPressedTime:Long= 0
-
+    var loadingDialog: LoadingDialog? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +80,6 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         pref = getSharedPreferences("idKey", 0)
         userid = pref.getString("id", "").toString()
-
         finishCheck(userid)
 
         binding.liveFocusButton.setOnClickListener{
@@ -180,6 +180,8 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         binding.navButton.setOnClickListener {
 
             Toast.makeText(this,"네비게이션을 로드하고 있습니다",Toast.LENGTH_SHORT).show()
+            loadingDialog = LoadingDialog(this)
+            loadingDialog!!.show()
             goNav()
         }
 
@@ -530,6 +532,17 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
             } })
 
+
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+//        if(loadingDialog){
+//
+//        }
+        if (loadingDialog != null){
+            loadingDialog!!.dismiss()
+        }
 
     }
     }

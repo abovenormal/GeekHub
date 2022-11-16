@@ -1,5 +1,6 @@
 package com.example.geekhub
 
+import OnSwipeTouchListener
 import android.app.Application
 import android.app.PendingIntent
 import android.content.Intent
@@ -49,6 +50,15 @@ class NfcFragment : Fragment() {
             .load(url) // 불러올 이미지 url
             .into(binding.logoIcon) // 이미지를 넣을 뷰
 
+        binding.allView.setOnTouchListener(object: OnSwipeTouchListener(requireContext()){
+            override fun onSwipeBottom() {
+                super.onSwipeBottom()
+                println("짜잔아래")
+                (activity as MainActivity).changeFragment(7)
+            }
+
+
+        })
 
 
         return binding.root

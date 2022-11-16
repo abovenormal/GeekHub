@@ -62,7 +62,7 @@ class DeliveryFragment : Fragment() {
 //            binding.deliveryLine.visibility = View.VISIBLE
             getDeliveryList(1)
         }
-        binding.mainFragmentDelivery.setOnTouchListener(object: OnSwipeTouchListener(requireContext()){
+        binding.allView.setOnTouchListener(object: OnSwipeTouchListener(requireContext()){
             override fun onSwipeBottom() {
                 super.onSwipeBottom()
                 println("짜잔아래")
@@ -72,55 +72,50 @@ class DeliveryFragment : Fragment() {
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
                 println("짜잔왼쪽")
-                getDeliveryList(0)
+                getDeliveryList(1)
+                nowState = 1
             }
 
             override fun onSwipeRight() {
                 super.onSwipeRight()
                 println("짜잔오른")
-                getDeliveryList(1)
+                getDeliveryList(0)
+                nowState = 0
             }
 
-            override fun onSwipeTop() {
-                super.onSwipeTop()
-                println("짜잔위쪽")
-            }
         })
 
+        binding.deliveryListRecycler.setOnTouchListener(object: OnSwipeTouchListener(requireContext()){
+            override fun onSwipeLeft() {
+                super.onSwipeLeft()
+                println("짜잔왼쪽")
+                getDeliveryList(1)
+                nowState = 1
+            }
 
-        return binding.root
-    }
+            override fun onSwipeRight() {
+                super.onSwipeRight()
+                println("짜잔오른")
+                getDeliveryList(0)
+                nowState = 0
+            }
 
+        })
 
-
-    override fun onResume() {
-        super.onResume()
-        nowFocus = 0
         binding.receiveButton.setOnClickListener{
-//            openReceive()
             getDeliveryList(0)
             nowState = 0
         }
         binding.deliveryButton.setOnClickListener {
-//            openDelivery()
             getDeliveryList(1)
             nowState = 1
         }
 
+
+
+
+        return binding.root
     }
-
-
-
-//    private fun openReceive(){
-//        binding.receiveLine.visibility = View.VISIBLE
-//        binding.deliveryLine.visibility = View.INVISIBLE
-//    }
-//
-//    private fun openDelivery(){
-//        binding.receiveLine.visibility = View.INVISIBLE
-//        binding.deliveryLine.visibility = View.VISIBLE
-//
-//    }
 
 
     fun getDeliveryList(number : Int){

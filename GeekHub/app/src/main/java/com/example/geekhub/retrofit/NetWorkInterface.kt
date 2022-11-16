@@ -49,4 +49,9 @@ interface NetWorkInterface {
     fun findChatMember(
         @Query("localSchool") localSchool : String?
     ):Call<List<Member>>
+
+    @GET("chat/message")
+    fun receiveMessage(
+        @Query("roomIdx") roomIdx : String?
+    ):Call<List<messageData>>
 }
