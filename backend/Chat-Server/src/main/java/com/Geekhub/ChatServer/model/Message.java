@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -11,7 +12,7 @@ import java.io.Serializable;
 public class Message implements Serializable {
     private String sender;
     private String content;
-    private String timestamp;
+    private LocalDateTime timestamp;
 
     private String roomId;
 
