@@ -94,7 +94,8 @@ public class SpotServiceImpl implements SpotService {
             String  time = "";
             if (searchList != null) {
                 for (Spot spot : searchList) {
-                    SpotImg spotImg = spotImgRepository.findSpotImgBySpotName(spot.getSpotName()).orElse(null);
+                    String spotLogo[] = spot.getSpotName().split(" ");
+                    SpotImg spotImg = spotImgRepository.findSpotImgBySpotName(spotLogo[0]).orElse(null);
                     int hour = spot.getExpectedTime().getHour();
                     int minute = spot.getExpectedTime().getMinute();
                     time = minute<10?hour + "시 0" + minute + "분":hour+"시 " + minute + "분";
