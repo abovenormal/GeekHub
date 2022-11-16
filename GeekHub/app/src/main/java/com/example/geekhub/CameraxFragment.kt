@@ -88,7 +88,9 @@ class CameraxFragment : Fragment() {
             spot = it.getString("spot")
             userid = it.getString("userid")
         }
-        binding.cameraTitle.setText("이곳은 ${title}입니다")
+        if (title != "널"){
+            binding.cameraTitle.setText("배달지는 ${title}입니다")
+        }
         println("쳌쳌")
         println(title)
         println(spot)
@@ -254,7 +256,7 @@ class CameraxFragment : Fragment() {
     }
 
     fun changeState(){
-        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io:9013/")
+        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
         val Body = SpotBody()

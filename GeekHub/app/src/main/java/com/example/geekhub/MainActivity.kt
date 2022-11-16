@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                add<NavFragment>(R.id.main_container_view)
+                add<DeliveryFragment>(R.id.main_container_view)
 //                add<CameraxFragment>(R.id.camera_view)
             }
         }
@@ -385,6 +385,9 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         bundle.putString("userid",userid)
         bundle.putString("title",title)
         fragment.arguments = bundle
+        supportFragmentManager.beginTransaction()
+            .remove(DeliveryFragment()).commit()
+
         supportFragmentManager.beginTransaction().add(R.id.camera_view,fragment).addToBackStack(null).commit()
     }
 
@@ -495,7 +498,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     fun finishCheck(number:String) {
 
 
-        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io:9013/")
+        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
         val call = callData.getlist(number.toInt())
