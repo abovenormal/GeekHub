@@ -24,6 +24,7 @@ import Toast from "../../utils/Toast";
 const List = (props) => {
   function Row(props) {
     const { row } = props;
+    const timebelt = props.timebelt;
     const [open, setOpen] = useState(false);
     const API = apiInstance();
     const [longitude, setLongitude] = useState("0");
@@ -34,7 +35,7 @@ const List = (props) => {
     
     const data_line = [
       {
-        id: "japan",
+        id: "data",
         color: "hsl(3, 70%, 50%)",
         data: [],
       },
@@ -42,6 +43,7 @@ const List = (props) => {
     {
       row.spotResponseDtoList.map((c) => {
         console.log(`c is ${c}`);
+        console.log(timebelt.timebelt);
         data_line[0].data.push({x: c.spotName, y: c.dif})
         if (c.status === 2) {
           allTask += 1;
@@ -80,6 +82,7 @@ const List = (props) => {
       script.type = "text/javascript";
       script.async = "async";
       document.head.appendChild(script);
+      console.log(row);
     }, [open]);
     async function GetLocation(userIdx) {
       // 열릴 때만 Get 요청 보내기 위해 분기 추가 했다가
@@ -113,7 +116,8 @@ const List = (props) => {
         });
       }
     }
-
+    const rowLunch = row.spotResponseDtoList.filter(taskRow => taskRow.expectedTime.substr(11,2) <= 15);
+    const rowDinner = row.spotResponseDtoList.filter(taskRow => taskRow.expectedTime.substr(11,2) > 15);
     return (
       <React.Fragment>
         <TableRow
@@ -206,6 +210,201 @@ const List = (props) => {
                         </TableCell>
                       </TableRow>
                     </TableHead>
+                    { (timebelt.timebelt === "점심1") ? 
+                    <TableBody>
+                    {rowLunch.map((taskRow, index) => (
+                      <TableRow
+                        key={index}
+                        className={
+                          taskRow.spotCategory === "DESTINATION"
+                            ? "list-destination"
+                            : taskRow.spotCategory === "HUB"
+                            ? "list-hub"
+                            : ""
+                        }
+                      >
+                        <TableCell
+                          component="th"
+                          scope="rowLunch"
+                          sx={{ width: "10%" }}
+                        >
+                          <div className="list-body">
+                            {taskRow.spotCategory === "STORE"
+                              ? "[픽업] "
+                              : taskRow.spotCategory === "DESTINATION"
+                              ? "[배달] "
+                              : "[허브] "}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="list-body">{taskRow.spotName}</div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="list-body">
+                            {taskRow.expectedTime.slice(11, 16)}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="list-body">
+                            {taskRow.arrivedTime !== null
+                              ? taskRow.arrivedTime.slice(11, 16)
+                              : ""}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div
+                            className={`list-body + ${
+                              taskRow.dif > 0
+                                ? "dif-red"
+                                : taskRow.dif < 0
+                                ? "dif-blue"
+                                : ""
+                            }`}
+                          >
+                            {taskRow.arrivedTime !== null
+                              ? `${taskRow.dif}분`
+                              : ""}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          {!taskRow.imageUrl ? (
+                            ""
+                          ) : taskRow.spotCategory === "STORE" ? (
+                            <div
+                              className="pickupPic"
+                              onClick={() => {
+                                const pickupPicture = taskRow.imageUrl;
+                                Swal.fire({
+                                  // title: '픽업 사진',
+                                  text: "픽업을 완료하였습니다.",
+                                  imageUrl: pickupPicture,
+                                  imageWidth: 300,
+                                  imageHeight: 300,
+                                  imageAlt: "Pickup image",
+                                });
+                              }}
+                            >
+                              보기
+                            </div>
+                          ) : (
+                            <div
+                              className="pickupPic"
+                              onClick={() => {
+                                const pickupPicture = taskRow.imageUrl;
+                                Swal.fire({
+                                  // title: '픽업 사진',
+                                  text: "배달을 완료하였습니다.",
+                                  imageUrl: pickupPicture,
+                                  imageWidth: 300,
+                                  imageHeight: 300,
+                                  imageAlt: "Drop image",
+                                });
+                              }}
+                            >
+                              보기
+                            </div>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>: (timebelt.timebelt === "저녁1") ? 
+                  <TableBody>
+                      {rowDinner.map((taskRow, index) => (
+                        <TableRow
+                          key={index}
+                          className={
+                            taskRow.spotCategory === "DESTINATION"
+                              ? "list-destination"
+                              : taskRow.spotCategory === "HUB"
+                              ? "list-hub"
+                              : ""
+                          }
+                        >
+                          <TableCell
+                            component="th"
+                            scope="rowDinner"
+                            sx={{ width: "10%" }}
+                          >
+                            <div className="list-body">
+                              {taskRow.spotCategory === "STORE"
+                                ? "[픽업] "
+                                : taskRow.spotCategory === "DESTINATION"
+                                ? "[배달] "
+                                : "[허브] "}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="list-body">{taskRow.spotName}</div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="list-body">
+                              {taskRow.expectedTime.slice(11, 16)}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="list-body">
+                              {taskRow.arrivedTime !== null
+                                ? taskRow.arrivedTime.slice(11, 16)
+                                : ""}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div
+                              className={`list-body + ${
+                                taskRow.dif > 0
+                                  ? "dif-red"
+                                  : taskRow.dif < 0
+                                  ? "dif-blue"
+                                  : ""
+                              }`}
+                            >
+                              {taskRow.arrivedTime !== null
+                                ? `${taskRow.dif}분`
+                                : ""}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {!taskRow.imageUrl ? (
+                              ""
+                            ) : taskRow.spotCategory === "STORE" ? (
+                              <div
+                                className="pickupPic"
+                                onClick={() => {
+                                  const pickupPicture = taskRow.imageUrl;
+                                  Swal.fire({
+                                    // title: '픽업 사진',
+                                    text: "픽업을 완료하였습니다.",
+                                    imageUrl: pickupPicture,
+                                    imageWidth: 300,
+                                    imageHeight: 300,
+                                    imageAlt: "Pickup image",
+                                  });
+                                }}
+                              >
+                                보기
+                              </div>
+                            ) : (
+                              <div
+                                className="pickupPic"
+                                onClick={() => {
+                                  const pickupPicture = taskRow.imageUrl;
+                                  Swal.fire({
+                                    // title: '픽업 사진',
+                                    text: "배달을 완료하였습니다.",
+                                    imageUrl: pickupPicture,
+                                    imageWidth: 300,
+                                    imageHeight: 300,
+                                    imageAlt: "Drop image",
+                                  });
+                                }}
+                              >
+                                보기
+                              </div>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>:
                     <TableBody>
                       {row.spotResponseDtoList.map((taskRow, index) => (
                         <TableRow
@@ -302,7 +501,9 @@ const List = (props) => {
                           </TableCell>
                         </TableRow>
                       ))}
-                    </TableBody>
+                    </TableBody>}
+
+                    
                   </Table>
                   <Table sx={{ maxWidth: "900px", width: "100%", height: "250px" }} colSpan={12}>
                       <TableRow>
@@ -355,7 +556,7 @@ const List = (props) => {
   }
 
   const rows = props.listData;
-
+  const timebelt = props.timebelt;
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -364,7 +565,7 @@ const List = (props) => {
         </TableHead>
         <TableBody sx={{ width: 1000 }}>
           {rows.map((row, index) => (
-            <Row key={index} row={row}></Row>
+            <Row key={index} row={row} timebelt={timebelt}></Row>
           ))}
         </TableBody>
       </Table>

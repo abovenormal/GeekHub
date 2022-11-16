@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Dropdown from "../Components/Common/Dropdown";
 import Datepicker from "../Components/Common/Datepicker";
+import Timebelt from "../Components/Common/Timebelt"
 import List from "../Components/Driverlocation/List";
 import "./css/Driverlocation.css";
 import { apiInstance } from "../api/index";
@@ -18,6 +19,8 @@ const Driverlocation = () => {
     localSchool: "",
     date: `${year}-${month}-${date}`,
   });
+  
+  const [timebelt, setTimebelt] = useState({timebelt: ""});
   const [listData, setListData] = useState([]);
   const API = apiInstance();
     
@@ -43,6 +46,7 @@ const Driverlocation = () => {
     }
 
     console.log(selected);
+    console.log(timebelt);
   }, [selected]);
 
   return (
@@ -51,8 +55,9 @@ const Driverlocation = () => {
       <div className="picker">
         <Dropdown selected={selected} setSelected={setSelected} />
         <Datepicker selected={selected} setSelected={setSelected} />
+        {/* <Timebelt timbelt={timebelt} setTimebelt={setTimebelt}/> */}
       </div>
-      <List className="driverlocation-list" listData={listData} />
+      <List className="driverlocation-list" listData={listData} timebelt={timebelt}/>
     </div>
   );
 };
