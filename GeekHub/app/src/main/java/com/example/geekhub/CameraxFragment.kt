@@ -28,6 +28,7 @@ import com.example.geekhub.data.SpotBody
 import com.example.geekhub.databinding.FragmentCameraxBinding
 import com.example.geekhub.retrofit.NetWorkClient
 import com.example.geekhub.retrofit.NetWorkInterface
+import com.example.todayfilm.LoadingDialog
 import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -50,7 +51,7 @@ private var imageCapture: ImageCapture? = null
 private lateinit var cameraExecutor: ExecutorService
 private const val TAG = "카메라"
 var snackbar : Snackbar? = null
-
+var loadingDialog: LoadingDialog? = null
 
 class CameraxFragment : Fragment() {
     lateinit var binding : FragmentCameraxBinding
@@ -87,7 +88,7 @@ class CameraxFragment : Fragment() {
             spot = it.getString("spot")
             userid = it.getString("userid")
         }
-        binding.cameraTitle.setText("배달지는 ${title}입니다")
+        binding.cameraTitle.setText("이곳은 ${title}입니다")
         println("쳌쳌")
         println(title)
         println(spot)
@@ -116,7 +117,10 @@ class CameraxFragment : Fragment() {
         binding.sendPicture.setOnClickListener {
             changeState()
             println("에러 가기전")
+            loadingDialog = LoadingDialog(requireContext())
+            loadingDialog!!.show()
             send()
+            (activity as MainActivity).finishCheck(userid!!)
         }
 
         return binding.root
@@ -330,6 +334,14 @@ class CameraxFragment : Fragment() {
 
         ) {
             ActivityCompat.requestPermissions(requireActivity(), REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+        }
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if(loadingDialog !=null){
+            loadingDialog!!.dismiss()
         }
 
     }

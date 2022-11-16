@@ -42,6 +42,7 @@ class DeliveryFragment : Fragment() {
     var spot : String? = null
     lateinit var pref : SharedPreferences
     lateinit var userid : String
+    var nowFocus = 0
     
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,7 +62,7 @@ class DeliveryFragment : Fragment() {
 //            binding.deliveryLine.visibility = View.VISIBLE
             getDeliveryList(1)
         }
-        binding.mainFragmentDelivery.setOnTouchListener(object: OnSwipeTouchListener(requireContext()){
+        binding.allView.setOnTouchListener(object: OnSwipeTouchListener(requireContext()){
             override fun onSwipeBottom() {
                 super.onSwipeBottom()
                 println("짜잔아래")
@@ -71,54 +72,50 @@ class DeliveryFragment : Fragment() {
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
                 println("짜잔왼쪽")
-                getDeliveryList(0)
+                getDeliveryList(1)
+                nowState = 1
             }
 
             override fun onSwipeRight() {
                 super.onSwipeRight()
                 println("짜잔오른")
-                getDeliveryList(1)
+                getDeliveryList(0)
+                nowState = 0
             }
 
-            override fun onSwipeTop() {
-                super.onSwipeTop()
-                println("짜잔위쪽")
-            }
         })
 
+        binding.deliveryListRecycler.setOnTouchListener(object: OnSwipeTouchListener(requireContext()){
+            override fun onSwipeLeft() {
+                super.onSwipeLeft()
+                println("짜잔왼쪽")
+                getDeliveryList(1)
+                nowState = 1
+            }
 
-        return binding.root
-    }
+            override fun onSwipeRight() {
+                super.onSwipeRight()
+                println("짜잔오른")
+                getDeliveryList(0)
+                nowState = 0
+            }
 
+        })
 
-
-    override fun onResume() {
-        super.onResume()
         binding.receiveButton.setOnClickListener{
-//            openReceive()
             getDeliveryList(0)
             nowState = 0
         }
         binding.deliveryButton.setOnClickListener {
-//            openDelivery()
             getDeliveryList(1)
             nowState = 1
         }
 
+
+
+
+        return binding.root
     }
-
-
-
-//    private fun openReceive(){
-//        binding.receiveLine.visibility = View.VISIBLE
-//        binding.deliveryLine.visibility = View.INVISIBLE
-//    }
-//
-//    private fun openDelivery(){
-//        binding.receiveLine.visibility = View.INVISIBLE
-//        binding.deliveryLine.visibility = View.VISIBLE
-//
-//    }
 
 
     fun getDeliveryList(number : Int){
@@ -236,8 +233,16 @@ class DeliveryFragment : Fragment() {
 
             }
 
+            binding.deliveryListRecycler.smoothScrollToPosition(position)
+
 
             if(number.status == 1){
+
+                if(nowFocus == 0){
+                    binding.deliveryListRecycler.smoothScrollToPosition(position)
+                    //focusingcode
+                    nowFocus +=1
+                }
                 visibleList(number,holder)
                 holder.title.setTextColor(resources.getColor(R.color.gick_blue))
                 holder.count.setTextColor(resources.getColor(R.color.gick_blue))
@@ -259,7 +264,7 @@ class DeliveryFragment : Fragment() {
                 holder.title.setTextColor(resources.getColor(R.color.gray_500))
                 holder.count.setTextColor(resources.getColor(R.color.gray_500))
                 holder.time.setTextColor(resources.getColor(R.color.gray_500))
-                holder.icon.visibility = View.VISIBLE
+//                holder.icon.visibility = View.VISIBLE
             }
 
             if(number.spotName == spot){

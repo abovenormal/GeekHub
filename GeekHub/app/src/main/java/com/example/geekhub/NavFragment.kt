@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -34,23 +35,21 @@ class NavFragment : Fragment() {
         binding = FragmentNavBinding.inflate(inflater,container,false)
 
         binding.swifeNav.setOnTouchListener(object :OnSwipeTouchListener(requireContext()){
-            override fun onSwipeTop() {
-                super.onSwipeTop()
+//            override fun onSwipeTop() {
+//                super.onSwipeTop()
+//                (activity as MainActivity).changeFragment(1)
+//            }
+//
+
+
+
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                 (activity as MainActivity).changeFragment(1)
+//
+                return false
+
             }
         })
-
-        binding.main.setOnClickListener {
-            (activity as MainActivity).changeFragment(1)
-        }
-
-
-
-
-
-
-
-
         return binding.root
     }
 
@@ -76,21 +75,10 @@ class NavFragment : Fragment() {
                 spot = response.body()?.spotName
                 try {
                     binding.spotNav.setText("다음 목적지는 ${spot.toString()}입니다")
-
                 }catch (e:java.lang.Error){
 
-                }
-
-
-            }
+                } }
         })
     }
-
-
-
-
-
-
-
 
 }
