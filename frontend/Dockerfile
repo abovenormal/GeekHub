@@ -1,12 +1,8 @@
-FROM node:16.15.0 as build-stage
+FROM node:16.18.0 as build-stage
 WORKDIR /var/jenkins_home/workspace/front/frontend
 COPY package*.json ./
 RUN npm install
-COPY . .
+COPY ./ ./
 RUN npm run build
-FROM nginx:stable-alpine as production-stage
-
-COPY --from=build-stage /var/jenkins_home/workspace/front/frontend/build /usr/share/nginx/html
-COPY --from=build-stage /var/jenkins_home/workspace/front/frontend/deploy_conf/nginx.conf /etc/nginx/conf.d/nginx.conf
 EXPOSE 3000
-CMD ["nginx", "-g","daemon off;"]
+CMD ["npm","run","start"]
