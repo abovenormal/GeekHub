@@ -93,6 +93,7 @@ public class AdminController {
             User user = adminService.userInfo(Long.parseLong(userId));
             userInfoDto.setLocalCity(user.getLocalCity());
             userInfoDto.setLocalSchool(user.getLocalSchool());
+            userInfoDto.setName(user.getUserName());
         } catch (Exception e) {
             e.printStackTrace();
         }
