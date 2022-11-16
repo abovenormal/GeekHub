@@ -9,6 +9,7 @@
 
 .pie-container {
   display: flex;
+  justify-content: space-evenly;
 }
 .pie-chart-container {
   display: flex;
