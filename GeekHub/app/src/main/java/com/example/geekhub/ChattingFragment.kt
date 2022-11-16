@@ -60,6 +60,7 @@ class ChattingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //
 
         pref = requireActivity().getSharedPreferences("idKey", 0)
         userid = pref.getString("id", "").toString()
