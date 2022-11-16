@@ -1,7 +1,15 @@
+.shortcut-container {
+  width: 100%;
+  height: 60vh;
+  border: 1px solid black;
+  border-radius: 12px;
+}
+
 .shortcut-box {
   width: 480px;
   height: 240px;
-  border: 1px solid white;
+  margin: 1rem;
+  border: 1px solid black;
   border-radius: 12px;
   display: flex;
   align-items: center;

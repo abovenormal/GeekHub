@@ -424,7 +424,7 @@ const List = (props) => {
                           >
                             <div className="list-body">
                               {taskRow.spotCategory === "STORE"
-                                ? "[픽업] "
+                                ? "[수령]"
                                 : taskRow.spotCategory === "DESTINATION"
                                 ? "[배달] "
                                 : "[허브] "}
