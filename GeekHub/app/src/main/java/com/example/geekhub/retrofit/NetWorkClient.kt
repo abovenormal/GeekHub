@@ -5,7 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object NetWorkClient {
-    private const val BASE_URL = "https://k7c205.p.ssafy.io:9012/"
+    private const val BASE_URL = "https://k7c205.p.ssafy.io/"
 
     var gson : Gson =  GsonBuilder()
         .setLenient()
