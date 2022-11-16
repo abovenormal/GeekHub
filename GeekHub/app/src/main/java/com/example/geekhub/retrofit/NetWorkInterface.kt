@@ -27,15 +27,15 @@ interface NetWorkInterface {
     fun changestate(
         @Body spotId : SpotBody
     ):Call<String>
-    @POST("location/sendLog")
+    @POST("api/location/sendLog")
     fun sendLocationLog(
         @Body locationInfo : LocationInfo
     ) :Call<String?>
-    @GET("spot/nextInfo/{driverIdx}")
+    @GET("api/spot/nextInfo/{driverIdx}")
     fun nextWork(
         @Path("driverIdx") driverIdx : Int
     ):Call<NextSpotInfo>
-    @POST("auth/login")
+    @POST("api/auth/login")
     fun login(
         @Body loginRequest : LoginRequest
     ):Call<LoginResponse>
@@ -45,7 +45,7 @@ interface NetWorkInterface {
         @Query("userIdx") userIdx : String?
     ):Call<ChattingRoomResponse>
 
-    @GET("admin/users")
+    @GET("api/admin/users")
     fun findChatMember(
         @Query("localSchool") localSchool : String?
     ):Call<List<Member>>
@@ -53,5 +53,5 @@ interface NetWorkInterface {
     @GET("chat/message")
     fun receiveMessage(
         @Query("roomIdx") roomIdx : String?
-    ):Call<List<messageData>>
+    ):Call<ArrayList<messageData>>
 }

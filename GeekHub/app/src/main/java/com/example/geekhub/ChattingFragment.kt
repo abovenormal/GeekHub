@@ -18,6 +18,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geekhub.data.ChattingRoomResponse
 import com.example.geekhub.data.DeliveryResponse
@@ -25,7 +26,6 @@ import com.example.geekhub.data.Member
 import com.example.geekhub.data.messageData
 import com.example.geekhub.databinding.FragmentChattingBinding
 import com.example.geekhub.databinding.RecyclerChattingBinding
-import com.example.geekhub.databinding.RecyclerDeliveryListBinding
 import com.example.geekhub.retrofit.NetWorkInterface
 import kotlinx.android.synthetic.main.fragment_chatting.*
 import org.json.JSONObject
@@ -53,7 +53,7 @@ class ChattingFragment : Fragment() {
     var LocalSchool: String? = null
     val url = "ws://k7c205.p.ssafy.io:8088/endpoint/websocket" // 소켓에 연결하는 엔드포인트가 /socket일때 다음과 같음
     val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url)
-
+    lateinit var datas: ArrayList<messageData>
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
@@ -90,6 +90,7 @@ class ChattingFragment : Fragment() {
             val mRecognizer = SpeechRecognizer.createSpeechRecognizer(requireActivity())
             mRecognizer.setRecognitionListener(listener)
             mRecognizer.startListening((intent))
+
         }
 
         binding.editChatting.addTextChangedListener(object : TextWatcher {
@@ -175,7 +176,7 @@ class ChattingFragment : Fragment() {
     }
 
     private fun getChattingRoom(userid: String) {
-        val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8088/")
+        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io:8088/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
         var call = callData.findChatRoom(userid)
@@ -203,7 +204,7 @@ class ChattingFragment : Fragment() {
     }
 
     private fun findMember(school: String) {
-        val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8000/")
+        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io/")
             .addConverterFactory(GsonConverterFactory.create()).build()
 
         val callData = retrofit.create(NetWorkInterface::class.java)
@@ -233,7 +234,10 @@ class ChattingFragment : Fragment() {
     fun openStomp(id: String) {
 
         stompClient.topic("/chat/${id}").subscribe {
+            var message = messageData()
 
+
+//            addItem(it)
             println("확인")
             println(it)
         }
@@ -269,25 +273,24 @@ class ChattingFragment : Fragment() {
             data.put("content", content)
             data.put("roomId", ChattingRoomId)
             stompClient.send("/app/sendMessage", data.toString()).subscribe()
-            println("보냄")
-            println(data)
+
         } catch (e: java.lang.Error) {
             Log.d("에러", e.toString())
         }
     }
 
     fun receiveData(roomId: String) {
-        val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8088/")
+        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io:8088/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
         val call = callData.receiveMessage(roomId)
-        call.enqueue(object : Callback<List<messageData>> {
-            override fun onFailure(call: Call<List<messageData>>, t: Throwable) {
+        call.enqueue(object : Callback<ArrayList<messageData>> {
+            override fun onFailure(call: Call<ArrayList<messageData>>, t: Throwable) {
             }
 
             override fun onResponse(
-                call: Call<List<messageData>>,
-                response: Response<List<messageData>>
+                call: Call<ArrayList<messageData>>,
+                response: Response<ArrayList<messageData>>
             ) {
                 val result = response.body()
 
@@ -295,25 +298,18 @@ class ChattingFragment : Fragment() {
                 binding.chattingRecycler.adapter = ChattingAddapter(result!!)
                 binding.chattingRecycler.layoutManager =  LinearLayoutManager(requireContext())
 
-//                if (result != null) {
-//                    for (i in result) {
-//                        println(i.content)
-//                        println(i.name)
-//                        println(i.created_at)
-//                        println(i.userId)
-//
-//                    }
-//                }
-
             }
         })
     }
 
 
     inner class ChattingAddapter(
-        private var datas: List<messageData>
+        datas: ArrayList<messageData>
     ) :
         RecyclerView.Adapter<ChattingFragment.ChattingAddapter.ViewHolder>() {
+        var previewId = ""
+
+
 
         override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -323,7 +319,7 @@ class ChattingFragment : Fragment() {
             val holder = ViewHolder(binding)
             val layoutParams = RecyclerView.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                280
+                220
             )
 
             binding.root.layoutParams = layoutParams
@@ -334,24 +330,52 @@ class ChattingFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val data = datas[position]
+            println("포지션,데이터사이즈")
+            println(position)
+            println(datas.size -1)
+            if(position == datas.size -1){
+                binding.chattingRecycler.scrollToPosition(position)
+            }
 
-            holder.oContent.setText(data.content)
-            holder.oNickname.setText(data.name)
-            holder.oTime.setText(data.created_at)
+            if (data.userId == userid){
+
+                previewId = data.userId
+                holder.oContent.visibility = View.INVISIBLE
+                holder.oNickname.visibility = View.INVISIBLE
+                holder.oTime.visibility = View.INVISIBLE
+
+                holder.mTime.visibility = View.VISIBLE
+                holder.mContent.visibility = View.VISIBLE
+
+                holder.mTime.setText(data.created_at)
+                holder.mContent.setText(data.content)
+            }else{
+                if( previewId != data.userId){
+                    holder.oNickname.setText(data.name)
+                    previewId = data.userId
+
+                }
+                holder.oContent.setText(data.content)
+                holder.oTime.setText(data.created_at)
+            }
+
+            val smoothScroller: RecyclerView.SmoothScroller by lazy {
+                object : LinearSmoothScroller(context) {
+                    override fun getVerticalSnapPreference() = SNAP_TO_START
+                }
+            }
+            smoothScroller.targetPosition = position
+            chatting_recycler.layoutManager?.startSmoothScroll(smoothScroller)
+
+
+
+
         }
 
-//        override fun onBindViewHolder(
-//            holder: DeliveryFragment.DeliveryListAddapter.ViewHolder,
-//            position: Int
-//        ) {
-//            // status 0 : 내용없음  1 : 배달해야함    2 : 완료
-//            val number = datas[position]
-//
-//
-//        }
         override fun getItemCount(): Int {
             return datas.size
         }
+
 
 
         inner class ViewHolder(binding: RecyclerChattingBinding)
@@ -359,14 +383,19 @@ class ChattingFragment : Fragment() {
             val oNickname = binding.otherNickname
             val oContent = binding.otherNicknameContent
             val oTime = binding.otherNicknameTime
-//            val count = binding.deliveryListCount
-//            val time = binding.deliveryListTime
-//            val main = binding.deliveryRecyclerView
-//            val image = binding.logoImage
-//            val icon = binding.cameraIcon
+
+            val mContent = binding.myNicknameContent
+            val mTime = binding.myNicknameTime
+
 
         }
 
+    }
+
+    fun addItem(message:messageData) {
+        datas.add(message)
 
     }
+
+
 }
