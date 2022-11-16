@@ -10,6 +10,7 @@
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.11",
     "@mui/styles": "^5.10.10",
+    "@mui/x-data-grid": "^4.0.2",
     "@mui/x-date-pickers": "^5.0.5",
     "@nivo/core": "^0.80.0",
     "@nivo/line": "^0.80.0",
@@ -37,8 +38,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "export PORT=3000 && react-scripts start",
-    "build": "export PORT=3000 && react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
