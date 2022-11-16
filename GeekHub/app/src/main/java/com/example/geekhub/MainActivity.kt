@@ -26,14 +26,17 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import com.example.geekhub.data.DeliveryList
 import com.example.geekhub.data.LocationInfo
 import com.example.geekhub.data.NextSpotInfo
 import com.example.geekhub.databinding.ActivityMainBinding
 import com.example.geekhub.retrofit.NetWorkInterface
+import com.example.todayfilm.LoadingDialog
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.skt.Tmap.*
@@ -65,6 +68,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     lateinit var userid: String
     lateinit var pref : SharedPreferences
     var backKeyPressedTime:Long= 0
+    var loadingDialog: LoadingDialog? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +80,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
         pref = getSharedPreferences("idKey", 0)
         userid = pref.getString("id", "").toString()
+        finishCheck(userid)
 
         binding.liveFocusButton.setOnClickListener{
             tMapView.setCenterPoint(gps!!.location.longitude, gps!!.location.latitude)
@@ -142,9 +147,9 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             tMapView.setCenterPoint(gps!!.location.longitude, gps!!.location.latitude)
         }
 
-        binding.goChatting.setOnClickListener {
-            activeChat()
-        }
+
+        activeChat()
+
         // 채팅버튼
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
         //nfc
@@ -173,6 +178,10 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         }
 
         binding.navButton.setOnClickListener {
+
+            Toast.makeText(this,"네비게이션을 로드하고 있습니다",Toast.LENGTH_SHORT).show()
+            loadingDialog = LoadingDialog(this)
+            loadingDialog!!.show()
             goNav()
         }
 
@@ -247,9 +256,6 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 moveFragment(NfcFragment())
             }
 
-            4 -> {
-                moveFragment(DeliveryCameraFragment())
-            }
 
             5 -> {
                 clearBackStack()
@@ -267,6 +273,16 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             }
         }
     }
+
+    fun activeChat() {
+
+        binding.goChatting.setOnClickListener{
+            moveFragment(ChattingFragment())
+        }
+
+
+    }
+
 
     private fun moveFragment(fragment: Fragment) {
         supportFragmentManager
@@ -421,6 +437,14 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         return date
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun getHour() : String {
+        val now = System.currentTimeMillis()
+        val simpleDateFormat = SimpleDateFormat("HH", Locale.KOREA).format(now)
+        val date : String = simpleDateFormat
+        return date
+    }
+
 
     fun next(userid: String) {
         val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8000/")
@@ -466,15 +490,65 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
     fun lockedChat() {
         binding.goChatting.setOnClickListener{
             Toast.makeText(applicationContext,"이미 채팅방이 켜져있습니다",Toast.LENGTH_SHORT).show()
-        }
+        }}
+
+    fun finishCheck(number:String) {
+
+
+        val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:9013/")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val callData = retrofit.create(NetWorkInterface::class.java)
+        val call = callData.getlist(number.toInt())
+        println("종료체크")
+
+
+
+        call.enqueue(object : Callback<DeliveryList> {
+            override fun onFailure(call: Call<DeliveryList>, t: Throwable) {
+                Log.e("안됨",t.toString())
+            }
+
+            override fun onResponse(call: Call<DeliveryList>, response: Response<DeliveryList>) {
+                println("됨")
+                val result = response.body()
+
+                if (result!!.isFinished == true){
+
+
+                    val intent = Intent(applicationContext, ReadyActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    return
+                }
+
+                if (result!!.del.size + result!!.rec.size == 0){
+
+                    val intent = Intent(applicationContext, ReadyActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    return
+                }
+
+
+            } })
+
 
     }
 
-    fun activeChat() {
-        binding.goChatting.setOnClickListener{
-            moveFragment(ChattingFragment())
+    override fun onRestart() {
+        super.onRestart()
+//        if(loadingDialog){
+//
+//        }
+        if (loadingDialog != null){
+            loadingDialog!!.dismiss()
         }
+
     }
-}
+    }
+
+
+
+
 
 

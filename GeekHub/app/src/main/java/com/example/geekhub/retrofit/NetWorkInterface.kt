@@ -1,12 +1,8 @@
 package com.example.geekhub.retrofit
 
-import com.example.geekhub.data.DeliveryList
+import com.example.geekhub.data.*
 
-import com.example.geekhub.data.LocationInfo
-import com.example.geekhub.data.NextSpotInfo
-import com.example.geekhub.data.LoginRequest
-import com.example.geekhub.data.LoginResponse
-import com.example.geekhub.data.SpotBody
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Param
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -44,4 +40,18 @@ interface NetWorkInterface {
         @Body loginRequest : LoginRequest
     ):Call<LoginResponse>
 
+    @GET("chat/room")
+    fun findChatRoom(
+        @Query("userIdx") userIdx : String?
+    ):Call<ChattingRoomResponse>
+
+    @GET("admin/users")
+    fun findChatMember(
+        @Query("localSchool") localSchool : String?
+    ):Call<List<Member>>
+
+    @GET("chat/message")
+    fun receiveMessage(
+        @Query("roomIdx") roomIdx : String?
+    ):Call<List<messageData>>
 }

@@ -10,6 +10,8 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +31,7 @@ class ReadyActivity : AppCompatActivity() {
     lateinit var binding: ActivityReadyBinding
     lateinit var pref : SharedPreferences
     lateinit var userid : String
+    var backKeyPressedTime:Long= 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +40,10 @@ class ReadyActivity : AppCompatActivity() {
         pref = getSharedPreferences("idKey", 0)
         userid = pref.getString("id", "").toString()
         getDeliveryList(userid.toInt())
-        println(userid.toInt())
+        Glide.with(this)
+            .load(R.drawable.empty) // 불러올 이미지 url
+            .into(binding.deliveryDobby) // 이미지를 넣을 뷰
 
-        binding.loadingLogo.visibility = View.VISIBLE
-        binding.copytight.visibility = View.VISIBLE
-        binding.readyFragmentView.setBackgroundResource(R.color.black)
-        binding.deliveryFree.visibility = View.INVISIBLE
     }
 
     fun getDeliveryList(number : Int){
@@ -62,34 +63,37 @@ class ReadyActivity : AppCompatActivity() {
                 println(response.code())
 
                 if (result!!.isFinished == true){
-                    dobby()
                     binding.deliveryFree.setText("오늘의 일을 완료했어요!")
-                    binding.loadingLogo.visibility = View.INVISIBLE
-                    binding.copytight.visibility = View.INVISIBLE
-                    binding.readyFragmentView.setBackgroundResource(R.color.white)
 
                     return
                 }
 
                 if (result!!.del.size + result!!.rec.size == 0){
-                    dobby()
                     binding.deliveryFree.setText("오늘은 업무가 없어요 ~_~")
 
                     return
                 }
-
-                Handler(Looper.getMainLooper()).postDelayed({
-                    startActivity(Intent(this@ReadyActivity,MainActivity::class.java))
-                    finish()
-                }, 3000)
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                startActivity(intent)
 
 
             } })
     }
 
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount == 0) {
 
-    fun dobby() {
-        binding.deliveryDobby.setImageResource(R.drawable.dobby)
-        binding.deliveryFree.visibility = View.VISIBLE
+            if (System.currentTimeMillis() > backKeyPressedTime + 2500) {
+                backKeyPressedTime = System.currentTimeMillis();
+                Toast.makeText(this,"뒤로가기를 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                return;
+            } else{
+                super.onBackPressed()
+            }
+        }
+        super.onBackPressed()
+
     }
+
+
 }
