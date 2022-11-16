@@ -61,7 +61,7 @@ class NavFragment : Fragment() {
     }
 
     fun nextSpot(userid: String) {
-        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io/")
+        val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8000/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
         val call = callData.nextWork(userid.toInt())

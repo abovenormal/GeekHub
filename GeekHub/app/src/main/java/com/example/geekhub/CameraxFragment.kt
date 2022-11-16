@@ -256,7 +256,7 @@ class CameraxFragment : Fragment() {
     }
 
     fun changeState(){
-        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io/")
+        val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:9013/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
         val Body = SpotBody()

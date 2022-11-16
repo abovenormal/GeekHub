@@ -51,7 +51,7 @@ class ChattingFragment : Fragment() {
     lateinit var userid: String
     var ChattingRoomId: String? = null
     var LocalSchool: String? = null
-    val url = "ws://k7c205.p.ssafy.io/8088/endpoint/websocket" // 소켓에 연결하는 엔드포인트가 /socket일때 다음과 같음
+    val url = "ws://k7c205.p.ssafy.io:8088/endpoint/websocket" // 소켓에 연결하는 엔드포인트가 /socket일때 다음과 같음
     val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url)
     lateinit var datas: ArrayList<messageData>
 
@@ -175,7 +175,7 @@ class ChattingFragment : Fragment() {
     }
 
     private fun getChattingRoom(userid: String) {
-        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io:8088/")
+        val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8088/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
         var call = callData.findChatRoom(userid)
@@ -203,7 +203,7 @@ class ChattingFragment : Fragment() {
     }
 
     private fun findMember(school: String) {
-        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io/")
+        val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8000/")
             .addConverterFactory(GsonConverterFactory.create()).build()
 
         val callData = retrofit.create(NetWorkInterface::class.java)
@@ -280,7 +280,7 @@ class ChattingFragment : Fragment() {
     }
 
     fun receiveData(roomId: String) {
-        val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io:8088/")
+        val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:8088/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
         val call = callData.receiveMessage(roomId)

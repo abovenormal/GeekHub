@@ -73,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener{
             var id = binding.editId.text.toString()
             var pw = binding.editPw.text.toString()
-            val retrofit = Retrofit.Builder().baseUrl("https://k7c205.p.ssafy.io/")
+            val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:9002/")
                 .addConverterFactory(
                 GsonConverterFactory.create()).build()
 

@@ -10,7 +10,7 @@ import retrofit2.http.*
 
 interface NetWorkInterface {
     @Multipart
-    @POST("api/s3/upload")
+    @POST("s3/upload")
     fun sendimage(
         @Part image : MultipartBody.Part,
         @Part("userId") userId : RequestBody,
@@ -18,24 +18,24 @@ interface NetWorkInterface {
         @Part("deliveryTime") deliveryTime : RequestBody
     ):Call<String>
 
-    @GET("api/spot/work/{driverIdx}")
+    @GET("spot/work/{driverIdx}")
     fun getlist(
         @Path("driverIdx") driverIdx : Int
     ):Call<DeliveryList>
 
-    @PUT("api/spot/update")
+    @PUT("spot/update")
     fun changestate(
         @Body spotId : SpotBody
     ):Call<String>
-    @POST("api/location/sendLog")
+    @POST("location/sendLog")
     fun sendLocationLog(
         @Body locationInfo : LocationInfo
     ) :Call<String?>
-    @GET("api/spot/nextInfo/{driverIdx}")
+    @GET("spot/nextInfo/{driverIdx}")
     fun nextWork(
         @Path("driverIdx") driverIdx : Int
     ):Call<NextSpotInfo>
-    @POST("api/auth/login")
+    @POST("auth/login")
     fun login(
         @Body loginRequest : LoginRequest
     ):Call<LoginResponse>
@@ -45,7 +45,7 @@ interface NetWorkInterface {
         @Query("userIdx") userIdx : String?
     ):Call<ChattingRoomResponse>
 
-    @GET("api/admin/users")
+    @GET("admin/users")
     fun findChatMember(
         @Query("localSchool") localSchool : String?
     ):Call<List<Member>>
