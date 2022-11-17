@@ -1,6 +1,9 @@
+
+
 .chart-container {
   width: 100%;
-  border: 1px solid black;
+  height: 100vh;
+  border: 1px solid white;
   border-radius: 12px;
 }
 
@@ -52,10 +55,8 @@
 
 .pie-chart-title {
   font-size: 1.2rem;
-  /* font-weight: bold; */
+  font-weight: bold;
   padding: 1rem;
-  font-family: "BMHANNAPro";
-  
 }
 
 .pie-chart-container2 {
