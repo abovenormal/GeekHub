@@ -45,7 +45,9 @@ function DashboardMap() {
 
   return (
     <div className="maps-container">
-      <div className="map-label">드라이버의 현재 위치 확인하기</div>
+      <div className="map-labels">
+        <div className="labels">드라이버의 현재 위치 확인하기</div>
+      </div>
       <Link
         to="drivermap">   
         <Map
@@ -87,7 +89,6 @@ function DashboardMap() {
           ))}
         </Map>
       </Link>
-      {/* <img src={drl} className="dashboard-img" /> */}
       <a className="dashboard-link">바로 확인하러 가기 </a>
     </div>
   );

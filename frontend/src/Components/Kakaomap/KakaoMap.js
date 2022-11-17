@@ -81,8 +81,10 @@ function KakaoMap() {
 
   return (
     <div className="map-container">
-      <div className="map-label">근무중인 배달기사</div>
-      <Dropdown selected={selected} setSelected={setSelected} />
+      <div className="map-label">실시간 드라이버 위치</div>
+      <div className="pickers">
+        <Dropdown selected={selected} setSelected={setSelected} />
+      </div>
       <Map
         center={state.center}
         isPanto={state.isPanto}

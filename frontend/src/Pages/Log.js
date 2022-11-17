@@ -41,7 +41,7 @@ const Log = () => {
   }, [selected])
   return (
     <div className="log-container">
-      <h1>로그 기록 조회</h1>
+      <div className="log-title">로그 기록 조회</div>
       <div className="picker">
         <Dropdown selected={selected} setSelected={setSelected} />
         <Datepicker selected={selected} setSelected={setSelected} />
