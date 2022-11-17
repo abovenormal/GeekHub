@@ -3,9 +3,13 @@
   padding: 1rem;
 }
 
+.dashboard-link {
+  text-decoration: none;
+}
 .bottom-container {
+  display: flex;
   width: 100%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 .shorcut-block {
   display: flex;
@@ -17,7 +21,6 @@
 .shortcut-link {
   text-decoration: none;
   color: white;
-  
 }
 
 .map {
@@ -26,5 +29,12 @@
 }
 
 .dash-map {
+  padding: 1rem;
+}
+
+.shorcut-chat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 1rem;
 }

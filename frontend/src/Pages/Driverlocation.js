@@ -53,7 +53,7 @@ const Driverlocation = () => {
 
   return (
     <div className="driver-location-container">
-      <h1>실시간 모니터링</h1>
+      <div className="driver-location-title">실시간 모니터링</div>
       <div className="picker">
         <Dropdown selected={selected} setSelected={setSelected} />
         <Datepicker selected={selected} setSelected={setSelected} />

@@ -4,19 +4,19 @@
   width: 100%;
   max-height: 500px;
   height: 100%;
-  background-color: white;
   border-radius: 12px;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-}
+  }
 
 .map {
+  position: relative;
   min-width: 500px;
   width: 100%;
-  min-height: 449px;
+  min-height: 500px;
   height: 100%;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
+  border-radius: 12px;
   cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+
 }
 
 .map:hover {
@@ -24,15 +24,30 @@
   filter: brightness(60%);
   transition: all ease 0.37s;
 }
-.map-label{
-  padding: 10px;
+.map-labels{
+  position: absolute;
+  top: 0;
+  /* background-color: #f5cc1f; */
+  background-color: #EECE4C;
+  width: 100%;
+  height: 60px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  z-index: 200;
+}
+
+.labels{
   font-size: 30px;
   font-family: "BMHANNAPro";
+  color: black;
+  padding: 1rem;
+  margin: 0;
 }
 .label {
   width:max-content;
   font-size: 16px;
   height: 16px;
+  
   color: #0e1737;
   padding: auto;
   margin-top: 20px;
