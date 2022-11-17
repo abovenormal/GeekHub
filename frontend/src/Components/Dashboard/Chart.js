@@ -323,8 +323,7 @@ const Chart = () => {
             <></>
           ) : (
             <>
-              <div className="pie-chart-title">전국 배달 요약</div>
-
+              <div className="pie-chart-title">학교별 배달 요약</div>
               <Carousel
                 autoPlay
                 infiniteLoop

@@ -44,18 +44,6 @@ const Nav = () => {
           </p>
         </Link>
         <Link
-          className={"nav-link" + (nowActive === "chat" ? " active" : "")}
-          onClick={() => {
-            setNowActive("chat");
-          }}
-          to="chat"
-        >
-          <ChatIcon className="nav-icon"></ChatIcon>
-          <p className={`description ${expanded && "show-description"}`}>
-            채팅
-          </p>
-        </Link>
-        <Link
           className={
             "nav-link" + (nowActive === "driverlocation" ? " active" : "")
           }
@@ -79,6 +67,18 @@ const Nav = () => {
           <FmdGoodIcon className="nav-icon"></FmdGoodIcon>
           <p className={`description ${expanded && "show-description"}`}>
             배달기사 현재위치
+          </p>
+        </Link>
+        <Link
+          className={"nav-link" + (nowActive === "chat" ? " active" : "")}
+          onClick={() => {
+            setNowActive("chat");
+          }}
+          to="chat"
+        >
+          <ChatIcon className="nav-icon"></ChatIcon>
+          <p className={`description ${expanded && "show-description"}`}>
+            채팅
           </p>
         </Link>
         <Link
