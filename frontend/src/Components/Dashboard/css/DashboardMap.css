@@ -1,0 +1,57 @@
+.maps-container {
+  position: relative;
+  max-width: 500px;
+  width: 100%;
+  max-height: 500px;
+  height: 100%;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.map {
+  min-width: 500px;
+  width: 100%;
+  min-height: 449px;
+  height: 100%;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  cursor: pointer;
+}
+
+.map:hover {
+  transition: transform 3s;
+  filter: brightness(60%);
+  transition: all ease 0.37s;
+}
+.map-label{
+  padding: 10px;
+  font-size: 30px;
+  font-family: "BMHANNAPro";
+}
+.label {
+  width:max-content;
+  font-size: 16px;
+  height: 16px;
+  color: #0e1737;
+  padding: auto;
+  margin-top: 20px;
+  margin-left: 10px;
+  font-family: "BMHANNAPro";
+}
+
+.dashboard-link {
+  position: absolute;
+  font-size: 3rem;
+  text-align: center;
+  top: 250px;
+  width: 500px;
+  height: 450px;
+  display: none;
+  color: white;
+  font-family: "BMHANNAPro";
+  transition: all ease 0.37s;
+}
+.maps-container:hover .dashboard-link{
+  display: block;
+}

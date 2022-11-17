@@ -310,7 +310,7 @@ const Chart = () => {
     <div className="chart-container">
       <div className="pie-container">
         <div className="pie-chart-container2">
-          <div className="pie-chart-title">배달 요약</div>
+          <div className="pie-chart-title">전국 배달 요약</div>
           <div className="pie-chart-body2">
             <div className="pie-chart2">
               <YesterdayPie data={pieTotal} />
@@ -323,7 +323,7 @@ const Chart = () => {
             <></>
           ) : (
             <>
-              <div className="pie-chart-title">전국 배달 요약</div>
+              <div className="pie-chart-title">학교별 배달 요약</div>
 
               <Carousel
                 autoPlay
