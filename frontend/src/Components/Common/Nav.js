@@ -66,7 +66,7 @@ const Nav = () => {
         >
           <FmdGoodIcon className="nav-icon"></FmdGoodIcon>
           <p className={`description ${expanded && "show-description"}`}>
-            배달기사 현재위치
+            드라이버 현재 위치
           </p>
         </Link>
         <Link
@@ -102,7 +102,7 @@ const Nav = () => {
         >
           <PersonAddAltIcon className="nav-icon"></PersonAddAltIcon>
           <p className={`description ${expanded && "show-description"}`}>
-            신규 기사 생성
+            드라이버 등록
           </p>
         </Link>
       </div>
