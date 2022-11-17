@@ -1,5 +1,6 @@
 package com.example.geekhub
 
+import OnSwipeTouchListener
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
@@ -14,6 +15,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -27,7 +30,10 @@ import com.example.geekhub.data.messageData
 import com.example.geekhub.databinding.FragmentChattingBinding
 import com.example.geekhub.databinding.RecyclerChattingBinding
 import com.example.geekhub.retrofit.NetWorkInterface
+import com.example.todayfilm.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_chatting.*
+import kotlinx.android.synthetic.main.fragment_delivery.*
+import kotlinx.android.synthetic.main.fragment_delivery.view.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -53,7 +59,8 @@ class ChattingFragment : Fragment() {
     var LocalSchool: String? = null
     val url = "ws://k7c205.p.ssafy.io:8088/endpoint/websocket" // 소켓에 연결하는 엔드포인트가 /socket일때 다음과 같음
     val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url)
-    lateinit var datas: ArrayList<messageData>
+    var loadingDialog: LoadingDialog? = null
+//    lateinit var datas: ArrayList<messageData>
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
@@ -66,6 +73,8 @@ class ChattingFragment : Fragment() {
         binding = FragmentChattingBinding.inflate(inflater, container, false)
         (activity as MainActivity).lockedChat()
         // 채팅 중복파일 막기
+        loadingDialog = LoadingDialog(requireContext())
+        loadingDialog!!.show()
 
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "com.example.geekhub")
@@ -73,6 +82,21 @@ class ChattingFragment : Fragment() {
         setListener() // 음성인식 가져오기
 
         getChattingRoom(userid)
+
+        binding.chattingForm                                                                                                                                                                                                                                                                                      .setOnTouchListener(object: OnSwipeTouchListener(requireContext()){
+            override fun onSwipeBottom() {
+                super.onSwipeBottom()
+                (activity as MainActivity).changeFragment(7)
+            }
+
+            override fun onSwipeTop() {
+                super.onSwipeTop()
+                println("올려")
+                binding.chattingForm.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT,
+                    MATCH_PARENT)
+
+            }
+        })
 
 
 
@@ -84,7 +108,6 @@ class ChattingFragment : Fragment() {
             fragmentManager.popBackStack()
         }
         binding.sendButton.setOnClickListener {
-            println("얍얍")
             setListener() // 음성인식 가져오기
             val mRecognizer = SpeechRecognizer.createSpeechRecognizer(requireActivity())
             mRecognizer.setRecognitionListener(listener)
@@ -99,6 +122,7 @@ class ChattingFragment : Fragment() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (binding.editChatting.text.toString().isNotEmpty()) {
                     binding.sendBirdButton.setImageResource(R.drawable.send)
@@ -113,7 +137,6 @@ class ChattingFragment : Fragment() {
                     binding.sendBirdButton.setImageResource(R.drawable.mic)
                     binding.sendBackgroundButton.setBackgroundResource(R.color.red)
                     binding.sendButton.setOnClickListener {
-                        println("얍얍")
                         val mRecognizer = SpeechRecognizer.createSpeechRecognizer(requireActivity())
                         mRecognizer.setRecognitionListener(listener)
                         mRecognizer.startListening((intent))
@@ -152,7 +175,6 @@ class ChattingFragment : Fragment() {
                 val blank = " "
                 var matches: ArrayList<String> =
                     p0?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION) as ArrayList<String>
-                println(binding.editChatting.text)
                 var word = concat(binding.editChatting.text, blank, matches[0])
                 binding.editChatting.setText(word)
 
@@ -188,14 +210,14 @@ class ChattingFragment : Fragment() {
                 call: Call<ChattingRoomResponse>,
                 response: Response<ChattingRoomResponse>
             ) {
-                println(response.code())
                 ChattingRoomId = response.body()?._id
                 LocalSchool = response.body()?.localSchool
+
+                binding.chattingTitle.setText(LocalSchool)
 
                 findMember(LocalSchool!!)
                 openStomp(ChattingRoomId!!)
                 receiveData(ChattingRoomId!!)
-                println(ChattingRoomId)
 
 
             }
@@ -210,20 +232,12 @@ class ChattingFragment : Fragment() {
         val call = callData.findChatMember(school)
         call.enqueue(object : Callback<List<Member>> {
             override fun onFailure(call: Call<List<Member>>, t: Throwable) {
-                TODO("Not yet implemented")
+
             }
 
             override fun onResponse(call: Call<List<Member>>, response: Response<List<Member>>) {
-                println(response.code())
-                println("에뤄코르")
-                var result = response.body()
-                if (result != null) {
-                    for (data in result) {
-                        println("너의 이름은")
-                        println(data.userName)
-
-                    }
-                }
+                var result = response.body()!!.size
+                binding.chattingPeople.setText("${result}명")
 
             }
         })
@@ -233,12 +247,7 @@ class ChattingFragment : Fragment() {
     fun openStomp(id: String) {
 
         stompClient.topic("/chat/${id}").subscribe {
-            var message = messageData()
-
-
-//            addItem(it)
-            println("확인")
-            println(it)
+            receiveData(ChattingRoomId!!)
         }
 
         stompClient.connect()
@@ -258,20 +267,23 @@ class ChattingFragment : Fragment() {
                 }
                 else -> {
                     Log.i("소ELSE", lifecycleEvent.message)
-                    println("확인했니")
                 }
             }
         }
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun sendMessage(user: String, content: String) {
         try {
             val data = JSONObject()
             data.put("sender", user)
             data.put("content", content)
             data.put("roomId", ChattingRoomId)
+            var time = (activity as MainActivity).getLocalTime()
+            data.put("timestamp",time)
             stompClient.send("/app/sendMessage", data.toString()).subscribe()
+//            receiveData(ChattingRoomId!!)
 
 
         } catch (e: java.lang.Error) {
@@ -294,9 +306,12 @@ class ChattingFragment : Fragment() {
             ) {
                 val result = response.body()
 
-                println(result)
-                binding.chattingRecycler.adapter = ChattingAddapter(result!!)
-                binding.chattingRecycler.layoutManager =  LinearLayoutManager(requireContext())
+                val chatRecycle = binding.chattingRecycler
+                chatRecycle.adapter = ChattingAddapter(result!!)
+                chatRecycle.layoutManager =  LinearLayoutManager(requireContext())
+                chatRecycle.scrollToPosition(result.size-1)
+                loadingDialog!!.dismiss()
+
 
             }
         })
@@ -304,10 +319,12 @@ class ChattingFragment : Fragment() {
 
 
     inner class ChattingAddapter(
-        datas: ArrayList<messageData>
+        var datas: ArrayList<messageData>
     ) :
         RecyclerView.Adapter<ChattingFragment.ChattingAddapter.ViewHolder>() {
         var previewId = ""
+
+
 
 
 
@@ -319,23 +336,23 @@ class ChattingFragment : Fragment() {
             val holder = ViewHolder(binding)
             val layoutParams = RecyclerView.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                220
+                WRAP_CONTENT
             )
 
             binding.root.layoutParams = layoutParams
 
-            return holder
+            return  holder
 
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val data = datas[position]
-            println("포지션,데이터사이즈")
-            println(position)
-            println(datas.size -1)
-            if(position == datas.size -1){
-                binding.chattingRecycler.scrollToPosition(position)
-            }
+//            var v = 0
+//            if ( v == 0){
+//                binding.chattingRecycler.scrollToPosition(itemCount-1)
+//                v +=1
+//            }
+
 
             if (data.userId == userid){
 
@@ -350,22 +367,27 @@ class ChattingFragment : Fragment() {
                 holder.mTime.setText(data.created_at)
                 holder.mContent.setText(data.content)
             }else{
-                if( previewId != data.userId){
-                    holder.oNickname.setText(data.name)
-                    previewId = data.userId
+                holder.oContent.visibility = View.VISIBLE
+                holder.oNickname.visibility = View.VISIBLE
+                holder.oTime.visibility = View.VISIBLE
 
+                holder.mTime.visibility = View.INVISIBLE
+                holder.mContent.visibility = View.INVISIBLE
+
+
+                if( position > 0 && datas[position-1].userId == data.userId){
+                    holder.oNickname.visibility = View.INVISIBLE
+                    holder.oNickname.setText("")
+
+
+                }else{
+                    holder.oNickname.visibility = View.VISIBLE
+                    holder.oNickname.setText(data.name)
                 }
+
                 holder.oContent.setText(data.content)
                 holder.oTime.setText(data.created_at)
             }
-
-            val smoothScroller: RecyclerView.SmoothScroller by lazy {
-                object : LinearSmoothScroller(context) {
-                    override fun getVerticalSnapPreference() = SNAP_TO_START
-                }
-            }
-            smoothScroller.targetPosition = position
-            chatting_recycler.layoutManager?.startSmoothScroll(smoothScroller)
 
 
 
@@ -390,12 +412,20 @@ class ChattingFragment : Fragment() {
 
         }
 
+
+
+
+        override fun getItemViewType(position: Int): Int {
+            return if(userid == datas[position].userId)1
+            else if (position > 0 && datas[position-1].userId == datas[position].userId)2
+            else 3
+
+        }
+
+
+
     }
 
-    fun addItem(message:messageData) {
-        datas.add(message)
-
-    }
 
 
 }

@@ -22,6 +22,7 @@ import com.example.geekhub.data.NextSpotInfo
 import com.example.geekhub.databinding.FragmentDeliveryBinding
 import com.example.geekhub.databinding.RecyclerDeliveryListBinding
 import com.example.geekhub.retrofit.NetWorkInterface
+import com.example.todayfilm.LoadingDialog
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_delivery.*
 import kotlinx.android.synthetic.main.fragment_nav.view.*
@@ -43,15 +44,21 @@ class DeliveryFragment : Fragment() {
     lateinit var pref : SharedPreferences
     lateinit var userid : String
     var nowFocus = 0
+    var loadingDialog: LoadingDialog? = null
+    var saveReceivePosition = 0
+    var saveDeliveryPosition = 0
+    var delComponentSwitch = false
     
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        loadingDialog = LoadingDialog(requireContext())
+        loadingDialog!!.show()
+
         pref = requireActivity().getSharedPreferences("idKey",0)
         userid = pref.getString("id", "").toString()
-        Log.d("체크입니다",userid)
         nextSpot(userid)
         binding = FragmentDeliveryBinding.inflate(inflater,container,false)
         if (nowState == 0 ){
@@ -65,20 +72,17 @@ class DeliveryFragment : Fragment() {
         binding.allView.setOnTouchListener(object: OnSwipeTouchListener(requireContext()){
             override fun onSwipeBottom() {
                 super.onSwipeBottom()
-                println("짜잔아래")
                 (activity as MainActivity).changeFragment(7)
             }
 
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                println("짜잔왼쪽")
                 getDeliveryList(1)
                 nowState = 1
             }
 
             override fun onSwipeRight() {
                 super.onSwipeRight()
-                println("짜잔오른")
                 getDeliveryList(0)
                 nowState = 0
             }
@@ -88,14 +92,12 @@ class DeliveryFragment : Fragment() {
         binding.deliveryListRecycler.setOnTouchListener(object: OnSwipeTouchListener(requireContext()){
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                println("짜잔왼쪽")
                 getDeliveryList(1)
                 nowState = 1
             }
 
             override fun onSwipeRight() {
                 super.onSwipeRight()
-                println("짜잔오른")
                 getDeliveryList(0)
                 nowState = 0
             }
@@ -141,8 +143,6 @@ class DeliveryFragment : Fragment() {
         val callData = retrofit.create(NetWorkInterface::class.java)
 
         val call = callData.getlist(userid.toInt())
-        println("콜")
-        println(call)
         call.enqueue(object : Callback<DeliveryList>{
             override fun onFailure(call: Call<DeliveryList>, t: Throwable) {
                 Log.e("안됨",t.toString())
@@ -163,20 +163,42 @@ class DeliveryFragment : Fragment() {
                 if (result == null){
                     return
                 }
+                var recCount = 0
+                var recSwitch = true
                 for (i in result!!.rec){
                     if(i.status !=0){
                         recdatas.add(i)
+                        if(i.status == 1 && recSwitch){
+                                saveReceivePosition = recCount
+
+                            recSwitch = false
+                        }
+                        recCount +=1
+
+                        if (recCount == result.rec.size && i.status == 2){
+                            delComponentSwitch = true
+
+                        }
+
+
+
                     }
                 }
-
+                var delCount = 0
+                var delSwitch = true
                 for (i in result!!.del){
                     if(i.status !=0){
                         deldatas.add(i)
+                        if(i.status == 1 && delSwitch){
+
+                                saveDeliveryPosition = delCount
+
+                            delSwitch = false
+                        }
+                        delCount +=1
                     }
                 }
 
-                println("데이터파싱")
-                println(recdatas)
                 try {
                     binding.deliveryRec.text = "${recdatas.size}개"
                     binding.deliveryDel.text = "${deldatas.size}개"
@@ -191,6 +213,7 @@ class DeliveryFragment : Fragment() {
                 }else{
                     selectDeliveryList(deldatas)
                 }
+                loadingDialog!!.dismiss()
             } })
     }
 
@@ -198,6 +221,13 @@ class DeliveryFragment : Fragment() {
         val deliveryListAddapter = DeliveryListAddapter(datas,nowState)
         binding.deliveryListRecycler.adapter = deliveryListAddapter
         binding.deliveryListRecycler.layoutManager =  LinearLayoutManager(requireContext())
+
+        if(nowState == 0){
+            binding.deliveryListRecycler.scrollToPosition(saveReceivePosition)
+        }else{
+            binding.deliveryListRecycler.scrollToPosition(saveDeliveryPosition)
+        }
+
     }
 
 
@@ -233,13 +263,12 @@ class DeliveryFragment : Fragment() {
 
             }
 
-            binding.deliveryListRecycler.smoothScrollToPosition(position)
+
 
 
             if(number.status == 1){
 
                 if(nowFocus == 0){
-                    binding.deliveryListRecycler.smoothScrollToPosition(position)
                     //focusingcode
                     nowFocus +=1
                 }
@@ -252,7 +281,7 @@ class DeliveryFragment : Fragment() {
                     if (nowState == 0){
                         (activity as MainActivity).sendData(NfcFragment(),number.spotName,number.spotIndex,number.iconUrl)
                     }
-                    else{
+                    else if (nowState == 1 && delComponentSwitch){
 
                         (activity as MainActivity).sendUserId(number.spotIndex,userid,number.spotName)
 
@@ -296,12 +325,6 @@ class DeliveryFragment : Fragment() {
                 .fallback(R.drawable.loading) // 로드할 url 이 비어있을(null 등) 경우 표시할 이미지
                 .into(holder.image) // 이미지를 넣을 뷰
 
-
-
-
-
-            println("빰")
-            println(number.expectedTime)
             holder.title.isSelected = true
         }
 
@@ -333,7 +356,6 @@ class DeliveryFragment : Fragment() {
             }
 
             override fun onResponse(call: Call<NextSpotInfo>, response: Response<NextSpotInfo>) {
-                println("여기" + response.body()?.spotName)
                 spot = response.body()?.spotName
 
 
