@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -25,5 +27,10 @@ public class RoomService {
     public Room findRoom(String localSchool) {
         Room room = roomRepository.findRoomByLocalSchool(localSchool).orElse(null);
         return room;
+    }
+
+    public List<Room> getAll() {
+        List<Room> rooms = roomRepository.findAll();
+        return rooms;
     }
 }

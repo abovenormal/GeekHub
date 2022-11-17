@@ -91,4 +91,9 @@ public class ChatController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @GetMapping("/rooms")
+    public ResponseEntity<?> getAll() {
+        List<Room> rooms = roomService.getAll();
+        return ResponseEntity.status(HttpStatus.OK).body(rooms);
+    }
 }
