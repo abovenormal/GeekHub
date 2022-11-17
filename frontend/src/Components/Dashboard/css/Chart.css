@@ -167,3 +167,6 @@ text{
   font-weight: bold;
   fill:rgb(65, 65, 65);
 }
+.apexcharts-datalabels text {
+  font-size: 12px;
+}
