@@ -58,10 +58,7 @@ class ReadyActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call<DeliveryList>, response: Response<DeliveryList>) {
-                println("됨")
                 val result = response.body()
-                println(response.code())
-
                 if (result!!.isFinished == true){
                     binding.deliveryFree.setText("오늘의 일을 완료했어요!")
 

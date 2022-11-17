@@ -91,11 +91,6 @@ class CameraxFragment : Fragment() {
         if (title != "널"){
             binding.cameraTitle.setText("배달지는 ${title}입니다")
         }
-        println("쳌쳌")
-        println(title)
-        println(spot)
-        println(userid)
-
 
         requestPermission()
 
@@ -106,7 +101,6 @@ class CameraxFragment : Fragment() {
         binding.imageCaptureButton.setOnClickListener { takePhoto() }
         cameraExecutor = Executors.newSingleThreadExecutor()
         binding.reTakePicture.setOnClickListener{
-            println("체크")
             cameraExecutor.shutdown()
             binding.viewFinder.visibility = View.VISIBLE
             binding.imageCaptureButton.visibility = View.VISIBLE
@@ -118,7 +112,6 @@ class CameraxFragment : Fragment() {
 
         binding.sendPicture.setOnClickListener {
             changeState()
-            println("에러 가기전")
             loadingDialog = LoadingDialog(requireContext())
             loadingDialog!!.show()
             send()
@@ -134,9 +127,7 @@ class CameraxFragment : Fragment() {
             // 권한이 거절된 상태
             if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.CAMERA)) {
                 // 1. 사용자가 승인 거절을 누른경우
-                println("승인거절")
             } else {
-                println("다시표시하지않기 횩은 승인요청안함")
                 // 2. 사용자가 승인 거절과 동시에 다시 표시하지 않기 옵션을 선택한 경우
                 // 3. 혹은 아직 승인요청을 한적이 없는 경우
                 val snackBar = Snackbar.make(binding.permissionCheck, "카메라 권한을 사용하지 않으면 사진을 찍을 수 없어요!", Snackbar.LENGTH_LONG)
@@ -208,7 +199,6 @@ class CameraxFragment : Fragment() {
                 .build()
                 .also {
                     it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
-                        Log.d(TAG, "Average luminosity: $luma")
                     })
                 }
 
@@ -263,16 +253,12 @@ class CameraxFragment : Fragment() {
         Body.spotId = spot!!
 
         val call = callData.changestate(Body)
-        println("안임")
-//        println(spot)
         call.enqueue(object :Callback<String>{
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.e("에러입니다",t.toString())
             }
 
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                println("안에러입니다")
-                println(response.body())
             }
         })
 

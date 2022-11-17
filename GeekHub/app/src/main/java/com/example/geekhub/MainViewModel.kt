@@ -15,7 +15,6 @@ class MainViewModel : ViewModel() {
 
 
         stompClient.topic("/chat/${id}").subscribe {
-            println("소체크")
         }
 
         stompClient.connect()
@@ -25,15 +24,12 @@ class MainViewModel : ViewModel() {
         stompClient.lifecycle().subscribe { lifecycleEvent ->
             when (lifecycleEvent.type) {
                 LifecycleEvent.Type.OPENED -> {
-                    Log.i("소OPEND", "!!")
                 }
                 LifecycleEvent.Type.CLOSED -> {
-                    Log.i("소CLOSED", "!!")
                     stompClient.disconnect()
 
                 }
                 LifecycleEvent.Type.ERROR -> {
-                    Log.i("ERROR", "!!")
                     Log.e("소CONNECT ERROR", lifecycleEvent.exception.toString())
                 }
                 else ->{
@@ -52,18 +48,10 @@ class MainViewModel : ViewModel() {
             data.put("content", content)
             data.put("roomId", "")
             stompClient.send("/app/sendMessage", data.toString()).subscribe()
-            println("보냄")
-            println(data)
         }catch (e:java.lang.Error){
             Log.d("에러",e.toString())
         }
     }
 
-    fun onMessageReceive(){
-        println("receive")
-    }
 
-    fun stopStomp() {
-        stompClient.disconnect()
-    }
 }

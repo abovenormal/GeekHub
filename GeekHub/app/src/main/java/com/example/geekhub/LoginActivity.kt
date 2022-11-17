@@ -29,9 +29,6 @@ class LoginActivity : AppCompatActivity() {
 
         pref = getSharedPreferences("idKey", 0)
         saveId =pref.getString("id", "").toString()
-        Log.d("태그", saveId)
-        println(saveId)
-
         if (saveId != "") {
             val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
@@ -91,14 +88,10 @@ class LoginActivity : AppCompatActivity() {
                     call: Call<LoginResponse>,
                     response: Response<LoginResponse>
                 ) {
-                    println("체크")
-                    println(response.code())
 
                     if(response.isSuccessful){
                         val data = response.body()?.key
-                        Log.d("키값입니다",data.toString())
                         saveDate(data.toString())
-
                         Toast.makeText(applicationContext,"로그인성공",Toast.LENGTH_SHORT).show()
                         intent = Intent(this@LoginActivity, MainActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -109,16 +102,6 @@ class LoginActivity : AppCompatActivity() {
 
                     }else{
                         Toast.makeText(applicationContext,"로그인실패",Toast.LENGTH_SHORT).show()
-                        try {
-                            println(response.code())
-                            println("체크")
-                            println(response.errorBody().toString())
-                            println(response.errorBody()?.string()!!)
-
-
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
                     }
                 }
             })

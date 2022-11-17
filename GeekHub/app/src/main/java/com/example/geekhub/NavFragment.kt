@@ -71,7 +71,6 @@ class NavFragment : Fragment() {
             }
 
             override fun onResponse(call: Call<NextSpotInfo>, response: Response<NextSpotInfo>) {
-                println("여기" + response.body()?.spotName)
                 spot = response.body()?.spotName
                 try {
                     binding.spotNav.setText("다음 목적지는 ${spot.toString()}입니다")
