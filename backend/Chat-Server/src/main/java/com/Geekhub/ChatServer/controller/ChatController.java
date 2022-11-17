@@ -55,6 +55,7 @@ public class ChatController {
     public Message broadcastGroupMessage(@Payload Message message) {
         log.info("연결 테스트" + message.toString());
         LocalDateTime localDateTime = LocalDateTime.now().plusHours(9);
+        message.setTimestamp(localDateTime);
         try {
             kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, message).get();
 //            simpMessagingTemplate.convertAndSend("/chat" + roomIdx, message);
