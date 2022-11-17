@@ -23,7 +23,6 @@ const Log = () => {
         async function getData() {
           const res = await apiInstance().post('spot/current', selected);
           setListData(res.data)
-          // console.log(res.data);
           setLoading(false);
         }
         getData();}
@@ -32,7 +31,7 @@ const Log = () => {
           async function getData() {
             const res = await apiInstance().post('spot/log', selected);
             setListData(res.data)
-            // console.log(res.data);
+            setLoading(false);
           }
           getData();
         }
