@@ -1,0 +1,13 @@
+.log-container {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  background-color: #f4f9fd;
+  width: 100%;
+  height: 100vh;
+  padding: 1rem;
+}
+
+.picker {
+  display: flex;
+}
