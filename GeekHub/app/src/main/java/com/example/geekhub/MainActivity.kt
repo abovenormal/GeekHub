@@ -47,6 +47,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.nio.charset.StandardCharsets
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -128,7 +129,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0);
         }
         gps = TMapGpsManager(this)
-        gps!!.minTime = 5000
+        gps!!.minTime = 3000
         gps!!.minDistance = 0F
         gps!!.provider = TMapGpsManager.GPS_PROVIDER
         gps!!.OpenGps()
@@ -233,11 +234,8 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             if (focusStatus == 1){
                 tMapView.setCenterPoint(gps!!.location.longitude, gps!!.location.latitude)
             }
+            findPath()
 
-            if (cnt == 0) {
-                findPath()
-                cnt = 1
-            }
         }
     }
 
@@ -248,9 +246,6 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 moveFragment(DeliveryFragment())
             }
 
-            2 -> {
-                moveFragment(DeliveryDetailFragment())
-            }
 
             3 -> {
                 moveFragment(NfcFragment())
@@ -310,9 +305,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             var message = data.ndefMessage
             var record = message.records
             for (records in record) {
-                println(records.payload)
                 var convert = String(records.payload, StandardCharsets.UTF_8)
-                println("프린트값")
                 var spot = convert.substring(3)
                 sendUserId(spot,userid,"널")
             }
@@ -330,8 +323,8 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                         TMapPoint(gps!!.location.latitude, gps!!.location.longitude),
                         TMapPoint(nextSpotInfo!!.lat, nextSpotInfo!!.lon)
                     )
-                    tMapPolyLine.lineColor = Color.rgb(235,198,42)
-                    tMapPolyLine.outLineColor = Color.rgb(235,198,42)
+                    tMapPolyLine.lineColor = Color.rgb(14,23,55)
+                    tMapPolyLine.outLineColor = Color.rgb(14,23,55)
                     tMapPolyLine.outLineWidth = 20F
 
                     tMapPolyLine.setLineWidth(0F)
@@ -370,8 +363,6 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         bundle.putString("idx",idx)
         bundle.putString("url",url)
         fragment.arguments = bundle
-        println(fragment)
-            println("나 카메라아니다")
             supportFragmentManager.beginTransaction()
                 .replace(R.id.main_container_view, fragment)
                 .addToBackStack(null)
@@ -423,11 +414,11 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         val call = callData.sendLocationLog(locationBody)
         call.enqueue(object : Callback<String?>{
             override fun onFailure(call: Call<String?>, t: Throwable) {
-//                Log.e("에러났다", t.toString())
+                Log.e("에러났다", t.toString())
             }
 
             override fun onResponse(call: Call<String?>, response: Response<String?>) {
-                println("에러 안남")
+
             }
         })
     }
@@ -440,13 +431,12 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         return date
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    fun getHour() : String {
-        val now = System.currentTimeMillis()
-        val simpleDateFormat = SimpleDateFormat("HH", Locale.KOREA).format(now)
-        val date : String = simpleDateFormat
-        return date
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getLocalTime() : LocalDateTime {
+        val now = LocalDateTime.now()
+        return now
     }
+
 
 
     fun next(userid: String) {
@@ -502,7 +492,6 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             .addConverterFactory(GsonConverterFactory.create()).build()
         val callData = retrofit.create(NetWorkInterface::class.java)
         val call = callData.getlist(number.toInt())
-        println("종료체크")
 
 
 
@@ -512,7 +501,6 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             }
 
             override fun onResponse(call: Call<DeliveryList>, response: Response<DeliveryList>) {
-                println("됨")
                 val result = response.body()
 
                 if (result!!.isFinished == true){
@@ -540,9 +528,6 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
 
     override fun onRestart() {
         super.onRestart()
-//        if(loadingDialog){
-//
-//        }
         if (loadingDialog != null){
             loadingDialog!!.dismiss()
         }

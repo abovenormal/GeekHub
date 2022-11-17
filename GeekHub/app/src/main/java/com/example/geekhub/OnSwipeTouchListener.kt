@@ -65,18 +65,14 @@ open class OnSwipeTouchListener(ctx: Context) : View.OnTouchListener {
     }
 
     open fun onSwipeRight() {
-        println("짜잔오른")
     }
 
     open fun onSwipeLeft() {
-        println("짜잔왼쪽")
     }
 
     open fun onSwipeTop() {
-        println("짜잔위쪽")
     }
 
     open fun onSwipeBottom() {
-        println("짜잔아래")
     }
 }
