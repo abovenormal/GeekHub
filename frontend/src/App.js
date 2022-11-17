@@ -12,6 +12,7 @@ import Login from "./Pages/Login";
 import User from "./Pages/User";
 import Signup from "./Pages/Signup";
 import Drivermap from "./Pages/Drivermap";
+import Worklist from "./Pages/Worklist";
 import "./App.css";
 import { apiInstance } from "./api/index";
 
@@ -76,6 +77,12 @@ function App() {
           path="/drivermap"
           element={
             <PrivateRoute component={<Drivermap />} authenticated={token} />
+          }
+        />
+        <Route
+          path="/worklist"
+          element={
+            <PrivateRoute component={<Worklist />} authenticated={token} />
           }
         />
       </Routes>
