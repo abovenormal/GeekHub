@@ -7,7 +7,7 @@ const ShortcutLog = () => {
   return (
     <Link
         className="dashboard-links"
-        to="chat"
+        to="log"
       >
     <div className="shortcut-box">
       <img src={scl} className="sc-img"></img>
