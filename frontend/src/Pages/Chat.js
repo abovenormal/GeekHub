@@ -55,7 +55,7 @@ const Chat = () => {
 
   const onMessageReceived = () => {
     console.log("메시지 받았니?")
-    axios("http://k7c205.p.ssafy.io:8088/chat/message", {
+    axios("https://k7c205.p.ssafy.io/chatapi/message", {
               method: "GET",
               params: {
                 roomIdx: roomIdx,
@@ -118,7 +118,7 @@ const Chat = () => {
             // console.log(rows[i].id)
             setRoomIdx(rows[i].id)
             setRoomName(rows[i].localSchool);
-            axios("http://k7c205.p.ssafy.io:8088/chat/message", {
+            axios("https://k7c205.p.ssafy.io/chatapi/message", {
               method: "GET",
               params: {
                 roomIdx: rows[i].id,
