@@ -7,7 +7,7 @@ const ShortcutTask = () => {
   return (
     <Link
         className="dashboard-links"
-        to="chat"
+        to="worklist"
       >
     <div className="shortcut-box">
       <img src={sct} className="sc-img"></img>
