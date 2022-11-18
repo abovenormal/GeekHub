@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://k7c205.p.ssafy.io:8088";
+const API_BASE_URL = "https://k7c205.p.ssafy.io/chatapi";
 
 export function apiInstance() {
   const instance = axios.create({
