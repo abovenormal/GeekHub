@@ -118,7 +118,7 @@ const Chat = () => {
             // console.log(rows[i].id)
             setRoomIdx(rows[i].id)
             setRoomName(rows[i].localSchool);
-            axios("https://k7c205.p.ssafy.io/chatapi/chat/message", {
+            axios("https://k7c205.p.ssafy.io/api/chat/message", {
               method: "GET",
               params: {
                 roomIdx: rows[i].id,
