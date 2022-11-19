@@ -91,7 +91,6 @@ class ChattingFragment : Fragment() {
 
             override fun onSwipeTop() {
                 super.onSwipeTop()
-                println("올려")
                 binding.chattingForm.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT,
                     MATCH_PARENT)
 
@@ -308,7 +307,7 @@ class ChattingFragment : Fragment() {
 
                 val chatRecycle = binding.chattingRecycler
                 chatRecycle.adapter = ChattingAddapter(result!!)
-                chatRecycle.layoutManager =  LinearLayoutManager(requireContext())
+                chatRecycle.layoutManager =  LinearLayoutManager(activity)
                 chatRecycle.scrollToPosition(result.size-1)
                 loadingDialog!!.dismiss()
 
