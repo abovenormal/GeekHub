@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0);
         }
         gps = TMapGpsManager(this)
-        gps!!.minTime = 3000
+        gps!!.minTime = 5000
         gps!!.minDistance = 0F
         gps!!.provider = TMapGpsManager.GPS_PROVIDER
         gps!!.OpenGps()

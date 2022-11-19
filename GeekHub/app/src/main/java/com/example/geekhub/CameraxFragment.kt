@@ -1,11 +1,9 @@
 package com.example.geekhub
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -23,10 +21,8 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.example.geekhub.data.SpotBody
 import com.example.geekhub.databinding.FragmentCameraxBinding
-import com.example.geekhub.retrofit.NetWorkClient
 import com.example.geekhub.retrofit.NetWorkInterface
 import com.example.todayfilm.LoadingDialog
 import com.google.android.material.snackbar.Snackbar
@@ -40,7 +36,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.nio.ByteBuffer
-import java.sql.Time
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -274,7 +269,11 @@ class CameraxFragment : Fragment() {
         val spotBody = RequestBody.create(MediaType.parse("text/plain"), spot)
         var timeBody = RequestBody.create(MediaType.parse("text/plain"), time)
 
-        val call = NetWorkClient.GetNetwork.sendimage(image,userBody,spotBody,timeBody)
+        val retrofit = Retrofit.Builder().baseUrl("http://k7c205.p.ssafy.io:9012/")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val callData = retrofit.create(NetWorkInterface::class.java)
+        val call = callData.sendimage(image,userBody,spotBody,timeBody)
+
         call.enqueue(object : Callback<String>{
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Toast.makeText(requireActivity(),"전송을 실패했습니다.",Toast.LENGTH_SHORT).show()
