@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./css/Chat.css";
 import { DataGrid } from "@mui/x-data-grid";
-import { apiInstance } from "../api/indexChat";
+import { apiInstance } from "../api/index";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -55,7 +55,7 @@ const Chat = () => {
 
   const onMessageReceived = () => {
     console.log("메시지 받았니?")
-    axios("https://k7c205.p.ssafy.io/chatapi/chat/message", {
+    axios("https://k7c205.p.ssafy.io/api/chat/message", {
               method: "GET",
               params: {
                 roomIdx: roomIdx,
