@@ -72,7 +72,7 @@ const Chat = () => {
 
   const onConnected = () => {
     console.log("커넥트 확인")
-    if(stompClient){
+    if(stompClient&&stompClient.connected){
     stompClient.subscribe(`/chat/${roomIdx}`, onMessageReceived);
     setLoading(false);
     }
