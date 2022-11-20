@@ -88,7 +88,7 @@ const Chat = () => {
   }
   useEffect(() => {
     console.log("연결 시작")
-    let Sock = new SockJS("https://k7c205.p.ssafy.io/api/endpoint")
+    let Sock = new SockJS("https://k7c205.p.ssafy.io/chatapi/endpoint")
     stompClient = over(Sock)
     console.log(roomIdx)
     stompClient.connect({}, onConnected, onError);
