@@ -100,6 +100,7 @@ const Chat = () => {
     getData();
   }, []);
   useEffect(() => {
+    if(scrollRef&&scrollRef.current)
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   });
   useEffect(() => {
