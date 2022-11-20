@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./css/Chat.css";
 import { DataGrid } from "@mui/x-data-grid";
-import { apiInstance } from "../api/indexChat";
+import { apiInstance } from "../api/index";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,7 +10,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
+import SockJS from "sockjs-client";
+import { over } from 'stompjs';
+import { now } from "moment";
 
+let stompClient = null;
 const Chat = () => {
   const scrollRef = useRef();
 
@@ -20,6 +24,55 @@ const Chat = () => {
   const [chat, setChat] = useState([]);
   const [chatMap, setChatMap] = useState([]);
   const [roomName, setRoomName] = useState("");
+  const [roomIdx, setRoomIdx] = useState("");
+  const [message, setMessage] = useState("");
+  const sendChatHandler = async () => {
+    if (message === '') return;
+    const now = new Date();
+    const utcNow = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+    const koreaTimeDiff = 9 * 60 * 60 * 1000;
+    const koreaNow = new Date(utcNow + koreaTimeDiff);
+    const time = new Date()
+    time.setHours(koreaNow.getHours)
+    time.setMinutes(koreaNow.getMinutes)
+    console.log(time)
+    const chatMessage = {
+      sender : "1",
+      content : message,
+      roomId : roomIdx,
+      timestamp : new Date()
+    };
+    console.log(chatMessage)
+    console.log(JSON.stringify(chatMessage))
+    stompClient.send(`/app/sendMessage`, {}, JSON.stringify(chatMessage));
+    setMessage('');
+
+  }
+
+  const onError = err => {
+    console.log("에러났다.`")
+    throw err;
+  }
+
+  const onMessageReceived = () => {
+    console.log("메시지 받았니?")
+    axios("https://k7c205.p.ssafy.io/api/chat/message", {
+              method: "GET",
+              params: {
+                roomIdx: roomIdx,
+              },
+            })
+              .then((res) => {
+                console.log(res);
+                setChat(res.data);
+              })
+              .catch((err) => console.log("Update Price error", err));
+  }
+
+  const onConnected = () => {
+    console.log("커넥트 확인")
+    stompClient.subscribe(`/chat/${roomIdx}`, onMessageReceived);
+  }
 
   async function getData() {
     try {
@@ -33,6 +86,13 @@ const Chat = () => {
   function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
   }
+  useEffect(() => {
+    console.log("연결 시작")
+    let Sock = new SockJS("https://k7c205.p.ssafy.io/chatapi/endpoint")
+    stompClient = over(Sock)
+    console.log(roomIdx)
+    stompClient.connect({}, onConnected, onError);
+  }, [roomIdx])
   useEffect(() => {
     getData();
   }, []);
@@ -57,15 +117,17 @@ const Chat = () => {
         <div
           className="discussion message-active"
           onClick={(e) => {
+            // console.log(rows[i].id)
+            setRoomIdx(rows[i].id)
             setRoomName(rows[i].localSchool);
-            axios("http://k7c205.p.ssafy.io:8088/chat/message", {
+            axios("https://k7c205.p.ssafy.io/api/chat/message", {
               method: "GET",
               params: {
                 roomIdx: rows[i].id,
               },
             })
               .then((res) => {
-                console.log(res);
+                // console.log(res);
                 setChat(res.data);
               })
               .catch((err) => console.log("Update Price error", err));
@@ -135,11 +197,14 @@ const Chat = () => {
                 type="text"
                 className="write-message"
                 placeholder="메세지 입력"
+                value={message}
+                onChange={e => setMessage(e.target.value)}
               ></input>
               <i
                 className="icon send fa fa-paper-plane-o clickable"
                 aria-hidden="true"
                 c0js0
+                onClick={sendChatHandler}
               ></i>
             </div>
           </div>

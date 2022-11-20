@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">GeekHub</string>
+    <string name="id_login">아이디를 입력해주세요</string>
+    <string name="pw_login">비밀번호를 입력해주세요</string>
+    <string name="go_login">로그인하기</string>
+    <string name="ready_title">배정된 작업</string>
+    <string name="ready_time">저녁1</string>
+    <string name="ready_spot">알촌-1동</string>
+    <string name="ready_button">배달 시작</string>
+    <string name="receive">수령</string>
+    <string name="delivery">배달</string>
+    <string name="count_number">0개</string>
+    <string name="dummy_title">알촌</string>
+    <string name="dummy_order">10개주문</string>
+    <string name="tagging_button">NFC 태깅하기</string>
+    <string name="dummy_camera">X개를 수령하셨나요?</string>
+    <string name="backspace">뒤로가기</string>
+    <string name="take_picture">재촬영</string>
+    <string name="go_picture">사진찍기</string>
+    <string name="send">배달완료</string>ㅎ
+    <string name="colleague">동료기사</string>
+    <string name="admin">관리자</string>
+    <string name="rest_day">오늘은 쉬는날이에요!</string>
+    <string name="login">로그인</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_start">StartActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="re_photo">재촬영이 필요하면 눌러주세요</string>
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="loading">"잠시만 기다려주세요..</string>
+</resources>

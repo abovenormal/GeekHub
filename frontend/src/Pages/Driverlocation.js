@@ -53,7 +53,7 @@ const Driverlocation = () => {
 
   return (
     <div className="driver-location-container">
-      <h1>실시간 모니터링</h1>
+      <div className="driver-location-title">실시간 모니터링</div>
       <div className="picker">
         <Dropdown selected={selected} setSelected={setSelected} />
         <Datepicker selected={selected} setSelected={setSelected} />
@@ -67,7 +67,7 @@ const Driverlocation = () => {
             </div>
             <h2>실제 도착 시각 확인</h2>
             <div className="text">
-              기사님이 픽업/배달존에
+              드라이버가 픽업/배달존에
               <br />
               도착한 시각을 알 수 있어요.
             </div>
@@ -76,9 +76,9 @@ const Driverlocation = () => {
             <div className="gif-img-con">
               <img className="gif-img" src={drl} />
             </div>
-            <h2>기사님의 현재 위치</h2>
+            <h2>드라이버의 현재 위치</h2>
             <div className="text">
-              기사님의 현재 위치를
+              드라이버의 현재 위치를
               <br />
               실시간으로 확인해보세요.
             </div>

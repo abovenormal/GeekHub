@@ -37,16 +37,24 @@ const Login = () => {
     try {
       console.log(loginInfo);
       const res = await api.post("auth/login", loginInfo);
-      console.log(res.data.accessToken);
-      localStorage.setItem("accesstoken", res.data.accessToken);
       await new Promise(() => {
-        navigate("/");
-        navigate(0);
-        Toast.fire({
-          icon: "success",
-          title: "로그인 성공!",
-          timer: 1500,
-        });
+        if (loginInfo.userId != "admin" && loginInfo.userId != "coach") {
+          Toast.fire({
+            icon: "error",
+            title: "오류",
+            text: "로그인 권한이 없습니다.",
+          });
+        } else {
+          console.log(res.data.accessToken);
+          localStorage.setItem("accesstoken", res.data.accessToken);
+          navigate("/");
+          navigate(0);
+          Toast.fire({
+            icon: "success",
+            title: "로그인 성공!",
+            timer: 1500,
+          });
+        }
       });
     } catch (error) {
       Toast.fire({
@@ -108,13 +116,8 @@ const Login = () => {
             </div>
             <div className="vc">
               <div className="video-container">
-                <video
-                  className="login-video"
-                  loop
-                  muted
-                  autoPlay
-                >
-                  <source src={loginVideo} type="video/mp4"/>
+                <video className="login-video" loop muted autoPlay>
+                  <source src={loginVideo} type="video/mp4" />
                 </video>
                 {/* <div className="center"></div> */}
               </div>
@@ -122,9 +125,10 @@ const Login = () => {
           </div>
           <div className="login-header">
             <div className="login-title">
-            <img src={loginAnalysis} className="login-analysis"></img>
+              <img src={loginAnalysis} className="login-analysis"></img>
               <h2>
-                안녕하세요! 👋🏻<br />
+                안녕하세요! 👋🏻
+                <br />
                 GeekHub 관리자 페이지입니다!
               </h2>
             </div>
