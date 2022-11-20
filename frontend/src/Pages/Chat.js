@@ -25,6 +25,7 @@ const Chat = () => {
   const [chatMap, setChatMap] = useState([]);
   const [roomName, setRoomName] = useState("");
   const [roomIdx, setRoomIdx] = useState("");
+  const [loading,setLoading]=useState(true);
   const [message, setMessage] = useState("");
   const sendChatHandler = async () => {
     if (message === '') return;
@@ -72,6 +73,7 @@ const Chat = () => {
   const onConnected = () => {
     console.log("커넥트 확인")
     stompClient.subscribe(`/chat/${roomIdx}`, onMessageReceived);
+    setLoading(false);
   }
 
   async function getData() {
@@ -87,6 +89,7 @@ const Chat = () => {
     return { name, calories, fat, carbs, protein };
   }
   useEffect(() => {
+    setLoading(true);
     console.log("연결 시작")
     let Sock = new SockJS("https://k7c205.p.ssafy.io/chatapi/endpoint")
     stompClient = over(Sock)
@@ -133,7 +136,6 @@ const Chat = () => {
               .catch((err) => console.log("Update Price error", err));
             console.log(rows[i]);
           }}
-
         >
           <div className="desc-contact">
             <p className="name">{rows[i].localSchool}</p>
@@ -176,7 +178,7 @@ const Chat = () => {
             </div>
             {rowsMap}
           </div>
-          <div className="chat">
+          {!loading?(<div className="chat">
             <div className="header-chat">
               <i className="icon fa fa-user-o" aria-hidden="true"></i>
               <p className="name">{roomName}</p>
@@ -208,7 +210,7 @@ const Chat = () => {
                 onClick={sendChatHandler}
               ></i>
             </div>
-          </div>
+          </div>):'로딩중'}
         </div>
       </div>
     </div>
