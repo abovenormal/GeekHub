@@ -50,6 +50,7 @@ const Chat = () => {
   }
 
   const onError = err => {
+    console.log("에러났다.`")
     throw err;
   }
 
@@ -69,6 +70,7 @@ const Chat = () => {
   }
 
   const onConnected = () => {
+    console.log("커넥트 확인")
     stompClient.subscribe(`/chat/${roomIdx}`, onMessageReceived);
   }
 
@@ -85,7 +87,8 @@ const Chat = () => {
     return { name, calories, fat, carbs, protein };
   }
   useEffect(() => {
-    let Sock = new SockJS("https://k7c205.p.ssafy.io/chat/endpoint")
+    console.log("연결 시작")
+    let Sock = new SockJS("https://k7c205.p.ssafy.io/chatapi/endpoint")
     stompClient = over(Sock)
     stompClient.debug = null;
     console.log(roomIdx)
