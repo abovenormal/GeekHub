@@ -1,0 +1,16 @@
+server:
+  port: 8081
+
+spring:
+  application :
+    name : Kafka
+  data:
+    mongodb:
+      uri : mongodb://posi:deleatc205@3.36.113.161/geekhub?authSource=admin
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone : http://127.0.0.1:8761/eureka

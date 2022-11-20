@@ -1,0 +1,9 @@
+FROM openjdk:11-jdk
+
+WORKDIR /app/Kafka
+
+COPY build/libs/*.jar Kafka.jar
+
+EXPOSE 12000
+
+CMD ["java", "-jar", "Kafka.jar"]
