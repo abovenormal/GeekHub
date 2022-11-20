@@ -85,7 +85,7 @@ const Chat = () => {
     return { name, calories, fat, carbs, protein };
   }
   useEffect(() => {
-    let Sock = new SockJS("http://k7c205.p.ssafy.io:8088/endpoint")
+    let Sock = new SockJS("https://k7c205.p.ssafy.io/endpoint")
     stompClient = over(Sock)
     stompClient.debug = null;
     console.log(roomIdx)
