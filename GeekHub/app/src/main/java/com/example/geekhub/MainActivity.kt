@@ -303,11 +303,14 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
             var data = Ndef.get(tagFromIntent)
             data.connect()
             var message = data.ndefMessage
-            var record = message.records
-            for (records in record) {
-                var convert = String(records.payload, StandardCharsets.UTF_8)
-                var spot = convert.substring(3)
-                sendUserId(spot,userid,"널")
+            if (message != null){
+                var record = message.records
+                for (records in record) {
+                    var convert = String(records.payload, StandardCharsets.UTF_8)
+                    var spot = convert.substring(3)
+                    sendUserId(spot,userid,"널")
+                }
+
             }
 
         }
