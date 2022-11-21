@@ -85,6 +85,9 @@ class CameraxFragment : Fragment() {
         }
         if (title != "널"){
             binding.cameraTitle.setText("배달지는 ${title}입니다")
+
+        }else{
+            binding.sendPicture.setText("수령완료")
         }
 
         requestPermission()
@@ -110,6 +113,7 @@ class CameraxFragment : Fragment() {
             loadingDialog = LoadingDialog(requireContext())
             loadingDialog!!.show()
             send()
+
             (activity as MainActivity).finishCheck(userid!!)
         }
 
@@ -276,17 +280,19 @@ class CameraxFragment : Fragment() {
 
         call.enqueue(object : Callback<String>{
             override fun onFailure(call: Call<String>, t: Throwable) {
-                Toast.makeText(requireActivity(),"전송을 실패했습니다.",Toast.LENGTH_SHORT).show()
-            }
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                val result: String? =response.body()
+//                Toast.makeText(requireActivity(),"전송을 실패했습니다.",Toast.LENGTH_SHORT).show()
                 finishFragment()
                 (activity as MainActivity).next(userid!!)
                 (activity as MainActivity).findPath()
                 (activity as MainActivity).changeFragment(7)
                 (activity as MainActivity).cntClear()
-//
-//            (activity as MainActivity).changeFragment(1)
+            }
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                finishFragment()
+                (activity as MainActivity).next(userid!!)
+                (activity as MainActivity).findPath()
+                (activity as MainActivity).changeFragment(7)
+                (activity as MainActivity).cntClear()
 
             }
         })}

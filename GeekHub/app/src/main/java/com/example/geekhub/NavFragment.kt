@@ -33,19 +33,13 @@ class NavFragment : Fragment() {
         pref = requireActivity().getSharedPreferences("idKey", 0)
         userid = pref.getString("id", "").toString()
         binding = FragmentNavBinding.inflate(inflater,container,false)
-
-        binding.swifeNav.setOnTouchListener(object :OnSwipeTouchListener(requireContext()){
-//            override fun onSwipeTop() {
-//                super.onSwipeTop()
-//                (activity as MainActivity).changeFragment(1)
-//            }
-//
+        binding.main.setOnTouchListener(object :OnSwipeTouchListener(requireContext()){
 
 
 
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                 (activity as MainActivity).changeFragment(1)
-//
+
                 return false
 
             }
@@ -73,7 +67,7 @@ class NavFragment : Fragment() {
             override fun onResponse(call: Call<NextSpotInfo>, response: Response<NextSpotInfo>) {
                 spot = response.body()?.spotName
                 try {
-                    binding.spotNav.setText("다음 목적지는 ${spot.toString()}입니다")
+                    binding.spotNav.setText("${spot.toString()}")
                 }catch (e:java.lang.Error){
 
                 } }

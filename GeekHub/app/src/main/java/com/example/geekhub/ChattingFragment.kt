@@ -91,6 +91,7 @@ class ChattingFragment : Fragment() {
 
             override fun onSwipeTop() {
                 super.onSwipeTop()
+                binding.view.setBackgroundResource(R.drawable.down_row)
                 binding.chattingForm.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT,
                     MATCH_PARENT)
 
@@ -236,7 +237,7 @@ class ChattingFragment : Fragment() {
 
             override fun onResponse(call: Call<List<Member>>, response: Response<List<Member>>) {
                 var result = response.body()!!.size
-                binding.chattingPeople.setText("${result}명")
+                binding.chattingPeople.setText("${result+1}명")
 
             }
         })
