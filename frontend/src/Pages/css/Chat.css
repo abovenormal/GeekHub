@@ -65,11 +65,12 @@ body {
 .discussions .discussion {
   width: 100%;
   height: 90px;
-  background-color: #FAFAFA;
   border-bottom: solid 1px #E0E0E0;
   display: flex;
   align-items: center;
   cursor: pointer;
+  font-size: 1.2rem;
+  color: #515151;
 }
 
 .discussions .search {
@@ -201,8 +202,8 @@ body {
 .chat .header-chat .name {
   margin: 0 0 0 20px;
   text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 13pt;
+  font-family: "BMHANNAPro";
+  font-size: 1.6rem;
   color: #515151;
 }
 
@@ -212,16 +213,16 @@ body {
 }
 
 .chat .messages-chat {
-  padding: 0px 35px;
+  padding: 10px 35px;
   overflow-y: auto;
-  height: 82vh;
+  height: 80vh;
 }
 
 .messages-chat-loading {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 82vh;
+  height: 78vh;
 }
 
 .loading {
@@ -288,6 +289,7 @@ body {
   width: calc(65% - 100px);
   height: 80px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   position: absolute;
   bottom: 0;
@@ -297,7 +299,7 @@ body {
 }
 
 .chat .footer-chat .icon {
-  margin-left: 30px;
+  margin: 0px 20px;
   /* color: #C0C0C0; */
   /* font-size: 14pt; */
 }
@@ -315,7 +317,7 @@ body {
 .chat .footer-chat .name {
   margin: 0 0 0 20px;
   text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'BMHANNAAir';
   font-size: 20pt;
   color: #515151;
 }

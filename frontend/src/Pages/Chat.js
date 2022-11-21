@@ -193,15 +193,15 @@ const Chat = () => {
       <div className="container">
         <div className="row">
           <div className="discussions">
-            <div className="discussion search">
-              <div className="searchbar">채팅방 목록</div>
+            <div className="discussion">
+              👇🏻👇🏻채팅방을 선택해주세요.
             </div>
             {rowsMap}
           </div>
           {!loading ? (
             <div className="chat">
               <div className="header-chat">
-                <p className="name">{roomName}</p>
+                <p className="name">{roomName} 드라이버님들과의 채팅방</p>
               </div>
               <div className="messages-chat" ref={scrollRef}>
                 {chatMap}
@@ -229,17 +229,16 @@ const Chat = () => {
           ) : (
             <div className="chat">
               <div className="header-chat">
-                <p className="name">{roomName}</p>
+                <p className="name">{roomName} 드라이버님들과의 채팅방</p>
               </div>
               <div className="messages-chat-loading" ref={scrollRef}>
                 <img src={Loading} className="loading"></img>
               </div>
               <div className="footer-chat">
-                <input
-                  type="text"
+                <div
                   className="write-message"
                   placeholder="메세지 입력"
-                ></input>
+                ></div>
                 <SendIcon
                   className="clickable icon"
                   color="primary"
