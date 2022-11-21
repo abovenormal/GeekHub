@@ -178,8 +178,6 @@
 
     - #### 웹과 실시간으로 채팅을 할 수 있습니다.
 
-    ![어플채팅](./README.assets/어플채팅.jpg)
-
   <br/>
 
   - #### 2.5 배달 완료 화면
@@ -245,15 +243,6 @@
 
 client 폴더 안에서 아래의 명령어를 실행합니다.
 
-- dev 환경에서는 약간의 버그가 있을 수 있습니다.
-
-```
-환경변수 .env.development  .env.production
-NEXT_PUBLIC_API_URI=http://j7c207.p.ssafy.io:8088
-NEXT_PUBLIC_BLOCKCHAIN_URI=http://43.200.253.174:3000
-
-```
-
 ```
 패키지 설치
 $ npm install
@@ -277,6 +266,7 @@ $ ./gradlew build
 
 ```
 빌드 파일 실행
-폴더이동 : build -> libs
-$ java -jar aldl.jar
+(MSA 구조로 각 파일의 jar 파일을 실행)
+각 폴더에서 이동 : build -> libs
+$ java -jar *.jar(해당 폴더 안에 맞는 형식의 jar파일 실행)
 ```
