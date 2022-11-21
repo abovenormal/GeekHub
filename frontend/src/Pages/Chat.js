@@ -11,7 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
 import SockJS from "sockjs-client";
-import { over } from 'stompjs';
+import { over } from "stompjs";
 import { now } from "moment";
 
 let stompClient = null;
@@ -25,63 +25,62 @@ const Chat = () => {
   const [chatMap, setChatMap] = useState([]);
   const [roomName, setRoomName] = useState("");
   const [roomIdx, setRoomIdx] = useState("");
-  const [loading,setLoading]=useState(true);
+  const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const sendChatHandler = async () => {
-    if (message === '') return;
+    if (message === "") return;
     const now = new Date();
-    const utcNow = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+    const utcNow = now.getTime() + now.getTimezoneOffset() * 60 * 1000;
     const koreaTimeDiff = 9 * 60 * 60 * 1000;
     const koreaNow = new Date(utcNow + koreaTimeDiff);
-    const time = new Date()
-    time.setHours(koreaNow.getHours)
-    time.setMinutes(koreaNow.getMinutes)
-    console.log(time)
+    const time = new Date();
+    time.setHours(koreaNow.getHours);
+    time.setMinutes(koreaNow.getMinutes);
+    console.log(time);
     const chatMessage = {
-      sender : "1",
-      content : message,
-      roomId : roomIdx,
-      timestamp : new Date()
+      sender: "1",
+      content: message,
+      roomId: roomIdx,
+      timestamp: new Date(),
     };
-    console.log(chatMessage)
-    console.log(JSON.stringify(chatMessage))
+    console.log(chatMessage);
+    console.log(JSON.stringify(chatMessage));
     stompClient.send(`/app/sendMessage`, {}, JSON.stringify(chatMessage));
-    setMessage('');
+    setMessage("");
+  };
 
-  }
-
-  const onError = err => {
-    console.log("에러났다.`")
+  const onError = (err) => {
+    console.log("에러났다.`");
     throw err;
-  }
+  };
 
   const onMessageReceived = () => {
-    console.log("메시지 받았니?")
+    console.log("메시지 받았니?");
     axios("https://k7c205.p.ssafy.io/api/chat/message", {
-              method: "GET",
-              params: {
-                roomIdx: roomIdx,
-              },
-            })
-              .then((res) => {
-                console.log(res);
-                setChat(res.data);
-              })
-              .catch((err) => console.log("Update Price error", err));
-  }
+      method: "GET",
+      params: {
+        roomIdx: roomIdx,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setChat(res.data);
+      })
+      .catch((err) => console.log("Update Price error", err));
+  };
 
   const onConnected = () => {
-    console.log("커넥트 확인")
-    if(stompClient&&stompClient.connected){
-    stompClient.subscribe(`/chat/${roomIdx}`, onMessageReceived);
-    setLoading(false);
+    console.log("커넥트 확인");
+    if (stompClient && stompClient.connected) {
+      stompClient.subscribe(`/chat/${roomIdx}`, onMessageReceived);
+      setLoading(false);
     }
-  }
+  };
 
   async function getData() {
     try {
       const res = await apiInstance().get("chat/rooms");
-      console.log(res.data);
+      // console.log(res.data);
       setData(res.data);
     } catch (err) {
       console.log(err);
@@ -92,18 +91,18 @@ const Chat = () => {
   }
   useEffect(() => {
     setLoading(true);
-    console.log("연결 시작")
-    let Sock = new SockJS("https://k7c205.p.ssafy.io/chatapi/endpoint")
-    stompClient = over(Sock)
-    console.log(roomIdx)
+    console.log("연결 시작");
+    let Sock = new SockJS("https://k7c205.p.ssafy.io/chatapi/endpoint");
+    stompClient = over(Sock);
+    console.log(roomIdx);
     stompClient.connect({}, onConnected, onError);
-  }, [roomIdx])
+  }, [roomIdx]);
   useEffect(() => {
     getData();
   }, []);
   useEffect(() => {
-    if(scrollRef&&scrollRef.current)
-    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    if (scrollRef && scrollRef.current)
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   });
   useEffect(() => {
     let result = [];
@@ -124,7 +123,7 @@ const Chat = () => {
           className="discussion message-active"
           onClick={(e) => {
             // console.log(rows[i].id)
-            setRoomIdx(rows[i].id)
+            setRoomIdx(rows[i].id);
             setRoomName(rows[i].localSchool);
             axios("https://k7c205.p.ssafy.io/api/chat/message", {
               method: "GET",
@@ -181,39 +180,43 @@ const Chat = () => {
             </div>
             {rowsMap}
           </div>
-          {!loading?(<div className="chat">
-            <div className="header-chat">
-              <i className="icon fa fa-user-o" aria-hidden="true"></i>
-              <p className="name">{roomName}</p>
-              <i
-                className="icon clickable fa fa-ellipsis-h right"
-                aria-hidden="true"
-              ></i>
+          {!loading ? (
+            <div className="chat">
+              <div className="header-chat">
+                <i className="icon fa fa-user-o" aria-hidden="true"></i>
+                <p className="name">{roomName}</p>
+                <i
+                  className="icon clickable fa fa-ellipsis-h right"
+                  aria-hidden="true"
+                ></i>
+              </div>
+              <div className="messages-chat" ref={scrollRef}>
+                {chatMap}
+              </div>
+              <div className="footer-chat">
+                <i
+                  className="icon fa fa-smile-o clickable"
+                  style={{ fontSize: 25 }}
+                  aria-hidden="true"
+                ></i>
+                <input
+                  type="text"
+                  className="write-message"
+                  placeholder="메세지 입력"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                ></input>
+                <i
+                  className="icon send fa fa-paper-plane-o clickable"
+                  aria-hidden="true"
+                  c0js0
+                  onClick={sendChatHandler}
+                ></i>
+              </div>
             </div>
-            <div className="messages-chat" ref={scrollRef}>
-              {chatMap}
-            </div>
-            <div className="footer-chat">
-              <i
-                className="icon fa fa-smile-o clickable"
-                style={{ fontSize: 25 }}
-                aria-hidden="true"
-              ></i>
-              <input
-                type="text"
-                className="write-message"
-                placeholder="메세지 입력"
-                value={message}
-                onChange={e => setMessage(e.target.value)}
-              ></input>
-              <i
-                className="icon send fa fa-paper-plane-o clickable"
-                aria-hidden="true"
-                c0js0
-                onClick={sendChatHandler}
-              ></i>
-            </div>
-          </div>):'로딩중'}
+          ) : (
+            "로딩중"
+          )}
         </div>
       </div>
     </div>
