@@ -147,20 +147,36 @@ const Chat = () => {
     }
     setRowsMap(result);
   }, [rows]);
+
   useEffect(() => {
     let result = [];
     for (let i = 0; i < chat.length; i++) {
       result.push(
         <>
-          <div className="message">
-            <p className="text"> {chat[i].content}</p>
-          </div>
-          <p className="time"> {chat[i].created_at}</p>
+          {chat[i].userId == 1 ? (
+            <>
+              <div class="message text-only">
+                <div class="response">
+                  <p class="text"> {chat[i].content}</p>
+                  <p class="response-time"> {chat[i].created_at}</p>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div class="username">{chat[i].name} 드라이버</div>
+              <div class="message text-only">
+                <p class="text">{chat[i].content}</p>
+              </div>
+              <p class="time"> {chat[i].created_at}</p>
+            </>
+          )}
         </>
       );
     }
     setChatMap(result);
   }, [chat]);
+
   const columns = [
     {
       field: "localSchool",
@@ -204,6 +220,11 @@ const Chat = () => {
                   className="write-message"
                   placeholder="메세지 입력"
                   value={message}
+                  onKeyPress={(e) => {
+                    if (e.key == "Enter") {
+                      sendChatHandler();
+                    }
+                  }}
                   onChange={(e) => setMessage(e.target.value)}
                 ></input>
                 <i
