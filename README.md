@@ -250,7 +250,7 @@ $ npm install
 
 ```
 프로젝트 실행
-$ npm run dev
+$ npm run start
 ```
 
 #### Backend <br/>
