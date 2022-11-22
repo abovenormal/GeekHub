@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import "./css/Nav.css";
 import logo from "../../asset/image/logo.png";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -14,6 +14,7 @@ import Logout from "@mui/icons-material/Logout";
 // import logo from "../../asset/image/logo.png"
 const Nav = () => {
   const [nowActive, setNowActive] = useState("overview");
+  const location = useLocation();
   const [expanded, setExpanded] = useState(true);
   return (
     // <nav className={`navigation ${expanded && "expanded"}`}>
@@ -30,9 +31,9 @@ const Nav = () => {
             GeekHub
           </div>
         </Link>
+
         <Link
-          className={"nav-link" + (nowActive === "overview" ? " active" : "")}
-          // className={"nav-link"}
+          className={"nav-link" + (location.pathname === "/" ? " active" : "")}
           to="/"
           onClick={() => {
             setNowActive("overview");
@@ -45,7 +46,8 @@ const Nav = () => {
         </Link>
         <Link
           className={
-            "nav-link" + (nowActive === "driverlocation" ? " active" : "")
+            "nav-link" +
+            (location.pathname === "/driverlocation" ? " active" : "")
           }
           onClick={() => {
             setNowActive("driverlocation");
@@ -58,7 +60,9 @@ const Nav = () => {
           </p>
         </Link>
         <Link
-          className={"nav-link" + (nowActive === "drivermap" ? " active" : "")}
+          className={
+            "nav-link" + (location.pathname === "/drivermap" ? " active" : "")
+          }
           onClick={() => {
             setNowActive("drivermap");
           }}
@@ -70,7 +74,9 @@ const Nav = () => {
           </p>
         </Link>
         <Link
-          className={"nav-link" + (nowActive === "chat" ? " active" : "")}
+          className={
+            "nav-link" + (location.pathname === "/chat" ? " active" : "")
+          }
           onClick={() => {
             setNowActive("chat");
           }}
@@ -82,7 +88,9 @@ const Nav = () => {
           </p>
         </Link>
         <Link
-          className={"nav-link" + (nowActive === "log" ? " active" : "")}
+          className={
+            "nav-link" + (location.pathname === "/log" ? " active" : "")
+          }
           onClick={() => {
             setNowActive("log");
           }}
@@ -94,7 +102,9 @@ const Nav = () => {
           </p>
         </Link>
         <Link
-          className={"nav-link" + (nowActive === "signup" ? " active" : "")}
+          className={
+            "nav-link" + (location.pathname === "/signup" ? " active" : "")
+          }
           onClick={() => {
             setNowActive("signup");
           }}

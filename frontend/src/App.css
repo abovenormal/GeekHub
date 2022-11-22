@@ -33,3 +33,6 @@
   display: flex;
   margin: 1rem;
 }
+.MuiPaper-root {
+  max-height: 2000px;
+}
