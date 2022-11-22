@@ -6,7 +6,10 @@ import Select from "@mui/material/Select";
 import "./css/Dropdown.css";
 import { apiInstance } from "../../api/index";
 import Datepicker from "./Datepicker";
+import cityJson from "../Kakaomap/city.json";
+import schoolJson from "../Kakaomap/school.json";
 import Button from "@mui/material/Button";
+import { Map, MapMarker, Polyline } from "react-kakao-maps-sdk";
 
 const Dropdown = (props) => {
   const selected = props.selected;
@@ -16,6 +19,56 @@ const Dropdown = (props) => {
   const [hourList, setHourList] = useState([]);
   const [minList, setMinList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
+  const [state, setState] = useState({
+    center: { lat: 35.19919101818564, lng: 126.87300478078876 },
+    isPanto: false,
+    level: 7,
+  });
+  const [preSchool, setPreSchool] = useState("");
+  const [preCity, setPreCity] = useState("");
+  useEffect(() => {
+    console.log(selected)
+    for (let i = 0; i < cityJson.length; i++) {
+
+      if (cityJson[i].localCity == selected.localCity) {
+
+        setState((prev) => {
+          return {
+            ...prev,
+            center: {
+              lat: cityJson[i].center.lat,
+              lng: cityJson[i].center.lng,
+            },
+            level: cityJson[i].level,
+          };
+        });
+        if (preSchool == selected.localSchool) {
+          break;
+        }
+        for (let j = 0; j < schoolJson.length; j++) {
+          if (schoolJson[j].localSchool == selected.localSchool) {
+            console.log(selected.localSchool);
+            setState((prev) => {
+              return {
+                ...prev,
+                center: {
+                  lat: schoolJson[j].center.lat,
+                  lng: schoolJson[j].center.lng,
+                },
+                level: schoolJson[j].level,
+              };
+            });
+            setPreSchool(selected.localSchool);
+            setPreCity(selected.localCity)
+            break;
+          }
+        }
+        setPreSchool(selected.localSchool);
+        setPreCity(selected.localCity)
+        break;
+      }
+    }
+  }, [selected]);
 
   useEffect(() => {
     let result = [];
@@ -60,6 +113,7 @@ const Dropdown = (props) => {
       [e.target.name]: e.target.value,
     };
     setSelected(nextInfo);
+
     if (nextInfo.localCity === "서울") {
       setSchoolList(schoolSeoul);
     } else if (nextInfo.localCity === "광주") {
@@ -95,7 +149,16 @@ const Dropdown = (props) => {
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
           value={selected.localCity}
-          onChange={onChange}
+          onChange={(e) => {
+            onChange(e);
+            setSelected((prev) => {
+              return {
+                ...prev,
+                localSchool: "",
+              };
+            });
+          }
+          }
           label="지역"
           name="localCity"
         >
@@ -230,8 +293,8 @@ const Dropdown = (props) => {
           name="category"
           style={{ maxHeight: 300 }}
         >
-          {categoryList.map((category) => (
-            <MenuItem key={category} value={category}>
+          {categoryList.map((category, index) => (
+            <MenuItem key={index} value={category}>
               {category}
             </MenuItem>
           ))}
@@ -274,6 +337,7 @@ const Dropdown = (props) => {
           class="effect-1"
           type="text"
           placeholder="위도"
+          value={selected.lat}
           onChange={(e) => {
             setSelected((prev) => {
               return {
@@ -291,18 +355,39 @@ const Dropdown = (props) => {
           class="effect-1"
           type="text"
           placeholder="경도"
+          value={selected.lng}
           onChange={(e) => {
             setSelected((prev) => {
               return {
                 ...prev,
-                lon: e.target.value,
+                lng: e.target.value,
               };
             });
           }}
         />
         <span class="focus-border"></span>
       </div>
+      <Map
+        center={state.center}
+        level={state.level}
+        style={{
+          // 지도의 크기
+          width: "100%",
+          height: "450px",
+        }}
+        onClick={(_t, mouseEvent) =>
+          setSelected((prev) => {
+            return {
+              ...prev,
+              lat: mouseEvent.latLng.getLat(),
+              lng: mouseEvent.latLng.getLng(),
+            };
+          })
 
+        }
+      >
+        {selected && <MapMarker position={selected} />}
+      </Map>
     </div >
   );
 };

@@ -25,6 +25,7 @@ function DataList() {
   let year = today.getFullYear(); // 년도
   let month = today.getMonth() + 1; // 월
   let date = today.getDate(); // 날짜
+
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
   const [selected, setSelected] = useState({
@@ -38,6 +39,8 @@ function DataList() {
     lat: "",
     lon: "",
   });
+
+  const [position, setPosition] = useState()
 
   const [schoolList, setSchoolList] = useState([]);
 
@@ -167,7 +170,7 @@ function DataList() {
             <div style={{ height: "25vh", width: "100%" }}>
               <div class="container">
                 <div className="newpicker">
-                  <DetailDropdown selected={selected} setSelected={setSelected} />
+                  <DetailDropdown position={position} setPosition={setPosition} selected={selected} setSelected={setSelected} />
 
                 </div>
                 <div class="createbutton">
@@ -175,14 +178,7 @@ function DataList() {
                     variant="contained"
                     onClick={() => {
                       console.log(selected);
-                      console.log(selected.category,
-                        selected.storename,
-                        selected.lat,
-                        selected.lon,
-                        selected.data + `T${selected.hour}:${selected.min}`,
-                        1,
-                        selected.count,
-                        selected.driver)
+
                       axios("https://k7c205.p.ssafy.io/api/spot/createname", {
                         method: "POST",
                         data: {
