@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./css/List.css";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
@@ -20,13 +20,22 @@ import Toast from "../../utils/Toast"
 import { apiInstance } from "../../api/index";
 import logoDotBlack from "../../asset/image/logo-dot-black.png";
 import logoDotWhite from "../../asset/image/logo-dot-white.png";
+import { Map, MapMarker, Polyline } from "react-kakao-maps-sdk";
+
 const List = (props) => {
   const listData = props.listData;
   const selected = props.selected;
+
   function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const [logData, setLogData] = useState([]);
+    const [dataMap, setDataMap] = useState([]);
+    const [state, setState] = useState({
+      center: { lat: 35.19919101818564, lng: 126.87300478078876 },
+      isPanto: false,
+      level: 7,
+    });
     const API = apiInstance();
     let allTask = 0;
     let completeTask = 0;
@@ -45,35 +54,47 @@ const List = (props) => {
       console.log(selected.date)
       // 열릴 때만 Get 요청 보내기 위해 분기 추가 했다가
       // 열린 채로 새로 고침 안 되서 잠시 삭제
-    if (allTask > 0) {
-      try {
-        const res = await API.get("/location/getLog50", {
-          params: { 
-            driver: id,
-            date: selected.date
-          },
+      if (allTask > 0) {
+        try {
+          const res = await API.get("/location/getLog50", {
+            params: {
+              driver: id,
+              date: selected.date
+            },
+          });
+          console.log(res.data);
+          let result = [];
+          for (let i = 0; i < res.data.length; i++) {
+            let item = res.data[i];
+            if (!item.latitude) continue;
+            result.push({
+              lat: item.latitude,
+              lng: item.longitude
+            }
+            );
+          }
+          console.log(result);
+          setDataMap(result);
+          setLogData(res.data);
+          setOpen(!open);
+        }
+        catch (err) {
+          console.log(err);
+        }
+      } else {
+        Toast.fire({
+          icon: "info",
+          title: "조회된 데이터가 없습니다.",
+          timer: 1000,
+          position: "center",
         });
-        console.log(res.data);
-        setLogData(res.data);
-        setOpen(!open);
       }
-      catch (err) {
-        console.log(err);
-      }
-    } else {
-      Toast.fire({
-        icon: "info",
-        title: "조회된 데이터가 없습니다.",
-        timer: 1000,
-        position: "center",
-      });
     }
-  }
-    
+
     async function getLog(id) {
       try {
         const res = await API.get("/location/getLog", {
-          params: { 
+          params: {
             driver: id,
             date: selected.date
           },
@@ -131,9 +152,9 @@ const List = (props) => {
                 <div className="no-list">조회된 데이터가 없습니다.</div>
               </div>
             ) : <div className="name-container">
-            <div className="list-username">{row.userName}</div>
-            <div className="no-list">총 {completeTask}건의 기록이 있습니다.</div>
-          </div> }
+              <div className="list-username">{row.userName}</div>
+              <div className="no-list">총 {completeTask}건의 기록이 있습니다.</div>
+            </div>}
           </TableCell>
         </TableRow>
         <TableRow>
@@ -156,47 +177,75 @@ const List = (props) => {
                   <div className="img-container">
                     {row.spotResponseDtoList.map((taskRow) => (
                       <div className="img-box">
-                        {(taskRow.imageUrl) ? 
-                        <>
-                        <img
-                          className="img"
-                          src={taskRow.imageUrl}
-                          onClick={() => {
-                            const spotName = taskRow.spotName;
-                            const imageUrl = taskRow.imageUrl;
-                            const arrivedTime = taskRow.arrivedTime;
-                            Swal.fire({
-                              title: spotName,
-                              text: `도착 시각 : ${arrivedTime.slice(11, 16)}`,
-                              imageUrl: imageUrl,
-                              imageWidth: 300,
-                              imageHeight: 300,
-                              imageAlt: "Pickup image",
-                            });
-                          }}
-                        />
-                        <h3>{taskRow.spotName}</h3></> : <img className="img" src={logoDotBlack}></img>}
-                        
+                        {(taskRow.imageUrl) ?
+                          <>
+                            <img
+                              className="img"
+                              src={taskRow.imageUrl}
+                              onClick={() => {
+                                const spotName = taskRow.spotName;
+                                const imageUrl = taskRow.imageUrl;
+                                const arrivedTime = taskRow.arrivedTime;
+                                Swal.fire({
+                                  title: spotName,
+                                  text: `도착 시각 : ${arrivedTime.slice(11, 16)}`,
+                                  imageUrl: imageUrl,
+                                  imageWidth: 300,
+                                  imageHeight: 300,
+                                  imageAlt: "Pickup image",
+                                });
+                              }}
+                            />
+                            <h3>{taskRow.spotName}</h3></> : <img className="img" src={logoDotBlack}></img>}
+
                       </div>
                     ))}
                   </div>
-                  
+
                   <Typography
                     variant="h5"
                     gutterBottom
                     component="div"
                     sx={{ margin: "0.5rem" }}
                   >
-                    GPS          
+                    GPS
                   </Typography>
-                  <span className="all-show" onClick={()=>{
+                  <span className="all-show" onClick={() => {
                     getLog(row.userIdx)
                   }}>로그 기록 전체 보기</span>
+
+
+                  <Map
+
+                    center={{
+                      // 지도의 중심좌표
+                      lat: 35.19919101818564, lng: 126.87300478078876
+                    }}
+                    style={{
+                      // 지도의 크기
+                      width: "100%",
+                      height: "450px",
+                    }}
+                    level={7} // 지도의 확대 레벨
+                  >
+                    <Polyline
+                      path={
+                        dataMap
+                      }
+                      strokeWeight={5} // 선의 두께 입니다
+                      strokeColor={"black"} // 선의 색깔입니다
+                      strokeOpacity={0.7} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                      strokeStyle={"solid"} // 선의 스타일입니다
+                    />
+                  </Map>
+
+
                   <Table
                     size="small"
                     aria-label="purchases"
                     className="table-container"
                   >
+
                     <TableHead>
                       <TableRow>
                         <TableCell>시간</TableCell>
@@ -206,7 +255,7 @@ const List = (props) => {
                     </TableHead>
                     <TableBody>
                       {logData.map((log) => (
-                        <TableRow key={log.timestamp}>
+                        <TableRow key={log._id}>
                           <TableCell component="th" scope="row">
                             {JSON.stringify(log.timestamp)}
                           </TableCell>
@@ -221,7 +270,7 @@ const List = (props) => {
             </Collapse>
           </TableCell>
         </TableRow>
-      </React.Fragment>
+      </React.Fragment >
     );
   }
 
