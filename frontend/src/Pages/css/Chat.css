@@ -1,6 +1,7 @@
-.row {
+.rows {
   display: flex;
   height: 100%;
+  /* padding: 110; */
 }
 body {
 }
@@ -56,10 +57,11 @@ body {
 
 .discussions {
   width: 35%;
-  box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.20);
   overflow: hidden;
   /* background-color: #87a3ec; */
   display: inline-block;
+  height: 78vh + 90px;
 }
 
 .discussions .discussion {
@@ -236,7 +238,7 @@ body {
 }
 
 .chat .messages-chat {
-  padding: 10px 35px;
+  padding: 10px 35px 0 35px;
   overflow-y: auto;
   height: 80vh;
 }
@@ -310,7 +312,7 @@ body {
 
 .footer-chat {
   width: calc(65% - 100px);
-  height: 80px;
+  height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
