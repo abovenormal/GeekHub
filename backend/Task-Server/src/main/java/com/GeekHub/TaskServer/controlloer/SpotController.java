@@ -1,5 +1,6 @@
 package com.GeekHub.TaskServer.controlloer;
 
+import com.GeekHub.TaskServer.dto.request.CreateSpotRequestDto;
 import com.GeekHub.TaskServer.dto.request.ImgRequestDto;
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
@@ -59,7 +60,9 @@ public class SpotController {
         HttpEntity<Map<String,Object>> entity = new HttpEntity<Map<String,Object>>(request);
         // Webhook URL
         String url = "https://hooks.slack.com/services/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";
+        log.info("11111111111");
         restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+        log.info("222222222222");
     }
 
     @GetMapping
@@ -89,6 +92,16 @@ public class SpotController {
         try {
            SpotService.createSpot(spotRequestDto);
          }catch (Exception e){
+            throw new RuntimeException();
+        }
+        return new ResponseEntity<String>("success",HttpStatus.CREATED);
+    }
+    @PostMapping("/createname")
+    public ResponseEntity<String> createSpotName(@RequestBody CreateSpotRequestDto createSpotRequestDto){
+        try {
+
+            SpotService.createSpotName(createSpotRequestDto);
+        }catch (Exception e){
             throw new RuntimeException();
         }
         return new ResponseEntity<String>("success",HttpStatus.CREATED);
