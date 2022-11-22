@@ -148,7 +148,11 @@ public class SpotServiceImpl implements SpotService {
         spot.setStatus(2);
     }
 
-
+    @Override
+    @Transactional
+    public void deleteSpot(Long spotIdx) throws Exception {
+        spotRepository.deleteSpotBySpotIdx(spotIdx);
+    }
 //    public List<SpotLogDto> log(LogRequestDto logRequestDto) throws Exception{
 //        String localCity= logRequestDto.getLocalCity();
 //        String localSchool= logRequestDto.getLocalSchool();

@@ -17,7 +17,7 @@ public interface SpotService {
     void createSpotName(CreateSpotRequestDto createSpotRequestDto) throws Exception;
     void createSpot(SpotRequestDto spotDto) throws Exception;
 //    void updateSpot(SpotRequestDto spotDto) throws Exception;
-//    void deleteSpot(Long spotIdx) throws Exception;
+    void deleteSpot(Long spotIdx) throws Exception;
 //    List<SpotLogDto> log(LogRequestDto logRequestDto) throws Exception;
 //    List<SchoolSuccessDto> getSuccess() throws  Exception;
     List<WorkResponseDto> work(long driverIdx, SpotCategory spotCategory) throws Exception;

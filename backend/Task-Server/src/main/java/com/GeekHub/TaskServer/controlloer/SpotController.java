@@ -60,9 +60,7 @@ public class SpotController {
         HttpEntity<Map<String,Object>> entity = new HttpEntity<Map<String,Object>>(request);
         // Webhook URL
         String url = "https://hooks.slack.com/services/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";
-        log.info("11111111111");
         restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-        log.info("222222222222");
     }
 
     @GetMapping
@@ -95,6 +93,19 @@ public class SpotController {
             throw new RuntimeException();
         }
         return new ResponseEntity<String>("success",HttpStatus.CREATED);
+    }
+    @DeleteMapping("/{spotIdx}")
+    public ResponseEntity<String> deleteSpot(@PathVariable("spotIdx") long spotIdx){
+        String result;
+        try {
+            SpotService.deleteSpot(spotIdx);
+            result="delete success";
+        } catch (Exception e) {
+            result="error";
+            throw new RuntimeException();
+        }
+
+        return new ResponseEntity<String>(result,HttpStatus.OK);
     }
     @PostMapping("/createname")
     public ResponseEntity<String> createSpotName(@RequestBody CreateSpotRequestDto createSpotRequestDto){
