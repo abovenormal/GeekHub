@@ -4,6 +4,22 @@ import { apiInstance } from "../../api/index";
 import Button from "@mui/material/Button";
 import "./DataGrid.css";
 import DetailDropdown from "../Common/DetailDropdown";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import axios from "axios";
+import Toast from "../../utils/Toast";
+
 function DataList() {
   let today = new Date();
   let year = today.getFullYear(); // 년도
@@ -35,25 +51,16 @@ function DataList() {
     }
   }
   useEffect(() => {
-    let result = [];
-    let temp = {};
-    temp.id = "";
-    temp.spotCategory = "";
-    temp.spotName = "";
-    temp.expectedTime = "2022-01-01 12:00:00";
-    temp.arrivedTime = "";
-    temp.count = 0;
-    temp.lat = "";
-    temp.lon = "";
-    result.push(temp);
+
     getData();
   }, []);
+
   useEffect(() => {
     let result = [];
     for (let i = 0; i < data.length; i++) {
       let item = data[i];
       let temp = {};
-      temp.id = item.spotIdx;
+      temp.spotIdx = item.spotIdx;
       temp.spotCategory = item.spotCategory;
       temp.spotName = item.spotName;
       temp.expectedTime = item.expectedTime;
@@ -66,148 +73,161 @@ function DataList() {
     setRows(result);
   }, [data]);
 
-  function getExpectedTime(params) {
-    return `${params.row.expectedTime.substr(
-      0,
-      10
-    )} ${params.row.expectedTime.substr(11, 18)}`;
-  }
-  function getArrivedTime(params) {
-    if (params.row.arrivedTime == null) {
-      return;
-    }
-    return `${params.row.arrivedTime.substr(
-      0,
-      10
-    )} ${params.row.arrivedTime.substr(11, 18)}`;
-  }
 
-  const columns = [
-    { field: "id", headerName: "ID", width: 100 },
-    {
-      field: "spotCategory",
-      headerName: "분류",
-      width: 100,
-      editable: true,
-    },
-    {
-      field: "spotName",
-      headerName: "가게 이름",
-      width: 200,
-      editable: true,
-    },
-    {
-      field: "expectedTime",
-      headerName: "도착 예정 시간",
-      type: "dateTime",
-      width: 200,
-      editable: true,
-      valueGetter: getExpectedTime,
-    },
-    {
-      field: "count",
-      headerName: "수량",
-      type: "number",
-      width: 150,
-      editable: true,
-    },
-    {
-      field: "lat",
-      headerName: "위도",
-      width: 150,
-      editable: true,
-    },
-    {
-      field: "lon",
-      headerName: "경도",
-      width: 150,
-      editable: true,
-    },
-  ];
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
-    <div style={{ height: "70vh", width: "80vw" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={7}
-        rowsPerPageOptions={[5]}
-      />
-      <div style={{ height: "25vh", width: "80vw" }}>
-        <div class="container">
-          <div className="newpicker">
-            <DetailDropdown selected={selected} setSelected={setSelected} />
-          </div>
-          <div class="col-3">
-            <input
-              class="effect-1"
-              type="text"
-              placeholder="가게명"
-              onChange={(e) => {
-                setSelected((prev) => {
-                  return {
-                    ...prev,
-                    storename: e.target.value,
-                  };
-                });
-              }}
-            />
-            <span class="focus-border"></span>
-          </div>
-          <div class="col-3">
-            <input
-              class="effect-1"
-              type="text"
-              placeholder="위도"
-              onChange={(e) => {
-                setSelected((prev) => {
-                  return {
-                    ...prev,
-                    lat: e.target.value,
-                  };
-                });
-              }}
-            />
-            <span class="focus-border"></span>
-          </div>
+    <div>
+      <TableContainer component={Paper} style={{ height: "100vh", width: "80vw", fontFamily: "BMHANNAPro" }}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>분류</TableCell>
+              <TableCell align="justify">가게명</TableCell>
+              <TableCell align="justify">도착 예정 시간</TableCell>
+              <TableCell align="justify">수량</TableCell>
+              <TableCell align="justify">위도</TableCell>
+              <TableCell align="justify">경도</TableCell>
+              <TableCell align="center">
+                <Button variant="contained" startIcon={<AddIcon />} color="success"
+                  onClick={handleOpen}>추가</Button></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { backgroundColor: "#f6d336" } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.spotCategory}
+                </TableCell>
+                <TableCell align="justify">{row.spotName}</TableCell>
+                <TableCell align="justify">{row.expectedTime.substr(0, 10) + " " + row.expectedTime.substr(11, 16)}</TableCell>
+                <TableCell align="justify">{row.count}</TableCell>
+                <TableCell align="justify">{row.lat}</TableCell>
+                <TableCell align="justify">{row.lon}</TableCell>
+                <TableCell align="center">
+                  {/* <Button variant="contained" startIcon={<EditIcon />}
+                    onClick={() => {
+                      Toast.fire({
+                        icon: "info",
+                        title: "조회된 데이터가 없습니다.",
+                        timer: 1000,
+                        position: "center",
+                      });
 
-          <div class="col-3">
-            <input
-              class="effect-1"
-              type="text"
-              placeholder="경도"
-              onChange={(e) => {
-                setSelected((prev) => {
-                  return {
-                    ...prev,
-                    lon: e.target.value,
-                  };
-                });
-              }}
-            />
-            <span class="focus-border"></span>
-          </div>
-          <div class="col-3">
-            <Button
-              variant="contained"
-              onClick={() => {
-                // console.log(selected);
-                // axios("https://k7c205.p.ssafy.io/api/chat/message", {
-                //   method: "POST",
-                //   data: selected,
-                // })
-                //   .then((res) => {
-                //     console.log(res);
-                //     setChat(res.data);
-                //   })
-                //   .catch((err) => console.log("Update Price error", err));
-              }}
-            >
-              업무 추가
-            </Button>
-          </div>
-        </div>
-      </div>
+                    }}>수정</Button>
+                  {" "} */}
+                  <Button variant="contained" startIcon={<DeleteIcon />} color="error"
+                    onClick={() => {
+                      axios("https://k7c205.p.ssafy.io/api/spot/" + row.spotIdx, {
+                        method: "delete",
+                      })
+                        .then((res) => {
+                          handleClose();
+                          getData();
+                          Toast.fire({
+                            icon: "info",
+                            title: "업무가 삭제 되었습니다.",
+                            timer: 1000,
+                            position: "center",
+                          });
+                          console.log(res.data);
+                        })
+                        .catch((err) => console.log("Update Price error", err));
+                    }}>삭제</Button></TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: "50%",
+          bgcolor: 'background.paper',
+          border: '2px solid #000',
+          p: 4,
+        }}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            업무 추가
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <div style={{ height: "25vh", width: "100%" }}>
+              <div class="container">
+                <div className="newpicker">
+                  <DetailDropdown selected={selected} setSelected={setSelected} />
+
+                </div>
+                <div class="createbutton">
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      console.log(selected);
+                      console.log(selected.category,
+                        selected.storename,
+                        selected.lat,
+                        selected.lon,
+                        selected.data + `T${selected.hour}:${selected.min}`,
+                        1,
+                        selected.count,
+                        selected.driver)
+                      axios("https://k7c205.p.ssafy.io/api/spot/createname", {
+                        method: "POST",
+                        data: {
+                          spotCategory: selected.category,
+                          spotName: selected.storename,
+                          lat: selected.lat,
+                          lon: selected.lon,
+                          expectedTime: selected.date + `T${selected.hour}:${selected.min}`,
+                          status: 1,
+                          count: selected.count,
+                          userName: selected.driver
+                        },
+                      })
+                        .then((res) => {
+                          handleClose();
+                          getData();
+                          Toast.fire({
+                            icon: "info",
+                            title: "업무가 생성 되었습니다.",
+                            timer: 1000,
+                            position: "center",
+                          });
+                          console.log(res.data);
+                        })
+                        .catch((err) => {
+                          Toast.fire({
+                            icon: "error",
+                            title: "입력을 확인해주세요.",
+                            timer: 1000,
+                            position: "center",
+                          });
+                          console.log("Update Price error", err)
+                        });
+                    }}
+                  >
+                    업무 추가
+                  </Button>
+                </div>
+              </div>
+
+            </div>
+          </Typography>
+        </Box>
+      </Modal>
+
     </div>
   );
 }
