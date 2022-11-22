@@ -83,10 +83,13 @@ class CameraxFragment : Fragment() {
             spot = it.getString("spot")
             userid = it.getString("userid")
         }
-        if (title != "널"){
+        if (title != "널" && title != "비NFC"){
             binding.cameraTitle.setText("배달지는 ${title}입니다")
 
-        }else{
+        }else if (title != "비NFC"){
+            binding.sendPicture.setText("수령완료")
+        }
+        else{
             binding.sendPicture.setText("수령완료")
         }
 

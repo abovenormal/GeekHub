@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0);
         }
         gps = TMapGpsManager(this)
-        gps!!.minTime = 5000
+        gps!!.minTime = 100000
         gps!!.minDistance = 0F
         gps!!.provider = TMapGpsManager.GPS_PROVIDER
         gps!!.OpenGps()
@@ -366,6 +366,7 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
         bundle.putString("idx",idx)
         bundle.putString("url",url)
         fragment.arguments = bundle
+
             supportFragmentManager.beginTransaction()
                 .replace(R.id.main_container_view, fragment)
                 .addToBackStack(null)
