@@ -35,7 +35,7 @@ const Dropdown = (props) => {
         for (let i = 0; i < res.data.length; i++) {
           let item = res.data[i];
           if (item.userName != null) {
-            result.push(item.userName);
+            result.push(item);
           }
         }
         setDriverList(result);
@@ -122,6 +122,7 @@ const Dropdown = (props) => {
           id="demo-simple-select-standard"
           value={selected.driver}
           onChange={(e) => {
+            console.log(e);
             setSelected((prev) => {
               return {
                 ...prev,
@@ -133,9 +134,9 @@ const Dropdown = (props) => {
           label="드라이버"
           name="driver"
         >
-          {driverList.map((driver) => (
-            <MenuItem key={driver} value={driver}>
-              {driver}
+          {driverList.map((d) => (
+            <MenuItem key={d.userIdx} value={d.userName}>
+              {d.userName}
             </MenuItem>
           ))}
         </Select>
