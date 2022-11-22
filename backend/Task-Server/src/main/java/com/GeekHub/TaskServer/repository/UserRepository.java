@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
     User findUserByUserIdx(long userIdx);
+    User findUserByUserName(String userName);
     Optional<List<User>> findUserByLocalCityAndLocalSchool(String localCity, String localSchool);
     Optional<List<User>> findUserByLocalSchool(String localSchool);
     List<User> findAll();

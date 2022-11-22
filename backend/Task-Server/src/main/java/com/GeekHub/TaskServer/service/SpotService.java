@@ -1,5 +1,6 @@
 package com.GeekHub.TaskServer.service;
 
+import com.GeekHub.TaskServer.dto.request.CreateSpotRequestDto;
 import com.GeekHub.TaskServer.dto.request.ImgRequestDto;
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
@@ -14,7 +15,8 @@ public interface SpotService {
     List<SpotResponseDto> getSpotAll() throws Exception;
     SpotResponseDto getSpot(Long spotIdx) throws  Exception;
     void createSpot(SpotRequestDto spotDto) throws Exception;
-//    void updateSpot(SpotRequestDto spotDto) throws Exception;
+    void createSpotName(CreateSpotRequestDto createSpotRequestDto) throws Exception;
+    //    void updateSpot(SpotRequestDto spotDto) throws Exception;
 //    void deleteSpot(Long spotIdx) throws Exception;
 //    List<SpotLogDto> log(LogRequestDto logRequestDto) throws Exception;
 //    List<SchoolSuccessDto> getSuccess() throws  Exception;

@@ -1,5 +1,6 @@
 package com.GeekHub.TaskServer.service;
 
+import com.GeekHub.TaskServer.dto.request.CreateSpotRequestDto;
 import com.GeekHub.TaskServer.dto.request.ImgRequestDto;
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
@@ -84,7 +85,29 @@ public class SpotServiceImpl implements SpotService {
             throw new Exception();
         }
     }
+    @Override
+    @Transactional
+    public void createSpotName(CreateSpotRequestDto createSpotRequestDto) throws Exception {
+        LOGGER.info(createSpotRequestDto.toString());
+        User spotUser = userRepository.findUserByUserName(createSpotRequestDto.getUserName());
 
+        LOGGER.info(spotUser.toString());
+        try {
+            Spot spotEntity = Spot.builder()
+                    .spotCategory(createSpotRequestDto.getSpotCategory())
+                    .spotName(createSpotRequestDto.getSpotName())
+                    .lat(createSpotRequestDto.getLat())
+                    .lon(createSpotRequestDto.getLon())
+                    .expectedTime(createSpotRequestDto.getExpectedTime())
+                    .status(createSpotRequestDto.getStatus())
+                    .count(createSpotRequestDto.getCount())
+                    .userIdx(spotUser.getUserIdx())
+                    .build();
+            spotRepository.save(spotEntity);
+        }catch (Exception e){
+            throw new Exception();
+        }
+    }
     @Override
     public List<WorkResponseDto> work(long driverIdx, SpotCategory spotCategory) throws Exception {
         User user = userRepository.findUserByUserIdx(driverIdx);

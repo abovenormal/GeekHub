@@ -1,5 +1,6 @@
 package com.GeekHub.TaskServer.controlloer;
 
+import com.GeekHub.TaskServer.dto.request.CreateSpotRequestDto;
 import com.GeekHub.TaskServer.dto.request.ImgRequestDto;
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
@@ -89,6 +90,16 @@ public class SpotController {
         try {
            SpotService.createSpot(spotRequestDto);
          }catch (Exception e){
+            throw new RuntimeException();
+        }
+        return new ResponseEntity<String>("success",HttpStatus.CREATED);
+    }
+    @PostMapping("/createname")
+    public ResponseEntity<String> createSpotName(@RequestBody CreateSpotRequestDto createSpotRequestDto){
+        try {
+
+            SpotService.createSpotName(createSpotRequestDto);
+        }catch (Exception e){
             throw new RuntimeException();
         }
         return new ResponseEntity<String>("success",HttpStatus.CREATED);
