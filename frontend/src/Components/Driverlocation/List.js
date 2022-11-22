@@ -187,7 +187,7 @@ const List = (props) => {
                     gutterBottom
                     component="div"
                   ></Typography>
-                  <Table size="small" aria-label="purchases">
+                  <Table size="small">
                     <TableHead>
                       <TableRow>
                         <TableCell>
@@ -559,7 +559,7 @@ const List = (props) => {
   const timebelt = props.timebelt;
   return (
     <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
+      <Table>
         <TableHead>
           <TableRow></TableRow>
         </TableHead>
