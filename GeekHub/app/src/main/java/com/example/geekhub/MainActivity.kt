@@ -251,6 +251,11 @@ class MainActivity : AppCompatActivity(), TMapGpsManager.onLocationChangedCallba
                 moveFragment(NfcFragment())
             }
 
+            4 -> {
+                clearBackStack()
+                moveFragment(DeliveryFragment())
+
+            }
 
             5 -> {
                 clearBackStack()

@@ -287,14 +287,14 @@ class CameraxFragment : Fragment() {
                 finishFragment()
                 (activity as MainActivity).next(userid!!)
                 (activity as MainActivity).findPath()
-                (activity as MainActivity).changeFragment(7)
+                (activity as MainActivity).changeFragment(4)
                 (activity as MainActivity).cntClear()
             }
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 finishFragment()
                 (activity as MainActivity).next(userid!!)
                 (activity as MainActivity).findPath()
-                (activity as MainActivity).changeFragment(7)
+                (activity as MainActivity).changeFragment(4)
                 (activity as MainActivity).cntClear()
 
             }
