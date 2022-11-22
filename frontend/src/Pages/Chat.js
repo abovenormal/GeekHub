@@ -13,6 +13,8 @@ import axios from "axios";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { now } from "moment";
+import SendIcon from "@mui/icons-material/Send";
+import Loading from "../asset/image/loading.gif";
 
 let stompClient = null;
 const Chat = () => {
@@ -27,6 +29,7 @@ const Chat = () => {
   const [roomIdx, setRoomIdx] = useState("");
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [nowSelected, setNowSelected] = useState("");
   const sendChatHandler = async () => {
     if (message === "") return;
     const now = new Date();
@@ -115,34 +118,17 @@ const Chat = () => {
     }
     setRows(result);
   }, [data]);
+  const onToggle = (schoolIdx) => {
+    setNowSelected(schoolIdx);
+    console.log(`nowSelected is ${nowSelected}`)
+  }
   useEffect(() => {
     let result = [];
     for (let i = 0; i < rows.length; i++) {
       result.push(
-        <div
-          className="discussion message-active"
-          onClick={(e) => {
-            // console.log(rows[i].id)
-            setRoomIdx(rows[i].id);
-            setRoomName(rows[i].localSchool);
-            axios("https://k7c205.p.ssafy.io/api/chat/message", {
-              method: "GET",
-              params: {
-                roomIdx: rows[i].id,
-              },
-            })
-              .then((res) => {
-                // console.log(res);
-                setChat(res.data);
-              })
-              .catch((err) => console.log("Update Price error", err));
-            console.log(rows[i]);
-          }}
-        >
           <div className="desc-contact">
             <p className="name">{rows[i].localSchool}</p>
           </div>
-        </div>
       );
     }
     setRowsMap(result);
@@ -155,20 +141,20 @@ const Chat = () => {
         <>
           {chat[i].userId == 1 ? (
             <>
-              <div class="message text-only">
-                <div class="response">
-                  <p class="text"> {chat[i].content}</p>
-                  <p class="response-time"> {chat[i].created_at}</p>
+              <div className="message text-only">
+                <div className="response">
+                  <p className="text"> {chat[i].content}</p>
+                  <p className="response-time"> {chat[i].created_at}</p>
                 </div>
               </div>
             </>
           ) : (
             <>
-              <div class="username">{chat[i].name} 드라이버</div>
-              <div class="message text-only">
-                <p class="text">{chat[i].content}</p>
+              <div className="username">{chat[i].name} 드라이버</div>
+              <div className="message text-only">
+                <p className="text">{chat[i].content}</p>
               </div>
-              <p class="time"> {chat[i].created_at}</p>
+              <p className="time"> {chat[i].created_at}</p>
             </>
           )}
         </>
@@ -191,30 +177,43 @@ const Chat = () => {
       <div className="container">
         <div className="row">
           <div className="discussions">
-            <div className="discussion search">
-              <div className="searchbar">채팅방 목록</div>
+            <div className="discussion">
+              <div className="discussion-title">👇🏻채팅방을 선택해주세요.</div>
             </div>
-            {rowsMap}
+            {/* {rowsMap} */}
+            {rowsMap.map((row, i)=> 
+              (
+               <div
+        onClick={() => {
+          // console.log(rows[i].id)
+          setRoomIdx(rows[i].id);
+          setRoomName(rows[i].localSchool);
+          onToggle(rows[i].id);
+          axios("https://k7c205.p.ssafy.io/api/chat/message", {
+            method: "GET",
+            params: {
+              roomIdx: rows[i].id,
+            },
+          })
+          .then((res) => {
+            setChat(res.data);
+            onToggle(rows[i].id);
+          })
+          .catch((err) => console.log("Update Price error", err));
+          console.log(rows[i]);
+        }}
+        className={(nowSelected === rows[i].id ? "discussion selected-chat" : "discussion message-active")}
+        >{row}</div>))}
           </div>
           {!loading ? (
             <div className="chat">
               <div className="header-chat">
-                <i className="icon fa fa-user-o" aria-hidden="true"></i>
-                <p className="name">{roomName}</p>
-                <i
-                  className="icon clickable fa fa-ellipsis-h right"
-                  aria-hidden="true"
-                ></i>
+                <p className="name">{roomName} 드라이버님들과의 채팅방</p>
               </div>
               <div className="messages-chat" ref={scrollRef}>
                 {chatMap}
               </div>
               <div className="footer-chat">
-                <i
-                  className="icon fa fa-smile-o clickable"
-                  style={{ fontSize: 25 }}
-                  aria-hidden="true"
-                ></i>
                 <input
                   type="text"
                   className="write-message"
@@ -227,16 +226,33 @@ const Chat = () => {
                   }}
                   onChange={(e) => setMessage(e.target.value)}
                 ></input>
-                <i
-                  className="icon send fa fa-paper-plane-o clickable"
-                  aria-hidden="true"
-                  c0js0
+                <SendIcon
+                  className="clickable icon"
+                  color="primary"
                   onClick={sendChatHandler}
-                ></i>
+                />
               </div>
             </div>
           ) : (
-            "로딩중"
+            <div className="chat">
+              <div className="header-chat">
+                <p className="name">{roomName} 드라이버님들과의 채팅방</p>
+              </div>
+              <div className="messages-chat-loading" ref={scrollRef}>
+                <img src={Loading} className="loading"></img>
+              </div>
+              <div className="footer-chat">
+                <div
+                  className="write-message"
+                  placeholder="메세지 입력"
+                ></div>
+                <SendIcon
+                  className="clickable icon"
+                  color="primary"
+                />
+              </div>
+            </div>
+            
           )}
         </div>
       </div>
