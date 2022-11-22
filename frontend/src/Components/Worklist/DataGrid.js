@@ -1,10 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { apiInstance } from "../../api/index";
+import Button from "@mui/material/Button";
+import "./DataGrid.css";
+import DetailDropdown from "../Common/DetailDropdown";
 function DataList() {
+  let today = new Date();
+  let year = today.getFullYear(); // 년도
+  let month = today.getMonth() + 1; // 월
+  let date = today.getDate(); // 날짜
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
-  const [newrows, setNewRows] = useState([]);
+  const [selected, setSelected] = useState({
+    localCity: "",
+    localSchool: "",
+    date: `${year}-${month}-${date}`,
+    hour: "",
+    min: "",
+    storename: "",
+    driver: "",
+    lat: "",
+    lon: "",
+  });
+
+  const [schoolList, setSchoolList] = useState([]);
 
   async function getData() {
     try {
@@ -27,7 +46,6 @@ function DataList() {
     temp.lat = "";
     temp.lon = "";
     result.push(temp);
-    setNewRows(result);
     getData();
   }, []);
   useEffect(() => {
@@ -45,7 +63,6 @@ function DataList() {
       temp.lon = item.lon;
       result.push(temp);
     }
-    console.log(result);
     setRows(result);
   }, [data]);
 
@@ -117,12 +134,79 @@ function DataList() {
         rowsPerPageOptions={[5]}
       />
       <div style={{ height: "25vh", width: "80vw" }}>
-        <DataGrid
-          rows={newrows}
-          columns={columns}
-          pageSize={1}
-          experimentalFeatures={{ newEditingApi: true }}
-        />
+        <div class="container">
+          <div className="newpicker">
+            <DetailDropdown selected={selected} setSelected={setSelected} />
+          </div>
+          <div class="col-3">
+            <input
+              class="effect-1"
+              type="text"
+              placeholder="가게명"
+              onChange={(e) => {
+                setSelected((prev) => {
+                  return {
+                    ...prev,
+                    storename: e.target.value,
+                  };
+                });
+              }}
+            />
+            <span class="focus-border"></span>
+          </div>
+          <div class="col-3">
+            <input
+              class="effect-1"
+              type="text"
+              placeholder="위도"
+              onChange={(e) => {
+                setSelected((prev) => {
+                  return {
+                    ...prev,
+                    lat: e.target.value,
+                  };
+                });
+              }}
+            />
+            <span class="focus-border"></span>
+          </div>
+
+          <div class="col-3">
+            <input
+              class="effect-1"
+              type="text"
+              placeholder="경도"
+              onChange={(e) => {
+                setSelected((prev) => {
+                  return {
+                    ...prev,
+                    lon: e.target.value,
+                  };
+                });
+              }}
+            />
+            <span class="focus-border"></span>
+          </div>
+          <div class="col-3">
+            <Button
+              variant="contained"
+              onClick={() => {
+                // console.log(selected);
+                // axios("https://k7c205.p.ssafy.io/api/chat/message", {
+                //   method: "POST",
+                //   data: selected,
+                // })
+                //   .then((res) => {
+                //     console.log(res);
+                //     setChat(res.data);
+                //   })
+                //   .catch((err) => console.log("Update Price error", err));
+              }}
+            >
+              업무 추가
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
