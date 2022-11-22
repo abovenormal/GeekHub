@@ -114,7 +114,7 @@ const Signup = () => {
   return (
     <div className="signup-container">
       <form className="signup-form" method="post" onSubmit={signupSubmit}>
-        <h2 className="signup-title">신규 기사님 등록</h2>
+        <h2 className="signup-title">신규 드라이버 등록</h2>
         <TextField
           required
           id="name"
