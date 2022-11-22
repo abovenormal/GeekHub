@@ -6,7 +6,7 @@ import Select from "@mui/material/Select";
 import "./css/Dropdown.css";
 import { apiInstance } from "../../api/index";
 import Datepicker from "./Datepicker";
-import axios from "axios";
+import Button from "@mui/material/Button";
 
 const Dropdown = (props) => {
   const selected = props.selected;
@@ -15,6 +15,8 @@ const Dropdown = (props) => {
   const [driverList, setDriverList] = useState([]);
   const [hourList, setHourList] = useState([]);
   const [minList, setMinList] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
+
   useEffect(() => {
     let result = [];
     for (let i = 0; i < 24; i++) {
@@ -26,7 +28,13 @@ const Dropdown = (props) => {
       result.push(i);
     }
     setMinList(result);
+    result = [];
+    result.push("STORE");
+    result.push("DESTINATION");
+    result.push("HUB");
+    setCategoryList(result);
   }, []);
+
   useEffect(() => {
     if (selected.localCity && selected.localSchool) {
       async function getUser() {
@@ -78,7 +86,6 @@ const Dropdown = (props) => {
   ];
   const schoolSuwon = ["성균관대학교(자연과학캠퍼스)"];
   const schoolIncheon = ["송도 글로벌캠퍼스", "연세대학교(송도)"];
-
   const schoolGwangju = ["광주과학기술원", "전남대학교", "SSAFY"];
   return (
     <div className="dropdown">
@@ -199,7 +206,104 @@ const Dropdown = (props) => {
           ))}
         </Select>
       </FormControl>
-    </div>
+
+      <FormControl
+        className="label1"
+        variant="standard"
+        size="small"
+        sx={{ m: 1, minWidth: 100 }}
+      >
+        <InputLabel id="demo-simple-select-standard-label">분류</InputLabel>
+        <Select
+          labelId="demo-simple-select-standard-label"
+          id="demo-simple-select-standard"
+          value={selected.category}
+          onChange={(e) => {
+            setSelected((prev) => {
+              return {
+                ...prev,
+                category: e.target.value,
+              };
+            });
+          }}
+          label="분류"
+          name="category"
+          style={{ maxHeight: 300 }}
+        >
+          {categoryList.map((category) => (
+            <MenuItem key={category} value={category}>
+              {category}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <div class="col-3">
+        <input
+          class="effect-1"
+          type="text"
+          placeholder="가게명"
+          onChange={(e) => {
+            setSelected((prev) => {
+              return {
+                ...prev,
+                storename: e.target.value,
+              };
+            });
+          }}
+        />
+        <span class="focus-border"></span>
+      </div>
+      <div class="col-3">
+        <input
+          class="effect-1"
+          type="text"
+          placeholder="개수"
+          onChange={(e) => {
+            setSelected((prev) => {
+              return {
+                ...prev,
+                count: e.target.value,
+              };
+            });
+          }}
+        />
+        <span class="focus-border"></span>
+      </div>
+      <div class="col-3">
+        <input
+          class="effect-1"
+          type="text"
+          placeholder="위도"
+          onChange={(e) => {
+            setSelected((prev) => {
+              return {
+                ...prev,
+                lat: e.target.value,
+              };
+            });
+          }}
+        />
+        <span class="focus-border"></span>
+      </div>
+
+      <div class="col-3">
+        <input
+          class="effect-1"
+          type="text"
+          placeholder="경도"
+          onChange={(e) => {
+            setSelected((prev) => {
+              return {
+                ...prev,
+                lon: e.target.value,
+              };
+            });
+          }}
+        />
+        <span class="focus-border"></span>
+      </div>
+
+    </div >
   );
 };
 export default Dropdown;
