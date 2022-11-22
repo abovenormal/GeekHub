@@ -55,6 +55,7 @@ function DashboardMap() {
           isPanto={state.isPanto}
           level={state.level}
           className="map"
+          draggable={false}
         >
           {data.map((driver, index) => (
             <>

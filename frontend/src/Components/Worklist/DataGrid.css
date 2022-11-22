@@ -568,6 +568,7 @@ input[type="text"] {
     height: 2px;
     background-color: #3399FF;
     transition: 0.4s;
+    
 }
 
 .effect-17:focus~.focus-border,

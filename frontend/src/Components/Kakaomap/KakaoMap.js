@@ -21,6 +21,7 @@ function KakaoMap() {
     localSchool: "",
   });
   const [preSchool, setPreSchool] = useState("");
+
   async function getData() {
     try {
       const res = await apiInstance().get("spot/workingDriver");
@@ -90,7 +91,9 @@ function KakaoMap() {
         isPanto={state.isPanto}
         level={state.level}
         style={{ width: "100%", height: "80vh" }}
+        
       >
+        
         {data.map((driver, index) => (
           <>
             <CustomOverlayMap // 커스텀 오버레이를 표시할 Container
@@ -122,6 +125,7 @@ function KakaoMap() {
             ></MapMarker>
           </>
         ))}
+        
       </Map>
     </div>
   );

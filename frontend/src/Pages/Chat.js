@@ -175,7 +175,7 @@ const Chat = () => {
   return (
     <div className="chat-container">
       <div className="container">
-        <div className="row">
+        <div className="rows">
           <div className="discussions">
             <div className="discussion">
               <div className="discussion-title">👇🏻채팅방을 선택해주세요.</div>
