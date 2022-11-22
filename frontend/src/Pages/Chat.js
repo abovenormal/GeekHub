@@ -29,6 +29,7 @@ const Chat = () => {
   const [roomIdx, setRoomIdx] = useState("");
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [nowSelected, setNowSelected] = useState("");
   const sendChatHandler = async () => {
     if (message === "") return;
     const now = new Date();
@@ -117,34 +118,17 @@ const Chat = () => {
     }
     setRows(result);
   }, [data]);
+  const onToggle = (schoolIdx) => {
+    setNowSelected(schoolIdx);
+    console.log(`nowSelected is ${nowSelected}`)
+  }
   useEffect(() => {
     let result = [];
     for (let i = 0; i < rows.length; i++) {
       result.push(
-        <div
-          className="discussion message-active"
-          onClick={(e) => {
-            // console.log(rows[i].id)
-            setRoomIdx(rows[i].id);
-            setRoomName(rows[i].localSchool);
-            axios("https://k7c205.p.ssafy.io/api/chat/message", {
-              method: "GET",
-              params: {
-                roomIdx: rows[i].id,
-              },
-            })
-              .then((res) => {
-                // console.log(res);
-                setChat(res.data);
-              })
-              .catch((err) => console.log("Update Price error", err));
-            console.log(rows[i]);
-          }}
-        >
           <div className="desc-contact">
             <p className="name">{rows[i].localSchool}</p>
           </div>
-        </div>
       );
     }
     setRowsMap(result);
@@ -157,20 +141,20 @@ const Chat = () => {
         <>
           {chat[i].userId == 1 ? (
             <>
-              <div class="message text-only">
-                <div class="response">
-                  <p class="text"> {chat[i].content}</p>
-                  <p class="response-time"> {chat[i].created_at}</p>
+              <div className="message text-only">
+                <div className="response">
+                  <p className="text"> {chat[i].content}</p>
+                  <p className="response-time"> {chat[i].created_at}</p>
                 </div>
               </div>
             </>
           ) : (
             <>
-              <div class="username">{chat[i].name} 드라이버</div>
-              <div class="message text-only">
-                <p class="text">{chat[i].content}</p>
+              <div className="username">{chat[i].name} 드라이버</div>
+              <div className="message text-only">
+                <p className="text">{chat[i].content}</p>
               </div>
-              <p class="time"> {chat[i].created_at}</p>
+              <p className="time"> {chat[i].created_at}</p>
             </>
           )}
         </>
@@ -194,9 +178,32 @@ const Chat = () => {
         <div className="row">
           <div className="discussions">
             <div className="discussion">
-              👇🏻👇🏻채팅방을 선택해주세요.
+              <div className="discussion-title">👇🏻채팅방을 선택해주세요.</div>
             </div>
-            {rowsMap}
+            {/* {rowsMap} */}
+            {rowsMap.map((row, i)=> 
+              (
+               <div
+        onClick={() => {
+          // console.log(rows[i].id)
+          setRoomIdx(rows[i].id);
+          setRoomName(rows[i].localSchool);
+          onToggle(rows[i].id);
+          axios("https://k7c205.p.ssafy.io/api/chat/message", {
+            method: "GET",
+            params: {
+              roomIdx: rows[i].id,
+            },
+          })
+          .then((res) => {
+            setChat(res.data);
+            onToggle(rows[i].id);
+          })
+          .catch((err) => console.log("Update Price error", err));
+          console.log(rows[i]);
+        }}
+        className={(nowSelected === rows[i].id ? "discussion selected-chat" : "discussion message-active")}
+        >{row}</div>))}
           </div>
           {!loading ? (
             <div className="chat">

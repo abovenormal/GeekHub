@@ -72,6 +72,22 @@ body {
   font-size: 1.2rem;
   color: #515151;
 }
+.discussion-title {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 1rem;
+  font-weight: bold;
+  animation: slow-updown 0.5s infinite ease-in-out alternate;
+}
+
+@keyframes slow-updown{
+  from{
+    transform: translatey(15px);
+  }
+  to{
+    transform: translatey(20px);
+  }
+}
 
 .discussions .search {
   display: flex;
@@ -127,8 +143,15 @@ body {
 
 .discussions .message-active:hover {
   background-color: #f6d336;
+  
 }
 
+.selected-chat {
+  width: 100%;
+  height: 90px;
+  background-color: #f6d336;
+  border-bottom: solid 1px #E0E0E0;
+}
 .discussions .discussion .photo {
   margin-left: 20px;
   display: block;
