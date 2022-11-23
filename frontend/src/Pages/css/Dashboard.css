@@ -1,0 +1,40 @@
+.dashboard-container {
+  width: 100%;
+  padding: 1rem;
+}
+
+.dashboard-link {
+  text-decoration: none;
+}
+.bottom-container {
+  display: flex;
+  width: 100%;
+  /* border: 1px solid black; */
+}
+.shorcut-block {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  height: 1000px;
+}
+
+.shortcut-link {
+  text-decoration: none;
+  color: white;
+}
+
+.map {
+  width: 300px;
+  height: 300px;
+}
+
+.dash-map {
+  padding: 1rem;
+}
+
+.shorcut-chat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+}

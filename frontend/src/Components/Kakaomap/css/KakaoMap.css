@@ -1,0 +1,40 @@
+.map-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-color: #f4f9fd;
+}
+
+.map-label{
+    font-size: 36px;
+    font-family: "BMHANNAPro";
+    font-weight: 600;
+    padding: 1rem 0;
+    margin-left: 1rem;
+}
+.label {
+    width:max-content;
+    font-size:  22px;
+    height: 22px;
+    color: #0e1737;
+    margin-top: 20px;
+    margin-left: 10px;
+    font-family: "BMHANNAPro";
+}
+
+.pickers {
+    position: absolute;
+    top: 100px;
+    left: 30px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #EECE4C; */
+    background-color: white;
+    border-radius: 12px;
+    width: 450px;
+    z-index: 100;
+    border: 1px solid rgba(0,0,0, 0.2);
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
