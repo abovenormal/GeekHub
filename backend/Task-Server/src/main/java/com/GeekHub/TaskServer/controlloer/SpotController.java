@@ -1,9 +1,6 @@
 package com.GeekHub.TaskServer.controlloer;
 
-import com.GeekHub.TaskServer.dto.request.CreateSpotRequestDto;
-import com.GeekHub.TaskServer.dto.request.ImgRequestDto;
-import com.GeekHub.TaskServer.dto.request.LogRequestDto;
-import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
+import com.GeekHub.TaskServer.dto.request.*;
 import com.GeekHub.TaskServer.dto.response.*;
 import com.GeekHub.TaskServer.entity.SpotCategory;
 import com.GeekHub.TaskServer.service.DeliveryLogService;
@@ -106,6 +103,19 @@ public class SpotController {
         }
 
         return new ResponseEntity<String>(result,HttpStatus.OK);
+    }
+
+    @PutMapping("/{spotIdx}")
+    public ResponseEntity<String> updateSpot(@PathVariable("spotIdx") long spotIdx, @RequestBody UpdateSpotRequestDto updateSpotRequestDto){
+        String result;
+        try {
+            SpotService.updateSpot(spotIdx,updateSpotRequestDto);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+
+        return new ResponseEntity<String>("success",HttpStatus.OK);
+
     }
     @PostMapping("/createname")
     public ResponseEntity<String> createSpotName(@RequestBody CreateSpotRequestDto createSpotRequestDto){

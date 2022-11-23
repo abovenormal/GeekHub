@@ -1,9 +1,6 @@
 package com.GeekHub.TaskServer.service;
 
-import com.GeekHub.TaskServer.dto.request.CreateSpotRequestDto;
-import com.GeekHub.TaskServer.dto.request.ImgRequestDto;
-import com.GeekHub.TaskServer.dto.request.LogRequestDto;
-import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
+import com.GeekHub.TaskServer.dto.request.*;
 import com.GeekHub.TaskServer.dto.response.*;
 import com.GeekHub.TaskServer.entity.*;
 import com.GeekHub.TaskServer.repository.SpotImgRepository;
@@ -173,6 +170,21 @@ public class SpotServiceImpl implements SpotService {
     @Transactional
     public void deleteSpot(Long spotIdx) throws Exception {
         spotRepository.deleteSpotBySpotIdx(spotIdx);
+    }
+
+    @Override
+    @Transactional
+    public void updateSpot(long spotIdx,UpdateSpotRequestDto updateSpotRequestDto) throws Exception{
+        User user = userRepository.findUserByUserName(updateSpotRequestDto.getUserName());
+        Spot spot = spotRepository.findSpotBySpotIdx(spotIdx).orElse(null);
+        spot.setSpotName(updateSpotRequestDto.getSpotName());
+        spot.setSpotCategory(updateSpotRequestDto.getSpotCategory());
+        spot.setExpectedTime(updateSpotRequestDto.getExpectedTime());
+        spot.setCount(updateSpotRequestDto.getCount());
+        spot.setLat(updateSpotRequestDto.getLat());
+        spot.setLon(updateSpotRequestDto.getLon());
+        spot.setUserIdx(user.getUserIdx());
+
     }
 //    public List<SpotLogDto> log(LogRequestDto logRequestDto) throws Exception{
 //        String localCity= logRequestDto.getLocalCity();
