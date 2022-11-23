@@ -1,18 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./css/Chat.css";
-import { DataGrid } from "@mui/x-data-grid";
 import { apiInstance } from "../api/index";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import axios from "axios";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import { now } from "moment";
 import SendIcon from "@mui/icons-material/Send";
 import Loading from "../asset/image/loading.gif";
 
@@ -39,26 +30,21 @@ const Chat = () => {
     const time = new Date();
     time.setHours(koreaNow.getHours);
     time.setMinutes(koreaNow.getMinutes);
-    console.log(time);
     const chatMessage = {
       sender: "1",
       content: message,
       roomId: roomIdx,
       timestamp: new Date(),
     };
-    console.log(chatMessage);
-    console.log(JSON.stringify(chatMessage));
     stompClient.send(`/app/sendMessage`, {}, JSON.stringify(chatMessage));
     setMessage("");
   };
 
   const onError = (err) => {
-    console.log("에러났다.`");
     throw err;
   };
 
   const onMessageReceived = () => {
-    console.log("메시지 받았니?");
     axios("https://k7c205.p.ssafy.io/api/chat/message", {
       method: "GET",
       params: {
@@ -66,14 +52,12 @@ const Chat = () => {
       },
     })
       .then((res) => {
-        console.log(res);
         setChat(res.data);
       })
       .catch((err) => console.log("Update Price error", err));
   };
 
   const onConnected = () => {
-    console.log("커넥트 확인");
     if (stompClient && stompClient.connected) {
       stompClient.subscribe(`/chat/${roomIdx}`, onMessageReceived);
       setLoading(false);
@@ -83,7 +67,6 @@ const Chat = () => {
   async function getData() {
     try {
       const res = await apiInstance().get("chat/rooms");
-      // console.log(res.data);
       setData(res.data);
     } catch (err) {
       console.log(err);
@@ -94,10 +77,8 @@ const Chat = () => {
   }
   useEffect(() => {
     setLoading(true);
-    console.log("연결 시작");
     let Sock = new SockJS("https://k7c205.p.ssafy.io/chatapi/endpoint");
     stompClient = over(Sock);
-    console.log(roomIdx);
     stompClient.connect({}, onConnected, onError);
   }, [roomIdx]);
   useEffect(() => {
@@ -120,15 +101,14 @@ const Chat = () => {
   }, [data]);
   const onToggle = (schoolIdx) => {
     setNowSelected(schoolIdx);
-    console.log(`nowSelected is ${nowSelected}`)
-  }
+  };
   useEffect(() => {
     let result = [];
     for (let i = 0; i < rows.length; i++) {
       result.push(
-          <div className="desc-contact">
-            <p className="name">{rows[i].localSchool}</p>
-          </div>
+        <div className="desc-contact">
+          <p className="name">{rows[i].localSchool}</p>
+        </div>
       );
     }
     setRowsMap(result);
@@ -181,29 +161,33 @@ const Chat = () => {
               <div className="discussion-title">👇🏻채팅방을 선택해주세요.</div>
             </div>
             {/* {rowsMap} */}
-            {rowsMap.map((row, i)=> 
-              (
-               <div
-        onClick={() => {
-          // console.log(rows[i].id)
-          setRoomIdx(rows[i].id);
-          setRoomName(rows[i].localSchool);
-          onToggle(rows[i].id);
-          axios("https://k7c205.p.ssafy.io/api/chat/message", {
-            method: "GET",
-            params: {
-              roomIdx: rows[i].id,
-            },
-          })
-          .then((res) => {
-            setChat(res.data);
-            onToggle(rows[i].id);
-          })
-          .catch((err) => console.log("Update Price error", err));
-          console.log(rows[i]);
-        }}
-        className={(nowSelected === rows[i].id ? "discussion selected-chat" : "discussion message-active")}
-        >{row}</div>))}
+            {rowsMap.map((row, i) => (
+              <div
+                onClick={() => {
+                  setRoomIdx(rows[i].id);
+                  setRoomName(rows[i].localSchool);
+                  onToggle(rows[i].id);
+                  axios("https://k7c205.p.ssafy.io/api/chat/message", {
+                    method: "GET",
+                    params: {
+                      roomIdx: rows[i].id,
+                    },
+                  })
+                    .then((res) => {
+                      setChat(res.data);
+                      onToggle(rows[i].id);
+                    })
+                    .catch((err) => console.log("Update Price error", err));
+                }}
+                className={
+                  nowSelected === rows[i].id
+                    ? "discussion selected-chat"
+                    : "discussion message-active"
+                }
+              >
+                {row}
+              </div>
+            ))}
           </div>
           {!loading ? (
             <div className="chat">
@@ -242,17 +226,10 @@ const Chat = () => {
                 <img src={Loading} className="loading"></img>
               </div>
               <div className="footer-chat">
-                <div
-                  className="write-message"
-                  placeholder="메세지 입력"
-                ></div>
-                <SendIcon
-                  className="clickable icon"
-                  color="primary"
-                />
+                <div className="write-message" placeholder="메세지 입력"></div>
+                <SendIcon className="clickable icon" color="primary" />
               </div>
             </div>
-            
           )}
         </div>
       </div>
