@@ -208,7 +208,11 @@ function DataList() {
                   <Button
                     variant="contained"
                     startIcon={<EditIcon />}
-                    style={{ fontFamily: "BMHANNAAir", fontSize: 20 }}
+                    style={{
+                      fontFamily: "BMHANNAAir",
+                      fontSize: 13,
+                      backgroundColor: "#101836",
+                    }}
                     onClick={(e) => {
                       setUpdateSelected((prev) => {
                         return {
@@ -232,7 +236,7 @@ function DataList() {
                     variant="contained"
                     startIcon={<DeleteIcon />}
                     color="error"
-                    style={{ fontFamily: "BMHANNAAir", fontSize: 20 }}
+                    style={{ fontFamily: "BMHANNAAir", fontSize: 13 }}
                     onClick={() => {
                       axios(
                         "https://k7c205.p.ssafy.io/api/spot/" + row.spotIdx,

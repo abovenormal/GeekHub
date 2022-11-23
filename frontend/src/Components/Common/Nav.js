@@ -10,6 +10,7 @@ import SummarizeIcon from "@mui/icons-material/Summarize";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import LogoutIcon from "@mui/icons-material/Logout";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 import Logout from "@mui/icons-material/Logout";
 // import logo from "../../asset/image/logo.png"
 const Nav = () => {
@@ -99,6 +100,20 @@ const Nav = () => {
           <SummarizeIcon className="nav-icon"></SummarizeIcon>
           <p className={`description ${expanded && "show-description"}`}>
             로그 확인
+          </p>
+        </Link>
+        <Link
+          className={
+            "nav-link" + (location.pathname === "/worklist" ? " active" : "")
+          }
+          onClick={() => {
+            setNowActive("worklist");
+          }}
+          to="worklist"
+        >
+          <PostAddIcon className="nav-icon"></PostAddIcon>
+          <p className={`description ${expanded && "show-description"}`}>
+            업무 관리
           </p>
         </Link>
         <Link
