@@ -11,9 +11,10 @@ import schoolJson from "../Kakaomap/school.json";
 import Button from "@mui/material/Button";
 import { Map, MapMarker, Polyline } from "react-kakao-maps-sdk";
 
-const DetailDropdown = (props) => {
-  const selected = props.selected;
-  const setSelected = props.setSelected;
+const UpdateDropdown = (props) => {
+  const updateSelected = props.updateSelected;
+  const setUpdateSelected = props.setUpdateSelected;
+
   const [schoolList, setSchoolList] = useState([]);
   const [driverList, setDriverList] = useState([]);
   const [hourList, setHourList] = useState([]);
@@ -27,9 +28,9 @@ const DetailDropdown = (props) => {
   const [preSchool, setPreSchool] = useState("");
   const [preCity, setPreCity] = useState("");
   useEffect(() => {
-    console.log(selected);
+    console.log(updateSelected);
     for (let i = 0; i < cityJson.length; i++) {
-      if (cityJson[i].localCity == selected.localCity) {
+      if (cityJson[i].localCity == updateSelected.localCity) {
         setState((prev) => {
           return {
             ...prev,
@@ -40,12 +41,12 @@ const DetailDropdown = (props) => {
             level: cityJson[i].level,
           };
         });
-        if (preSchool == selected.localSchool) {
+        if (preSchool == updateSelected.localSchool) {
           break;
         }
         for (let j = 0; j < schoolJson.length; j++) {
-          if (schoolJson[j].localSchool == selected.localSchool) {
-            console.log(selected.localSchool);
+          if (schoolJson[j].localSchool == updateSelected.localSchool) {
+            console.log(updateSelected.localSchool);
             setState((prev) => {
               return {
                 ...prev,
@@ -56,18 +57,34 @@ const DetailDropdown = (props) => {
                 level: schoolJson[j].level,
               };
             });
-            setPreSchool(selected.localSchool);
-            setPreCity(selected.localCity);
+            setPreSchool(updateSelected.localSchool);
+            setPreCity(updateSelected.localCity);
             break;
           }
         }
-        setPreSchool(selected.localSchool);
-        setPreCity(selected.localCity);
+        setPreSchool(updateSelected.localSchool);
+        setPreCity(updateSelected.localCity);
         break;
       }
     }
-  }, [selected]);
+  }, [updateSelected]);
 
+  useEffect(() => {
+    if (updateSelected.localCity && updateSelected.localSchool) {
+      async function getUser() {
+        const res = await apiInstance().post("spot/current", updateSelected);
+        let result = [];
+        for (let i = 0; i < res.data.length; i++) {
+          let item = res.data[i];
+          if (item.userName != null) {
+            result.push(item);
+          }
+        }
+        setDriverList(result);
+      }
+      getUser();
+    }
+  }, [updateSelected]);
   useEffect(() => {
     let result = [];
     for (let i = 0; i < 24; i++) {
@@ -86,31 +103,14 @@ const DetailDropdown = (props) => {
     setCategoryList(result);
   }, []);
 
-  useEffect(() => {
-    if (selected.localCity && selected.localSchool) {
-      async function getUser() {
-        const res = await apiInstance().post("spot/current", selected);
-        let result = [];
-        for (let i = 0; i < res.data.length; i++) {
-          let item = res.data[i];
-          if (item.userName != null) {
-            result.push(item);
-          }
-        }
-        setDriverList(result);
-      }
-      getUser();
-    }
-  }, [selected]);
-
   const onChange = (e) => {
     // console.log(e);
 
     const nextInfo = {
-      ...selected,
+      ...updateSelected,
       [e.target.name]: e.target.value,
     };
-    setSelected(nextInfo);
+    setUpdateSelected(nextInfo);
 
     if (nextInfo.localCity === "서울") {
       setSchoolList(schoolSeoul);
@@ -122,7 +122,6 @@ const DetailDropdown = (props) => {
       setSchoolList(schoolIncheon);
     }
   };
-
   const schoolSeoul = [
     "건국대학교",
     "경희대학교",
@@ -146,10 +145,10 @@ const DetailDropdown = (props) => {
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          value={selected.localCity}
+          value={updateSelected.localCity}
           onChange={(e) => {
             onChange(e);
-            setSelected((prev) => {
+            setUpdateSelected((prev) => {
               return {
                 ...prev,
                 localSchool: "",
@@ -170,7 +169,7 @@ const DetailDropdown = (props) => {
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          value={selected.localSchool}
+          value={updateSelected.localSchool}
           onChange={onChange}
           label="장소"
           name="localSchool"
@@ -187,10 +186,10 @@ const DetailDropdown = (props) => {
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          value={selected.driver}
+          value={updateSelected.driver}
           onChange={(e) => {
             console.log(e);
-            setSelected((prev) => {
+            setUpdateSelected((prev) => {
               return {
                 ...prev,
                 driver: e.target.value,
@@ -209,15 +208,15 @@ const DetailDropdown = (props) => {
         </Select>
       </FormControl>
 
-      <Datepicker selected={selected} setSelected={setSelected} />
+      <Datepicker selected={updateSelected} setSelected={setUpdateSelected} />
       <FormControl size="small" variant="standard" sx={{ m: 1, minWidth: 100 }}>
         <InputLabel id="demo-simple-select-standard-label">시간</InputLabel>
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          value={selected.hour}
+          value={updateSelected.hour}
           onChange={(e) => {
-            setSelected((prev) => {
+            setUpdateSelected((prev) => {
               return {
                 ...prev,
                 hour: e.target.value,
@@ -245,9 +244,9 @@ const DetailDropdown = (props) => {
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          value={selected.min}
+          value={updateSelected.min}
           onChange={(e) => {
-            setSelected((prev) => {
+            setUpdateSelected((prev) => {
               return {
                 ...prev,
                 min: e.target.value,
@@ -277,9 +276,9 @@ const DetailDropdown = (props) => {
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          value={selected.category}
+          value={updateSelected.spotCategory}
           onChange={(e) => {
-            setSelected((prev) => {
+            setUpdateSelected((prev) => {
               return {
                 ...prev,
                 category: e.target.value,
@@ -301,9 +300,10 @@ const DetailDropdown = (props) => {
         <input
           class="effect-1"
           type="text"
+          value={updateSelected.storename}
           placeholder="가게명"
           onChange={(e) => {
-            setSelected((prev) => {
+            setUpdateSelected((prev) => {
               return {
                 ...prev,
                 storename: e.target.value,
@@ -317,9 +317,10 @@ const DetailDropdown = (props) => {
         <input
           class="effect-1"
           type="text"
+          value={updateSelected.count}
           placeholder="개수"
           onChange={(e) => {
-            setSelected((prev) => {
+            setUpdateSelected((prev) => {
               return {
                 ...prev,
                 count: e.target.value,
@@ -334,9 +335,9 @@ const DetailDropdown = (props) => {
           class="effect-1"
           type="text"
           placeholder="위도"
-          value={selected.lat}
+          value={updateSelected.lat}
           onChange={(e) => {
-            setSelected((prev) => {
+            setUpdateSelected((prev) => {
               return {
                 ...prev,
                 lat: e.target.value,
@@ -352,9 +353,9 @@ const DetailDropdown = (props) => {
           class="effect-1"
           type="text"
           placeholder="경도"
-          value={selected.lng}
+          value={updateSelected.lng}
           onChange={(e) => {
-            setSelected((prev) => {
+            setUpdateSelected((prev) => {
               return {
                 ...prev,
                 lng: e.target.value,
@@ -373,7 +374,7 @@ const DetailDropdown = (props) => {
           height: "450px",
         }}
         onClick={(_t, mouseEvent) =>
-          setSelected((prev) => {
+          setUpdateSelected((prev) => {
             return {
               ...prev,
               lat: mouseEvent.latLng.getLat(),
@@ -382,9 +383,9 @@ const DetailDropdown = (props) => {
           })
         }
       >
-        {selected && <MapMarker position={selected} />}
+        {updateSelected && <MapMarker position={updateSelected} />}
       </Map>
     </div>
   );
 };
-export default DetailDropdown;
+export default UpdateDropdown;
