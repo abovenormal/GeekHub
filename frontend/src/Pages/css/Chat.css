@@ -1,6 +1,7 @@
-.row {
+.rows {
   display: flex;
   height: 100%;
+  /* padding: 110; */
 }
 body {
 }
@@ -8,7 +9,7 @@ body {
 .container {
   padding: 0;
   background-color: #FFF;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); */
   height: 100%;
 }
 
@@ -16,7 +17,6 @@ body {
 .menu {
   float: left;
   height: 100%;
-  ;
   width: 70px;
   background: #4768b5;
   background: -webkit-linear-gradient(#4768b5, #35488e);
@@ -57,20 +57,38 @@ body {
 
 .discussions {
   width: 35%;
-  box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.20);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.20);
   overflow: hidden;
   /* background-color: #87a3ec; */
   display: inline-block;
+  height: 78vh + 90px;
 }
 
 .discussions .discussion {
   width: 100%;
   height: 90px;
-  background-color: #FAFAFA;
   border-bottom: solid 1px #E0E0E0;
   display: flex;
   align-items: center;
   cursor: pointer;
+  font-size: 1.2rem;
+  color: #515151;
+}
+.discussion-title {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 1rem;
+  font-weight: bold;
+  animation: slow-updown 0.5s infinite ease-in-out alternate;
+}
+
+@keyframes slow-updown{
+  from{
+    transform: translatey(15px);
+  }
+  to{
+    transform: translatey(20px);
+  }
 }
 
 .discussions .search {
@@ -119,12 +137,23 @@ body {
 }
 
 .discussions .message-active {
-  width: 98.5%;
+  width: 100%;
   height: 90px;
   background-color: #FFF;
   border-bottom: solid 1px #E0E0E0;
 }
 
+.discussions .message-active:hover {
+  background-color: #f6d336;
+  
+}
+
+.selected-chat {
+  width: 100%;
+  height: 90px;
+  background-color: #f6d336;
+  border-bottom: solid 1px #E0E0E0;
+}
 .discussions .discussion .photo {
   margin-left: 20px;
   display: block;
@@ -141,8 +170,8 @@ body {
 
 
 .desc-contact {
-  height: 43px;
-  width: 50%;
+  display: flex;
+  width: 80%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -150,8 +179,9 @@ body {
 
 .discussions .discussion .name {
   margin: 0 0 0 20px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 11pt;
+  font-family: 'BMHANNAAir';
+  font-size: 1.4rem;
+  font-weight: bold;
   color: #515151;
 }
 
@@ -179,6 +209,9 @@ body {
 
 .header-chat {
   background-color: #FFF;
+  font-family: 'BMHANNAAir';
+  font-size: 1.4rem;
+  font-weight: bold;
   height: 90px;
   box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.100);
   display: flex;
@@ -194,8 +227,8 @@ body {
 .chat .header-chat .name {
   margin: 0 0 0 20px;
   text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 13pt;
+  font-family: "BMHANNAPro";
+  font-size: 1.6rem;
   color: #515151;
 }
 
@@ -205,11 +238,21 @@ body {
 }
 
 .chat .messages-chat {
-  padding: 25px 35px;
+  padding: 10px 35px 0 35px;
   overflow-y: auto;
-  height: 70vh;
+  height: 80vh;
 }
 
+.messages-chat-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 78vh;
+}
+
+.loading {
+  width: 200px;
+}
 .chat .messages-chat .message {
   display: flex;
   align-items: center;
@@ -227,28 +270,33 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
 }
+.username{
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
 
 .chat .messages-chat .text {
-  margin: 0 35px;
+  margin: 0 0px;
   background-color: #f6f6f6;
   padding: 15px;
   border-radius: 12px;
 }
 
 .text-only {
-  margin-left: 45px;
+  font-family: 'BMHANNAAir';
+  font-size: 1.3rem;
 }
 
 .time {
   font-size: 10px;
   color: lightgrey;
-  margin-bottom: 10px;
-  margin-left: 85px;
+  margin-bottom: 20px;
 }
 
 .response-time {
   float: right;
-  margin-right: 40px !important;
+    font-size: 10px;
+      color: lightgrey;
 }
 
 .response {
@@ -263,9 +311,10 @@ body {
 }
 
 .footer-chat {
-  width: calc(65% - 66px);
-  height: 80px;
+  width: calc(65% - 100px);
+  height: 70px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   position: absolute;
   bottom: 0;
@@ -275,9 +324,9 @@ body {
 }
 
 .chat .footer-chat .icon {
-  margin-left: 30px;
-  color: #C0C0C0;
-  font-size: 14pt;
+  margin: 0px 20px;
+  /* color: #C0C0C0; */
+  /* font-size: 14pt; */
 }
 
 .chat .footer-chat .send {
@@ -293,8 +342,8 @@ body {
 .chat .footer-chat .name {
   margin: 0 0 0 20px;
   text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 13pt;
+  font-family: 'BMHANNAAir';
+  font-size: 20pt;
   color: #515151;
 }
 
@@ -305,10 +354,11 @@ body {
 
 .write-message {
   border: none !important;
-  width: 60%;
+  width: 85%;
   height: 50px;
   margin-left: 20px;
   padding: 10px;
+  font-size: 1.4rem;
 }
 
 .footer-chat *::-webkit-input-placeholder {
