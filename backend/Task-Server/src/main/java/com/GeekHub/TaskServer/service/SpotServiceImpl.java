@@ -1,9 +1,6 @@
 package com.GeekHub.TaskServer.service;
 
-import com.GeekHub.TaskServer.dto.request.CreateSpotRequestDto;
-import com.GeekHub.TaskServer.dto.request.ImgRequestDto;
-import com.GeekHub.TaskServer.dto.request.LogRequestDto;
-import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
+import com.GeekHub.TaskServer.dto.request.*;
 import com.GeekHub.TaskServer.dto.response.*;
 import com.GeekHub.TaskServer.entity.*;
 import com.GeekHub.TaskServer.repository.SpotImgRepository;
@@ -109,9 +106,54 @@ public class SpotServiceImpl implements SpotService {
         }
     }
     @Override
+    @Transactional
+    public void createSpotName(CreateSpotRequestDto createSpotRequestDto) throws Exception {
+        LOGGER.info(createSpotRequestDto.toString());
+        User spotUser = userRepository.findUserByUserName(createSpotRequestDto.getUserName());
+
+        LOGGER.info(spotUser.toString());
+        try {
+            Spot spotEntity = Spot.builder()
+                    .spotCategory(createSpotRequestDto.getSpotCategory())
+                    .spotName(createSpotRequestDto.getSpotName())
+                    .lat(createSpotRequestDto.getLat())
+                    .lon(createSpotRequestDto.getLon())
+                    .expectedTime(createSpotRequestDto.getExpectedTime())
+                    .status(createSpotRequestDto.getStatus())
+                    .count(createSpotRequestDto.getCount())
+                    .userIdx(spotUser.getUserIdx())
+                    .build();
+            spotRepository.save(spotEntity);
+        }catch (Exception e){
+            throw new Exception();
+        }
+    }
+
+    @Override
     public List<WorkResponseDto> work(long driverIdx, SpotCategory spotCategory) throws Exception {
         User user = userRepository.findUserByUserIdx(driverIdx);
         List<WorkResponseDto> result = new ArrayList<>();
+        if (spotCategory == SpotCategory.DESTINATION) {
+            List<Spot> hubSpot = spotRepository.findSpotByUserIdxAndSpotCategoryOrderByExpectedTime(user.getUserIdx(), SpotCategory.HUB).orElse(null);
+            if (hubSpot != null) {
+                String time = "";
+                for (Spot spot : hubSpot) {
+                    String spotLogo[] = spot.getSpotName().split(" ");
+                    SpotImg spotImg = spotImgRepository.findSpotImgBySpotName(spotLogo[0]).orElse(null);
+                    int hour = spot.getExpectedTime().getHour();
+                    int minute = spot.getExpectedTime().getMinute();
+                    time = minute<10?hour + "시 0" + minute + "분":hour+"시 " + minute + "분";
+                    WorkResponseDto workResponseDto = new WorkResponseDto();
+                    workResponseDto.setSpotIndex(String.valueOf(spot.getSpotIdx()));
+                    workResponseDto.setSpotName(spot.getSpotName());
+                    workResponseDto.setExpectedTime(time);
+                    workResponseDto.setCount(spot.getCount());
+                    workResponseDto.setStatus(spot.getStatus());
+                    workResponseDto.setIconUrl(spotImg.getImgUrl());
+                    result.add(workResponseDto);
+                }
+            }
+        }
         try {
             List<Spot> searchList = spotRepository.findSpotByUserIdxAndSpotCategoryOrderByExpectedTime(user.getUserIdx(), spotCategory).orElse(null);
             String  time = "";
@@ -146,7 +188,26 @@ public class SpotServiceImpl implements SpotService {
         spot.setStatus(2);
     }
 
+    @Override
+    @Transactional
+    public void deleteSpot(Long spotIdx) throws Exception {
+        spotRepository.deleteSpotBySpotIdx(spotIdx);
+    }
 
+    @Override
+    @Transactional
+    public void updateSpot(long spotIdx,UpdateSpotRequestDto updateSpotRequestDto) throws Exception{
+        User user = userRepository.findUserByUserName(updateSpotRequestDto.getUserName());
+        Spot spot = spotRepository.findSpotBySpotIdx(spotIdx).orElse(null);
+        spot.setSpotName(updateSpotRequestDto.getSpotName());
+        spot.setSpotCategory(updateSpotRequestDto.getSpotCategory());
+        spot.setExpectedTime(updateSpotRequestDto.getExpectedTime());
+        spot.setCount(updateSpotRequestDto.getCount());
+        spot.setLat(updateSpotRequestDto.getLat());
+        spot.setLon(updateSpotRequestDto.getLon());
+        spot.setUserIdx(user.getUserIdx());
+
+    }
 //    public List<SpotLogDto> log(LogRequestDto logRequestDto) throws Exception{
 //        String localCity= logRequestDto.getLocalCity();
 //        String localSchool= logRequestDto.getLocalSchool();
