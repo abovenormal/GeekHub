@@ -89,6 +89,27 @@ public class SpotServiceImpl implements SpotService {
     public List<WorkResponseDto> work(long driverIdx, SpotCategory spotCategory) throws Exception {
         User user = userRepository.findUserByUserIdx(driverIdx);
         List<WorkResponseDto> result = new ArrayList<>();
+        if (spotCategory == SpotCategory.DESTINATION) {
+            List<Spot> hubSpot = spotRepository.findSpotByUserIdxAndSpotCategoryOrderByExpectedTime(user.getUserIdx(), SpotCategory.HUB).orElse(null);
+            if (hubSpot != null) {
+                String time = "";
+                for (Spot spot : hubSpot) {
+                    String spotLogo[] = spot.getSpotName().split(" ");
+                    SpotImg spotImg = spotImgRepository.findSpotImgBySpotName(spotLogo[0]).orElse(null);
+                    int hour = spot.getExpectedTime().getHour();
+                    int minute = spot.getExpectedTime().getMinute();
+                    time = minute<10?hour + "시 0" + minute + "분":hour+"시 " + minute + "분";
+                    WorkResponseDto workResponseDto = new WorkResponseDto();
+                    workResponseDto.setSpotIndex(String.valueOf(spot.getSpotIdx()));
+                    workResponseDto.setSpotName(spot.getSpotName());
+                    workResponseDto.setExpectedTime(time);
+                    workResponseDto.setCount(spot.getCount());
+                    workResponseDto.setStatus(spot.getStatus());
+                    workResponseDto.setIconUrl(spotImg.getImgUrl());
+                    result.add(workResponseDto);
+                }
+            }
+        }
         try {
             List<Spot> searchList = spotRepository.findSpotByUserIdxAndSpotCategoryOrderByExpectedTime(user.getUserIdx(), spotCategory).orElse(null);
             String  time = "";
