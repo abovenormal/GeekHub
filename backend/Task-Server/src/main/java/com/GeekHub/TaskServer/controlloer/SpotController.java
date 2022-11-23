@@ -1,5 +1,6 @@
 package com.GeekHub.TaskServer.controlloer;
 
+import com.GeekHub.TaskServer.dto.request.CreateSpotRequestDto;
 import com.GeekHub.TaskServer.dto.request.ImgRequestDto;
 import com.GeekHub.TaskServer.dto.request.LogRequestDto;
 import com.GeekHub.TaskServer.dto.request.SpotRequestDto;
@@ -89,6 +90,29 @@ public class SpotController {
         try {
            SpotService.createSpot(spotRequestDto);
          }catch (Exception e){
+            throw new RuntimeException();
+        }
+        return new ResponseEntity<String>("success",HttpStatus.CREATED);
+    }
+    @DeleteMapping("/{spotIdx}")
+    public ResponseEntity<String> deleteSpot(@PathVariable("spotIdx") long spotIdx){
+        String result;
+        try {
+            SpotService.deleteSpot(spotIdx);
+            result="delete success";
+        } catch (Exception e) {
+            result="error";
+            throw new RuntimeException();
+        }
+
+        return new ResponseEntity<String>(result,HttpStatus.OK);
+    }
+    @PostMapping("/createname")
+    public ResponseEntity<String> createSpotName(@RequestBody CreateSpotRequestDto createSpotRequestDto){
+        try {
+
+            SpotService.createSpotName(createSpotRequestDto);
+        }catch (Exception e){
             throw new RuntimeException();
         }
         return new ResponseEntity<String>("success",HttpStatus.CREATED);
