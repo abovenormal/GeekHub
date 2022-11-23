@@ -11,8 +11,8 @@
         margin: 1rem 0;
 }
 
-Toast{
-    z-index: 1000;
+.swal2-container {
+    z-index: 10;
 }
 
 .container {
@@ -24,8 +24,6 @@ Toast{
 #categori{
     margin-top: -5px;
 }
-
-
 
 
 
