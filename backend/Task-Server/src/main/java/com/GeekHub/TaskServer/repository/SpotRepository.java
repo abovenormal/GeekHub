@@ -16,4 +16,5 @@ public interface SpotRepository extends JpaRepository<Spot,Long> {
     Optional<List<Spot>> findSpotByUserIdxOrderByExpectedTime(long userIdx);
     Optional<Spot> findSpotBySpotIdx(Long spotIdx);
     Spot findSpotByUserIdxAndSpotIdx(Long userIdx, Long spotIdx);
+    void deleteSpotBySpotIdx(Long spotIdx);
 }
