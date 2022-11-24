@@ -88,7 +88,7 @@ const Signup = () => {
         await API.post("admin/createdriver", info);
         await MySwal.fire({
           icon: "success",
-          title: "회원가입 성공!",
+          title: "드라이버 등록 성공!",
         });
         await new Promise(() => {
           navigate("/");
